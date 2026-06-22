@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FlirtCoach">
+<meta name="theme-color" content="#7c5cbf">
+<link rel="manifest" href="manifest.json">
+<title>Thai Flirt Coach</title>
+<style>
+:root {
+  --pink: #ff6b8a;
+  --purple: #7c5cbf;
+  --dark: #0f0f1a;
+  --card: #1a1a2e;
+  --card2: #16213e;
+  --border: #2a2a4a;
+  --text: #e8e8f0;
+  --muted: #6b7280;
+  --green: #4ecdc4;
+  --yellow: #ffd93d;
+  --orange: #ff9f43;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; width: 100%; overflow: hidden; background: var(--dark); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 15px; }
+
+.header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: calc(var(--safe-top) + 10px) 16px 10px; background: linear-gradient(135deg, #4a1a6b, #8b1a4a); display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 20px rgba(0,0,0,0.5); }
+.header-icon { font-size: 1.6rem; }
+.header-title { font-size: 1.1rem; font-weight: 700; }
+.header-sub { font-size: 0.65rem; opacity: 0.75; margin-top: 1px; }
+.stage-badge { margin-left: auto; font-size: 0.65rem; font-weight: 700; background: rgba(255,255,255,0.15); border-radius: 20px; padding: 3px 10px; border: 1px solid rgba(255,255,255,0.2); }
+
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 100; background: var(--card2); border-top: 1px solid var(--border); display: flex; padding-bottom: var(--safe-bot); }
+.nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 4px 8px; background: none; border: none; color: var(--muted); font-size: 0.6rem; font-weight: 600; gap: 3px; cursor: pointer; transition: color 0.2s; }
+.nav-btn .nav-icon { font-size: 1.3rem; }
+.nav-btn.active { color: var(--pink); }
+
+.screens { position: fixed; top: calc(var(--safe-top) + 56px); bottom: calc(var(--safe-bot) + 56px); left: 0; right: 0; overflow: hidden; }
+.screen { position: absolute; inset: 0; overflow-y: auto; -webkit-overflow-scrolling: touch; display: none; flex-direction: column; padding: 14px 14px 20px; gap: 12px; }
+.screen.active { display: flex; }
+
+.section { background: var(--card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
+.section-title { padding: 11px 14px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); border-bottom: 1px solid var(--border); }
+
+.rapport-body { padding: 14px; }
+.rapport-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.rapport-num { font-size: 1.6rem; font-weight: 800; color: var(--green); }
+.bar-track { background: var(--border); border-radius: 20px; height: 10px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--pink), var(--purple)); transition: width 0.5s ease; }
+.stage-pills { display: flex; gap: 6px; margin-top: 12px; flex-wrap: wrap; }
+.pill { font-size: 0.7rem; padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border); color: var(--muted); background: none; cursor: pointer; transition: all 0.2s; }
+.pill.active { border-color: var(--pink); color: var(--pink); background: rgba(255,107,138,0.12); }
+
+.persona-row { display: flex; gap: 8px; padding: 12px; }
+.persona-btn { flex: 1; padding: 10px 4px; border-radius: 12px; border: 1px solid var(--border); background: none; color: var(--text); font-size: 0.8rem; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: all 0.2s; }
+.persona-btn .p-icon { font-size: 1.5rem; }
+.persona-btn.active { border-color: var(--purple); background: rgba(124,92,191,0.2); color: var(--yellow); }
+
+.chat-scroll { padding: 12px; display: flex; flex-direction: column; gap: 7px; max-height: 260px; overflow-y: auto; }
+.bubble { max-width: 80%; padding: 9px 13px; border-radius: 18px; font-size: 0.85rem; line-height: 1.45; }
+.bubble.me { align-self: flex-end; background: linear-gradient(135deg, var(--purple), #5e35b1); border-bottom-right-radius: 4px; }
+.bubble.her { align-self: flex-start; background: var(--border); border-bottom-left-radius: 4px; }
+.bubble .btime { font-size: 0.58rem; opacity: 0.55; margin-top: 3px; display: block; }
+.add-msg-btn { margin: 0 12px 12px; padding: 10px; border: 1px dashed var(--border); border-radius: 10px; background: none; color: var(--muted); font-size: 0.8rem; cursor: pointer; transition: all 0.2s; width: calc(100% - 24px); }
+.add-msg-btn:active { border-color: var(--pink); color: var(--pink); }
+
+.input-card { background: var(--card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
+.input-label { padding: 10px 14px 6px; font-size: 0.72rem; color: var(--muted); }
+.input-row { display: flex; gap: 8px; padding: 0 12px 12px; }
+.msg-input { flex: 1; background: var(--dark); border: 1px solid var(--border); border-radius: 12px; padding: 10px 12px; color: var(--text); font-size: 0.95rem; font-family: inherit; resize: none; min-height: 46px; max-height: 100px; }
+.msg-input:focus { outline: none; border-color: var(--pink); }
+.go-btn { background: linear-gradient(135deg, var(--pink), var(--purple)); border: none; color: white; width: 46px; height: 46px; border-radius: 12px; font-size: 1.2rem; cursor: pointer; flex-shrink: 0; }
+.go-btn:active { opacity: 0.8; }
+
+.signals { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px; }
+.sig { font-size: 0.68rem; padding: 3px 9px; border-radius: 20px; background: var(--border); }
+.sig.pos { background: rgba(78,205,196,0.15); color: var(--green); }
+.sig.neu { background: rgba(255,217,61,0.1); color: var(--yellow); }
+.sig.neg { background: rgba(255,107,107,0.1); color: #ff6b6b; }
+
+.tip-box { padding: 12px 14px; background: rgba(124,92,191,0.1); border-top: 1px solid rgba(124,92,191,0.25); font-size: 0.78rem; color: #c4b5fd; line-height: 1.5; }
+.tip-box strong { color: var(--yellow); }
+
+.sugg-card { background: var(--card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; }
+.sugg-head { padding: 10px 14px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); }
+.type-tag { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 8px; border-radius: 20px; }
+.tw { background: rgba(255,159,67,0.2); color: var(--orange); }
+.twarm { background: rgba(255,107,138,0.2); color: var(--pink); }
+.tp { background: rgba(124,92,191,0.2); color: #a78bfa; }
+.td { background: rgba(78,205,196,0.2); color: var(--green); }
+.intensity { margin-left: auto; display: flex; gap: 2px; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); }
+.dot.on { background: var(--pink); }
+.sugg-body { padding: 13px 14px 10px; }
+.thai { font-size: 1.05rem; font-weight: 500; color: #fff; line-height: 1.6; margin-bottom: 8px; }
+.korean { font-size: 0.78rem; color: var(--muted); line-height: 1.5; padding-top: 8px; border-top: 1px solid var(--border); }
+.sugg-foot { padding: 8px 12px; display: flex; gap: 8px; }
+.btn-copy { flex: 1; background: none; border: 1px solid var(--border); color: var(--text); padding: 9px; border-radius: 10px; font-size: 0.78rem; cursor: pointer; }
+.btn-copy:active { border-color: var(--green); color: var(--green); }
+.btn-send { flex: 2; background: linear-gradient(135deg, var(--pink), var(--purple)); border: none; color: white; padding: 9px; border-radius: 10px; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
+.btn-send:active { opacity: 0.8; }
+
+.empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 50px 20px; text-align: center; color: var(--muted); }
+.empty .eicon { font-size: 3rem; }
+.empty p { font-size: 0.85rem; line-height: 1.7; }
+.loading { display: none; align-items: center; justify-content: center; gap: 10px; padding: 30px; color: var(--muted); }
+.loading.show { display: flex; }
+.dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--pink); animation: pop 1s infinite; display: inline-block; margin: 0 2px; }
+.dots span:nth-child(2) { animation-delay: 0.15s; }
+.dots span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes pop { 0%,80%,100%{transform:scale(.5);opacity:.3} 40%{transform:scale(1);opacity:1} }
+
+.tip-card { background: var(--card); border-radius: 16px; border: 1px solid var(--border); padding: 14px; }
+.tip-card h3 { font-size: 0.9rem; margin-bottom: 10px; color: var(--yellow); }
+.tip-card p { font-size: 0.82rem; line-height: 1.7; color: var(--text); margin-bottom: 6px; }
+.tip-card ul { padding-left: 16px; }
+.tip-card li { font-size: 0.82rem; line-height: 1.7; color: var(--text); margin-bottom: 3px; }
+.tag { display: inline-block; background: rgba(255,107,138,0.15); color: var(--pink); font-size: 0.68rem; padding: 2px 7px; border-radius: 6px; margin: 2px; }
+.divider { height: 1px; background: var(--border); margin: 14px 0; }
+
+.phrase-cat { font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin: 4px 0 8px; }
+.phrase-item { background: var(--card); border-radius: 12px; border: 1px solid var(--border); padding: 11px 13px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+.phrase-texts { flex: 1; }
+.phrase-th { font-size: 0.88rem; color: #fff; }
+.phrase-ko { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+.phrase-copy { background: none; border: 1px solid var(--border); color: var(--muted); padding: 6px 10px; border-radius: 8px; font-size: 0.7rem; cursor: pointer; white-space: nowrap; }
+.phrase-copy:active { border-color: var(--green); color: var(--green); }
+
+.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 200; align-items: flex-end; justify-content: center; }
+.modal-bg.open { display: flex; }
+.modal { background: var(--card2); border-radius: 24px 24px 0 0; padding: 20px 16px calc(var(--safe-bot) + 20px); width: 100%; }
+.modal h3 { font-size: 1rem; margin-bottom: 14px; }
+.sender-row { display: flex; gap: 8px; margin-bottom: 12px; }
+.sender-btn { flex: 1; padding: 9px; border-radius: 10px; border: 1px solid var(--border); background: none; color: var(--text); font-size: 0.82rem; cursor: pointer; }
+.sender-btn.sel { border-color: var(--pink); background: rgba(255,107,138,0.12); color: var(--pink); }
+.modal textarea { width: 100%; background: var(--dark); border: 1px solid var(--border); border-radius: 12px; padding: 11px; color: var(--text); font-family: inherit; font-size: 0.9rem; resize: none; height: 90px; margin-bottom: 12px; }
+.modal textarea:focus { outline: none; border-color: var(--pink); }
+.modal-btns { display: flex; gap: 8px; }
+.m-cancel { flex: 1; background: var(--border); border: none; color: var(--text); padding: 11px; border-radius: 12px; font-size: 0.85rem; cursor: pointer; }
+.m-add { flex: 2; background: linear-gradient(135deg, var(--pink), var(--purple)); border: none; color: white; padding: 11px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
+
+.toast { position: fixed; bottom: calc(var(--safe-bot) + 70px); left: 50%; transform: translateX(-50%) translateY(10px); background: var(--green); color: #000; padding: 10px 22px; border-radius: 30px; font-size: 0.82rem; font-weight: 700; opacity: 0; transition: all 0.25s; pointer-events: none; z-index: 999; white-space: nowrap; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">💬</div>
+  <div>
+    <div class="header-title">Thai Flirt Coach</div>
+    <div class="header-sub">태국/라오스 여성 대화 코치</div>
+  </div>
+  <div class="stage-badge" id="stageBadge">첫 연락</div>
+</div>
+
+<div class="screens">
+
+  <!-- 코치 -->
+  <div class="screen active" id="screen-coach">
+    <div class="input-card">
+      <div class="input-label">👩 상대방 메시지를 입력하세요</div>
+      <div class="input-row">
+        <textarea class="msg-input" id="herMsg" placeholder="예: สบายดี 🥰  ทำอะไรอยู่  คิดถึงนะ ..." rows="2" oninput="autoH(this)"></textarea>
+        <button class="go-btn" onclick="analyze()">▶</button>
+      </div>
+      <div id="signals" class="signals" style="display:none"></div>
+      <div id="tipBox" class="tip-box" style="display:none"></div>
+    </div>
+    <div class="loading" id="loading"><div class="dots"><span></span><span></span><span></span></div>&nbsp;분석 중...</div>
+    <div id="results"></div>
+    <div class="empty" id="emptyState">
+      <div class="eicon">💬</div>
+      <p>상대방 메시지를 입력하면<br>최적의 태국어 답변을 추천해드립니다<br><br><small style="color:var(--green)">✨ 실제 대화 패턴 학습 완료</small></p>
+    </div>
+  </div>
+
+  <!-- 설정 -->
+  <div class="screen" id="screen-setting">
+    <div class="section">
+      <div class="section-title">📊 친밀도 단계</div>
+      <div class="rapport-body">
+        <div class="rapport-top">
+          <span style="font-size:0.8rem">라포르</span>
+          <div class="rapport-num" id="rapNum">45</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" id="rapBar" style="width:45%"></div></div>
+        <div class="stage-pills">
+          <button class="pill active" onclick="setStage(0)">첫 연락</button>
+          <button class="pill" onclick="setStage(1)">친해지기</button>
+          <button class="pill" onclick="setStage(2)">호감 형성</button>
+          <button class="pill" onclick="setStage(3)">설레는 단계</button>
+          <button class="pill" onclick="setStage(4)">깊은 연결</button>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">🎭 나의 스타일</div>
+      <div class="persona-row">
+        <button class="persona-btn active" data-p="charming" onclick="setPersona(this)"><span class="p-icon">😏</span><span>매력남</span></button>
+        <button class="persona-btn" data-p="funny" onclick="setPersona(this)"><span class="p-icon">😄</span><span>재치남</span></button>
+        <button class="persona-btn" data-p="caring" onclick="setPersona(this)"><span class="p-icon">🥰</span><span>다정남</span></button>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">💬 대화 맥락</div>
+      <div class="chat-scroll" id="chatCtx">
+        <div class="bubble her">สบายดีไหม? 🥰<span class="btime">이전</span></div>
+        <div class="bubble me">สบายดีครับ แล้วน้องล่ะ<span class="btime">이전</span></div>
+        <div class="bubble her">สบายดีค่ะ<span class="btime">이전</span></div>
+      </div>
+      <button class="add-msg-btn" onclick="openModal()">+ 대화 내용 추가</button>
+    </div>
+  </div>
+
+  <!-- 표현집 -->
+  <div class="screen" id="screen-phrases">
+    <div class="phrase-cat">🌅 인사 / 안부</div>
+    <div id="ph-greet"></div>
+    <div class="phrase-cat">💕 칭찬 / 설레게</div>
+    <div id="ph-flirt"></div>
+    <div class="phrase-cat">📍 만남 제안</div>
+    <div id="ph-meet"></div>
+    <div class="phrase-cat">💬 대화 이어가기</div>
+    <div id="ph-talk"></div>
+    <div class="phrase-cat">🌙 밤 인사</div>
+    <div id="ph-night"></div>
+  </div>
+
+  <!-- 팁 -->
+  <div class="screen" id="screen-tips">
+    <div class="tip-card">
+      <h3>✨ Ssom 대화 스타일 분석</h3>
+      <p>실제 대화에서 발견된 핵심 특징:</p>
+      <ul>
+        <li>짧고 가볍게 시작 — 부담 없이 접근</li>
+        <li>상대방 일정·위치를 자연스럽게 확인</li>
+        <li>"5555" (태국식 ㅋㅋ) 로 유머감각 표현</li>
+        <li>น่ารัก(귀엽다), คิดถึง(보고싶다) 적절히 사용</li>
+        <li>다음 만남 기약으로 기대감 유지</li>
+      </ul>
+    </div>
+    <div class="divider"></div>
+    <div class="tip-card">
+      <h3>🧲 캘리브레이션 높이는 법</h3>
+      <ul>
+        <li>상대방보다 <strong>조금 덜</strong> 연락하기</li>
+        <li>답장이 길어도 <strong>짧고 재치있게</strong> 답하기</li>
+        <li>만남 제안은 가볍게 — 거절당해도 <strong>쿨하게</strong></li>
+        <li>"왜 생각났지?" 질문으로 <strong>상상하게</strong> 만들기</li>
+        <li>이모티콘은 <strong>포인트</strong>로만 사용</li>
+      </ul>
+    </div>
+    <div class="divider"></div>
+    <div class="tip-card">
+      <h3>🚨 절대 하지 말 것</h3>
+      <ul>
+        <li>답장 없을 때 연속 메시지 금지</li>
+        <li>"나 좋아해?" 직접 질문 금지 (초반)</li>
+        <li>칭찬을 너무 많이 — 가치가 낮아짐</li>
+        <li>항상 먼저 연락 — 상대가 연락하게 만들 것</li>
+      </ul>
+    </div>
+    <div class="divider"></div>
+    <div class="tip-card">
+      <h3>📱 핵심 태국어 표현</h3>
+      <p style="margin-bottom:8px">감정:</p>
+      <span class="tag">คิดถึง = 보고싶어</span><span class="tag">ชอบ = 좋아해</span><span class="tag">น่ารัก = 귀여워</span><span class="tag">สวย = 예뻐</span><span class="tag">เป็นห่วง = 걱정돼</span>
+      <div class="divider"></div>
+      <p style="margin-bottom:8px">반응:</p>
+      <span class="tag">555 = ㅋㅋㅋ</span><span class="tag">จริงๆ = 정말로</span><span class="tag">ใช่ = 맞아</span><span class="tag">ได้เลย = 당연하지</span><span class="tag">เค = 응</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="showScreen('coach',this)"><span class="nav-icon">🤖</span>코치</button>
+  <button class="nav-btn" onclick="showScreen('setting',this)"><span class="nav-icon">⚙️</span>설정</button>
+  <button class="nav-btn" onclick="showScreen('phrases',this)"><span class="nav-icon">📖</span>표현집</button>
+  <button class="nav-btn" onclick="showScreen('tips',this)"><span class="nav-icon">💡</span>팁</button>
+</div>
+
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3>💬 대화 추가</h3>
+    <div class="sender-row">
+      <button class="sender-btn sel" id="btnMe" onclick="setSender('me')">나 (Ssom)</button>
+      <button class="sender-btn" id="btnHer" onclick="setSender('her')">상대방</button>
+    </div>
+    <textarea id="modalTxt" placeholder="메시지 내용..."></textarea>
+    <div class="modal-btns">
+      <button class="m-cancel" onclick="closeModal()">취소</button>
+      <button class="m-add" onclick="addCtx()">추가</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">복사됨! ✓</div>
+
+<script>
+var stage=0, persona='charming', mSender='me';
+var stageNames=['첫 연락','친해지기','호감 형성','설레는 단계','깊은 연결'];
+var stageVals=[15,35,55,75,90];
+
+function showScreen(id,btn){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.nav-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('screen-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+function setStage(n){
+  stage=n;
+  document.querySelectorAll('.pill').forEach(function(p,i){p.classList.toggle('active',i===n);});
+  document.getElementById('rapNum').textContent=stageVals[n];
+  document.getElementById('rapBar').style.width=stageVals[n]+'%';
+  document.getElementById('stageBadge').textContent=stageNames[n];
+}
+function setPersona(btn){
+  persona=btn.dataset.p;
+  document.querySelectorAll('.persona-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+}
+function openModal(){document.getElementById('modalBg').classList.add('open');setTimeout(function(){document.getElementById('modalTxt').focus();},150);}
+function closeModal(){document.getElementById('modalBg').classList.remove('open');document.getElementById('modalTxt').value='';}
+function setSender(s){
+  mSender=s;
+  document.getElementById('btnMe').classList.toggle('sel',s==='me');
+  document.getElementById('btnHer').classList.toggle('sel',s==='her');
+}
+function addCtx(){
+  var t=document.getElementById('modalTxt').value.trim();if(!t)return;
+  var div=document.createElement('div');div.className='bubble '+mSender;
+  div.innerHTML=t+'<span class="btime">방금</span>';
+  document.getElementById('chatCtx').appendChild(div);
+  document.getElementById('chatCtx').scrollTop=9999;
+  closeModal();
+}
+function autoH(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
+function showToast(msg){
+  var t=document.getElementById('toast');t.textContent=msg||'복사됨! ✓';
+  t.classList.add('show');setTimeout(function(){t.classList.remove('show');},1800);
+}
+function cp(text){
+  if(navigator.clipboard){navigator.clipboard.writeText(text).then(function(){showToast();});}
+  else{var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast();}
+}
+function useMeg(text){
+  var div=document.createElement('div');div.className='bubble me';
+  div.innerHTML=text+'<span class="btime">방금</span>';
+  document.getElementById('chatCtx').appendChild(div);
+  document.getElementById('chatCtx').scrollTop=9999;
+  cp(text);
+  document.getElementById('herMsg').value='';
+  document.getElementById('results').innerHTML='';
+  document.getElementById('signals').style.display='none';
+  document.getElementById('tipBox').style.display='none';
+  var es=document.getElementById('emptyState');
+  es.innerHTML='<div class="eicon">✅</div><p>복사 완료!<br>상대방에게 보내고<br>답장이 오면 다시 입력하세요</p>';
+  es.style.display='flex';
+}
+function detectSigs(msg){
+  var sigs=[],lo=msg.toLowerCase();
+  if(/[🥰😍💕❤💓💗💞]/.test(msg)||/🥰|😍|💕|❤|💓|💗|💞/.test(msg))sigs.push({c:'pos',l:'❤️ 애정 이모티콘'});
+  if(/คิดถึง|miss/.test(lo))sigs.push({c:'pos',l:'💭 그리움 표현'});
+  if(/น่ารัก|สวย|หล่อ|cute/.test(lo))sigs.push({c:'pos',l:'✨ 칭찬'});
+  if(/มาไหม|เจอกัน|ไปกิน/.test(lo))sigs.push({c:'pos',l:'📍 만남 제안'});
+  if(/555|🤣|😂|ฮา/.test(msg))sigs.push({c:'pos',l:'😂 웃음 반응'});
+  if(/ทำอะไร|กินข้าว|เลิกงาน/.test(lo))sigs.push({c:'neu',l:'💬 일상 질문'});
+  if(/แฟน|boyfriend/.test(lo))sigs.push({c:'neu',l:'💑 연애 언급'});
+  if(/ไม่ว่าง|busy|ติดธุระ/.test(lo))sigs.push({c:'neg',l:'⚠️ 바쁨/거절'});
+  if(msg.trim().length<6)sigs.push({c:'neu',l:'📏 짧은 답변'});
+  if(msg.length>50)sigs.push({c:'pos',l:'📝 긴 답변 = 관심'});
+  if(!sigs.length)sigs.push({c:'neu',l:'💬 일반 메시지'});
+  return sigs;
+}
+function analyze(){
+  var msg=document.getElementById('herMsg').value.trim();if(!msg)return;
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('results').innerHTML='';
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('signals').style.display='none';
+  document.getElementById('tipBox').style.display='none';
+  var b=document.createElement('div');b.className='bubble her';
+  b.innerHTML=msg+'<span class="btime">방금</span>';
+  document.getElementById('chatCtx').appendChild(b);
+  document.getElementById('chatCtx').scrollTop=9999;
+  setTimeout(function(){
+    document.getElementById('loading').classList.remove('show');
+    var r=gen(msg,stage,persona);
+    renderSigs(r.sigs);renderTip(r.tip);renderSuggs(r.suggs);
+  },800);
+}
+function renderSigs(sigs){
+  var el=document.getElementById('signals');
+  el.innerHTML='<span style="font-size:0.65rem;color:var(--muted);margin-right:4px">분석:</span>';
+  sigs.forEach(function(s){var d=document.createElement('span');d.className='sig '+s.c;d.textContent=s.l;el.appendChild(d);});
+  el.style.display='flex';
+}
+function renderTip(tip){
+  var el=document.getElementById('tipBox');el.innerHTML='💡 '+tip;el.style.display='block';
+}
+function renderSuggs(suggs){
+  var area=document.getElementById('results');area.innerHTML='';
+  var tl={wit:'재치형',warm:'따뜻형',play:'장난기형',dir:'직접형'};
+  var tc={wit:'tw',warm:'twarm',play:'tp',dir:'td'};
+  suggs.forEach(function(s){
+    var dots='';for(var i=0;i<5;i++)dots+='<div class="dot'+(i<s.lv?' on':'')+'"></div>';
+    var card=document.createElement('div');card.className='sugg-card';
+    var th=s.th.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    card.innerHTML='<div class="sugg-head"><span class="type-tag '+tc[s.t]+'">'+tl[s.t]+'</span><div class="intensity">'+dots+'</div></div>'
+      +'<div class="sugg-body"><div class="thai">'+s.th+'</div><div class="korean">🇰🇷 '+s.ko+'</div></div>'
+      +'<div class="sugg-foot"><button class="btn-copy" onclick="cp(\''+th+'\')">복사</button><button class="btn-send" onclick="useMeg(\''+th+'\')">이걸로 보내기 ✓</button></div>';
+    area.appendChild(card);
+  });
+}
+function gen(msg,stg,per){
+  var lo=msg.toLowerCase(),sigs=detectSigs(msg),tip='',suggs=[];
+  if(/มอร์นิ่ง|morning|สวัสดี|ตื่น/.test(lo)){
+    tip='아침 인사는 하루를 여는 황금 타이밍! <strong>기대하게</strong> 만드세요.';
+    suggs=[
+      {t:'play',lv:3,th:'มอร์นิ่งนะ วันนี้น้องฝันถึงใครรึเปล่า 😏',ko:'굿모닝~ 오늘 꿈에서 누구 나왔어요? 😏'},
+      {t:'warm',lv:2,th:'มอร์นิ่งจ้ะ วันนี้ต้องเป็นวันดีๆของน้องแน่เลย ☀️',ko:'굿모닝! 오늘은 분명 좋은 하루가 될 거예요 ☀️'},
+      {t:'wit',lv:3,th:'มอร์นิ่งครับ ตื่นมาก็นึกถึงน้องเลย 😅',ko:'굿모닝~ 일어나자마자 생각났어요 ㅋㅋ'},
+      {t:'dir',lv:1,th:'สวัสดีตอนเช้า วันนี้ว่างไหม อยากคุยด้วย',ko:'좋은 아침이에요. 오늘 시간 있어요?'},
+    ];
+  } else if(/คิดถึง|miss you/.test(lo)){
+    tip='<strong>คิดถึง</strong>는 큰 신호! 바로 받아치되 <strong>과하지 않게</strong>. 상대가 더 그리워하게 만드세요.';
+    suggs=[
+      {t:'play',lv:4,th:'โอ้โห น้องคิดถึงพี่ด้วยเหรอ 🥰 ทำไมถึงคิดถึงล่ะ?',ko:'오오, 그리워했어요? 왜 갑자기 생각났어요? 😏'},
+      {t:'warm',lv:2,th:'พี่ก็คิดถึงน้องเหมือนกันนะ จริงๆด้วย 😊',ko:'나도 마찬가지예요. 진심으로요 😊'},
+      {t:'wit',lv:3,th:'คิดถึงแล้วบอกเลยนะ ชอบนิสัยน้องขึ้นเรื่อยๆ 555',ko:'그리우면 바로 말해줘서 좋아요~ 점점 더 좋아지는 것 같아요 ㅋㅋ'},
+      {t:'dir',lv:4,th:'คิดถึงกันก็ต้องเจอกันสิ เมื่อไหร่ว่าง?',ko:'그리우면 만나야죠~ 언제 시간 돼요?'},
+    ];
+  } else if(/ทำอะไร|อยู่ไหน/.test(lo)){
+    tip='일상 질문은 관심 표시. <strong>질문을 돌려</strong> 대화를 발전시키세요.';
+    suggs=[
+      {t:'play',lv:2,th:'นึกถึงน้องอยู่พอดีเลย เป็นยังไงบ้าง? 😊',ko:'마침 생각하고 있었는데! 어떻게 지내요? 😊'},
+      {t:'wit',lv:3,th:'กำลังหาวิธีทำให้น้องยิ้มอยู่เลย 😏 แล้วน้องทำอะไรอยู่?',ko:'어떻게 하면 웃게 해줄까 생각 중이었어요 😏 뭐 해요?'},
+      {t:'warm',lv:3,th:'อยู่บ้านครับ แต่น่าเบื่อกว่าปกติ เพราะไม่มีน้อง 555',ko:'집에 있는데 평소보다 심심해요. 당신이 없어서 그런가 봐요 ㅋㅋ'},
+      {t:'dir',lv:2,th:'ไม่ได้ทำอะไรพิเศษ อยากคุยกับน้องมากกว่า 😆',ko:'별거 없어요. 그냥 당신이랑 얘기하고 싶었어요 😆'},
+    ];
+  } else if(/ทำงาน|เลิกงาน|งาน/.test(lo)){
+    tip='직장 얘기엔 공감·격려를. <strong>센스를 더하면</strong> 호감도 UP!';
+    suggs=[
+      {t:'warm',lv:2,th:'เหนื่อยไหม ถ้าเหนื่อยพักผ่อนเยอะๆนะ พี่เป็นห่วงน้องเสมอ 🥺',ko:'힘들죠? 많이 쉬어요. 항상 걱정하고 있어요 🥺'},
+      {t:'play',lv:3,th:'เลิกงานแล้วอย่าลืมนึกถึงพี่ด้วยนะ 😏 555',ko:'퇴근하면 저 생각 해줘야 해요 😏 ㅋㅋ'},
+      {t:'wit',lv:2,th:'ทำงานเก่งขนาดนี้ ไม่แปลกใจที่น้องน่ารักจัง 💪',ko:'이렇게 열심히 하니까 더 매력 있어 보여요 💪'},
+      {t:'dir',lv:1,th:'เลิกงานกี่โมง ถ้าว่างอยากคุยด้วยนะ',ko:'몇 시에 퇴근해요? 시간 되면 얘기해요'},
+    ];
+  } else if(/^(ok|okay|ค่ะ|ครับ|ใช่|ได้|เค|อ่อ)$/i.test(msg.trim())||msg.trim().length<6){
+    tip='<strong>짧은 답변</strong> — 재미있는 질문으로 <strong>대화를 끌어내세요</strong>.';
+    suggs=[
+      {t:'play',lv:2,th:'แค่นั้นเลยเหรอ? พี่อยากได้ยินมากกว่านี้นะ 🥺 น้องคิดอะไรอยู่?',ko:'그게 다예요? 더 듣고 싶은데~ 뭐 생각해요? 🥺'},
+      {t:'wit',lv:2,th:'555 น้องพูดน้อยแต่น่ารักมากเลยนะ',ko:'ㅋㅋ 말은 적은데 너무 귀여워요'},
+      {t:'warm',lv:1,th:'โอเคครับ แล้วน้องวันนี้เป็นยังไงบ้าง?',ko:'알겠어요~ 오늘 어떻게 지냈어요?'},
+      {t:'dir',lv:2,th:'คุยเพิ่มได้ไหม อยากรู้จักน้องมากกว่านี้ 😊',ko:'조금 더 얘기해요~ 더 알고 싶어요 😊'},
+    ];
+  } else if(/แฟน|boyfriend|คบ|รัก/.test(lo)){
+    tip='연애 주제 등장! 너무 진지하지 않게 <strong>살짝 본인 얘기</strong>를 꺼내세요.';
+    suggs=[
+      {t:'wit',lv:4,th:'ถ้าน้องไม่มีแฟน พี่ก็โชคดีเลยนะ 😏',ko:'애인 없으면 내가 운 좋은 거 아니에요? 😏'},
+      {t:'warm',lv:3,th:'คนน่ารักอย่างน้องยังไม่มีแฟนได้ยังไง น่าแปลกใจมากเลย 🤭',ko:'이렇게 예쁜데 애인이 없다고요? 신기하다~ 🤭'},
+      {t:'play',lv:3,th:'555 พี่ก็ยังไม่มีแฟนเหมือนกัน เราเหมือนกันเลย!',ko:'ㅋㅋ 나도 없어요! 우리 똑같네요!'},
+      {t:'dir',lv:3,th:'แบบนั้นก็ดีแล้ว เราค่อยๆรู้จักกันเถอะนะ?',ko:'그럼 잘 됐네요. 우리 천천히 알아가요, 어때요?'},
+    ];
+  } else if(/เจอ|มาไหม|ไปกิน|ไปด้วย/.test(lo)){
+    tip='만남 제안이 왔어요! <strong>기대감을 높이는</strong> 말을 더하세요.';
+    suggs=[
+      {t:'play',lv:3,th:'ได้ๆ แต่น้องต้องยิ้มให้พี่ด้วยนะ 555',ko:'좋아요~ 근데 웃는 얼굴 보여줘야 해요 ㅋㅋ'},
+      {t:'warm',lv:3,th:'ได้เลยครับ รอมานานมากแล้ว ตื่นเต้นมากๆ 🥰',ko:'좋아요! 기다렸어요. 너무 설레는데요 🥰'},
+      {t:'wit',lv:3,th:'น้องชวนพี่เองแบบนี้ พี่ดีใจมากเลยนะ 😆 ไปเลย!',ko:'직접 불러줘서 너무 기뻐요 😆 당연히 가야죠!'},
+      {t:'dir',lv:2,th:'ได้ครับ วันไหนดี? พี่ว่างทั้งนั้นเลย 555',ko:'가죠! 언제요? 어차피 다 비어있어요 ㅋㅋ'},
+    ];
+  } else if(/สบายดี|สบายไหม|เป็นยัง/.test(lo)){
+    tip='안부 인사에서 멈추지 말고 상대방이 <strong>더 얘기하고 싶게</strong> 만드세요.';
+    suggs=[
+      {t:'warm',lv:2,th:'สบายดีมากเลยครับ ได้คุยกับน้องแบบนี้ 😊 แล้วน้องล่ะ?',ko:'당신이랑 얘기하니까 너무 좋죠~ 😊 당신은요?'},
+      {t:'wit',lv:3,th:'สบายดีครับ แต่สบายดีกว่านี้ถ้าได้คุยกับน้องนานๆ 555',ko:'잘 지내요~ 근데 당신이랑 더 오래 얘기하면 더 좋을 것 같아요 ㅋㅋ'},
+      {t:'play',lv:3,th:'สบายดีนะ เพิ่งนึกถึงน้องพอดีเลย ไม่ได้นึกถึงใครอื่น 😏',ko:'잘 지내요~ 마침 생각하고 있었어요. 다른 사람 말고 당신 😏'},
+      {t:'dir',lv:1,th:'สบายดีครับ น้องเป็นยังไงบ้างช่วงนี้?',ko:'잘 지내요. 요즘 어때요?'},
+    ];
+  } else if(/น่ารัก|สวย|หล่อ|ดีมาก/.test(lo)){
+    tip='칭찬을 받았어요! <strong>바로 칭찬을 돌려주면</strong> 대화가 더 달콤해져요.';
+    suggs=[
+      {t:'play',lv:3,th:'ขอบคุณนะครับ แต่ที่น่ารักกว่าคือน้องเลยนะ 😏',ko:'감사해요~ 근데 더 귀여운 건 당신이잖아요 😏'},
+      {t:'wit',lv:4,th:'น้องชมพี่แบบนี้ ระวังนะ พี่จะชอบมากขึ้นเรื่อยๆ 555',ko:'이렇게 칭찬하면 점점 더 좋아지는데요? 조심해요 ㅋㅋ'},
+      {t:'warm',lv:2,th:'ขอบคุณมากครับ คำชมของน้องทำให้พี่ยิ้มเลย 😊',ko:'감사해요 :) 당신 칭찬에 저도 모르게 웃게 되네요 😊'},
+      {t:'dir',lv:2,th:'ขอบคุณนะ น้องก็น่ารักไม่แพ้กันเลยครับ',ko:'고마워요. 당신도 그에 못지않게 예뻐요'},
+    ];
+  } else if(/ไม่ว่าง|busy|ติดธุระ/.test(lo)){
+    tip='<strong>바쁘다</strong>에 조급해하지 마세요. 이해해주고 여유롭게 — 오히려 더 <strong>매력있어</strong> 보여요.';
+    suggs=[
+      {t:'warm',lv:1,th:'โอเคครับ ไม่เป็นไร พักให้เยอะๆด้วยนะ 😊',ko:'괜찮아요~ 푹 쉬어요 😊 나중에 얘기해요'},
+      {t:'play',lv:2,th:'โอเค555 แต่อย่าลืมนึกถึงพี่บ้างนะ 😏',ko:'알겠어요 ㅋㅋ 근데 나 가끔은 생각해줘요 😏'},
+      {t:'wit',lv:2,th:'ไม่เป็นไรนะ ยิ่งยุ่งก็ยิ่งน่าสนใจ พี่ชอบคนขยัน 👍',ko:'괜찮아요. 바쁜 게 더 매력 있어 보여요 👍'},
+      {t:'dir',lv:2,th:'โอเคครับ แล้วว่างวันไหน? จะได้รอให้ถูก 555',ko:'알겠어요. 언제 시간 돼요? 그때 기다릴게요 ㅋㅋ'},
+    ];
+  } else {
+    tip='상대방 맥락에 맞게 답하되, <strong>질문으로 대화를 이어가는 것</strong>이 핵심이에요!';
+    suggs=[
+      {t:'warm',lv:2,th:'อ่อๆ แล้วน้องรู้สึกยังไงกับเรื่องนั้น? 😊',ko:'아 그래요? 그 부분에 대해 어떻게 생각해요? 😊'},
+      {t:'play',lv:2,th:'จริงด้วย! พี่ว่าน้องคิดถูกเลยนะ ฉลาดมาก 😆',ko:'맞아요! 당신 생각이 맞아요. 너무 똑똑한 거 아니에요? 😆'},
+      {t:'wit',lv:3,th:'555 น้องพูดแล้วพี่ยิ้มเลยนะ ทำไมน่ารักจัง',ko:'ㅋㅋ 그 말 듣고 웃음이 나왔어요. 왜 이렇게 귀여워요?'},
+      {t:'dir',lv:1,th:'เข้าใจเลยครับ แล้วน้องช่วงนี้เป็นยังไงบ้าง?',ko:'이해해요. 요즘 어떻게 지내요?'},
+    ];
+  }
+  return {sigs:sigs,tip:tip,suggs:suggs};
+}
+
+// 표현집 빌드
+var phrases={
+  greet:[
+    {th:'มอร์นิ่งนะ วันนี้จะเป็นวันดีๆ ☀️',ko:'굿모닝~ 오늘 좋은 하루 되세요 ☀️'},
+    {th:'สวัสดีตอนเช้า หลับสบายไหม?',ko:'좋은 아침이에요. 잘 잤어요?'},
+    {th:'ตื่นนอนรึยัง? นึกถึงน้องเลย 😊',ko:'일어났어요? 생각났어요 😊'},
+    {th:'สบายดีไหม? ช่วงนี้เป็นยังไงบ้าง',ko:'잘 지내요? 요즘 어때요?'},
+  ],
+  flirt:[
+    {th:'น้องน่ารักมากเลยนะ 🥰',ko:'너무 귀여워요 🥰'},
+    {th:'ยิ้มน้องทำให้พี่ใจละลายเลยนะ',ko:'당신 미소에 마음이 녹아요'},
+    {th:'ทำไมน้องน่ารักขนาดนี้ 😆',ko:'왜 이렇게 귀여운 거예요 😆'},
+    {th:'น้องชมพี่แบบนี้ ระวังนะ จะชอบมากขึ้นเรื่อยๆ',ko:'이렇게 칭찬하면 점점 더 좋아지는데요?'},
+    {th:'คิดถึงน้องทั้งวันเลย 😅',ko:'하루 종일 생각났어요 😅'},
+    {th:'เพิ่งนึกถึงน้องพอดีเลย ไม่ได้นึกถึงใครอื่น 😏',ko:'마침 생각하고 있었어요. 다른 사람 말고 당신 😏'},
+  ],
+  meet:[
+    {th:'เมื่อไหร่จะว่าง อยากเจอน้องจัง',ko:'언제 시간 돼요? 보고 싶어요'},
+    {th:'ไปกินอะไรอร่อยๆด้วยกันไหม?',ko:'맛있는 거 같이 먹으러 가요?'},
+    {th:'ถ้าว่างอาทิตย์หน้าไปเที่ยวด้วยกันได้ไหม',ko:'다음 주에 시간 되면 같이 어디 가요'},
+    {th:'ว่างวันไหน? พี่จะได้วางแผนให้ถูก 😆',ko:'언제 시간 돼요? 계획 세울게요 😆'},
+  ],
+  talk:[
+    {th:'วันนี้เป็นยังไงบ้าง? มีอะไรสนุกๆไหม',ko:'오늘 어땠어요? 재미있는 일 있어요?'},
+    {th:'น้องชอบทำอะไรตอนว่าง?',ko:'쉬는 날엔 보통 뭐 해요?'},
+    {th:'อาหารโปรดของน้องคืออะไร?',ko:'제일 좋아하는 음식이 뭐예요?'},
+    {th:'น้องเป็นคนยังไงในชีวิตจริง อยากรู้จักมากขึ้น',ko:'실제로 어떤 사람인지 더 알고 싶어요'},
+  ],
+  night:[
+    {th:'ฝันดีนะ 🌙',ko:'좋은 꿈 꿔요 🌙'},
+    {th:'คืนนี้หลับสบายๆนะ พรุ่งนี้เจอกันใหม่',ko:'오늘 밤 푹 자요. 내일 또 봐요'},
+    {th:'ราตรีสวัสดิ์ครับ นึกถึงน้องก่อนนอน 😊',ko:'잘 자요. 자기 전에 생각했어요 😊'},
+    {th:'ฝันถึงพี่ด้วยนะ 😏 ราตรีสวัสดิ์',ko:'꿈에서 나 나오게 해줘요 😏 잘 자요'},
+  ],
+};
+var phMap={greet:'ph-greet',flirt:'ph-flirt',meet:'ph-meet',talk:'ph-talk',night:'ph-night'};
+for(var key in phMap){
+  var cont=document.getElementById(phMap[key]);
+  phrases[key].forEach(function(p){
+    var thS=p.th.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    var div=document.createElement('div');div.className='phrase-item';
+    div.innerHTML='<div class="phrase-texts"><div class="phrase-th">'+p.th+'</div><div class="phrase-ko">'+p.ko+'</div></div><button class="phrase-copy" onclick="cp(\''+thS+'\')">복사</button>';
+    cont.appendChild(div);
+  });
+}
+
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(function(){});}
+</script>
+</body>
+</html>
