@@ -1,4 +1,4 @@
-const CACHE = 'flirt-coach-v1';
+const CACHE = 'flirt-coach-v3';
 const ASSETS = ['./', './index.html', './manifest.json'];
 
 self.addEventListener('install', e => {
