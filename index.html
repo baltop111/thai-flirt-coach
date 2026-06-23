@@ -206,6 +206,21 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 .chat-go{background:linear-gradient(135deg,#ff6b8a,#7c5cbf);border:none;color:#fff;width:42px;height:42px;border-radius:12px;font-size:1.1rem;cursor:pointer;-webkit-flex-shrink:0;flex-shrink:0;}
 .chat-loading{text-align:center;padding:14px;color:#6b7280;font-size:0.8rem;display:none;}
 .chat-loading.show{display:block;}
+/* 추천 패널 — 입력창 바로 위 고정 영역, 스크롤 불필요 */
+.sugg-panel{display:none;background:#0f0f1a;border-top:2px solid #ff6b8a;-webkit-flex-shrink:0;flex-shrink:0;overflow-y:auto;-webkit-overflow-scrolling:touch;max-height:56vh;}
+.sugg-panel.show{display:block;}
+.sugg-panel-hdr{padding:8px 14px 6px;font-size:0.65rem;color:#a78bfa;font-weight:700;border-bottom:1px solid #1a1a2e;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
+.sugg-panel-hdr span{-webkit-box-flex:1;-webkit-flex:1;flex:1;color:#6b7280;font-weight:400;}
+.sugg-panel-close{background:none;border:none;color:#4b5563;font-size:1rem;cursor:pointer;padding:0 0 0 10px;}
+.sp-item{padding:10px 14px 9px;border-bottom:1px solid #1a1a2e;}
+.sp-item:last-child{border-bottom:none;}
+.sp-lbl{display:inline-block;font-size:0.58rem;font-weight:700;color:#ffd93d;background:rgba(255,217,61,0.12);padding:2px 7px;border-radius:4px;margin-bottom:4px;}
+.sp-th{font-size:0.92rem;color:#fff;line-height:1.5;margin-bottom:3px;}
+.sp-ko{font-size:0.68rem;color:#6b7280;margin-bottom:7px;}
+.sp-btns{display:-webkit-box;display:-webkit-flex;display:flex;}
+.sp-cp{background:none;border:1px solid #2a2a4a;color:#9ca3af;padding:6px 14px;border-radius:8px;font-size:0.7rem;cursor:pointer;margin-right:6px;-webkit-flex-shrink:0;flex-shrink:0;}
+.sp-send{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);border:none;color:#fff;padding:6px 10px;border-radius:8px;font-size:0.72rem;font-weight:700;cursor:pointer;}
+.sp-retry{width:100%;background:#0f0f1a;border:1.5px dashed #2a2a4a;color:#4b5563;padding:9px;border-radius:0;font-size:0.78rem;cursor:pointer;}
 
 /* ── 편집 모달 ── */
 .overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:400;background:rgba(0,0,0,0.8);}
@@ -438,7 +453,7 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
       <div class="hdr-badges">
         <span class="badge" id="bdStage">첫 연락</span>
         <span class="badge" id="bdStyle">매력남</span>
-        <span class="badge badge-ver">v9.7</span>
+        <span class="badge badge-ver">v9.8</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="goSetup()">⚙️ 재설정</button>
@@ -1024,6 +1039,8 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
     <div class="dots"><span></span><span></span><span></span></div>
     AI 전략 분석 중...
   </div>
+  <!-- 추천 패널 — 입력창 위 고정 표시, 스크롤 없이 항상 보임 -->
+  <div class="sugg-panel" id="suggPanel"></div>
   <div class="chat-inp-area">
     <div class="img-mode-banner" id="imgModeBanner">
       <span>📷 사진 <span id="imgModeCount">0</span>장 선택됨 — AI가 대화 내용을 읽어 분석합니다</span>
@@ -1572,6 +1589,7 @@ var chatImages=[];   // [{data:base64, type:'image/jpeg', thumb:objectURL}, ...]
 function openChat(i){
   chatIdx=i;
   closeEdit();
+  hideSuggPanel();
   var p=people[i];
   document.getElementById('chatAv').textContent=p.e||AE[i];
   document.getElementById('chatName').textContent=p.n;
@@ -1581,10 +1599,10 @@ function openChat(i){
   document.getElementById('chatTa').value='';
   setTimeout(function(){scrollChatBottom();},100);
 }
-function closeChat(){document.getElementById('chatScreen').classList.remove('show');}
+function closeChat(){hideSuggPanel();document.getElementById('chatScreen').classList.remove('show');}
 function clearChat(){
   if(!confirm('이 이성과의 대화를 모두 삭제할까요?'))return;
-  people[chatIdx].chat=[];savePpl();renderChatMsgs();
+  people[chatIdx].chat=[];savePpl();renderChatMsgs();hideSuggPanel();
 }
 function scrollChatBottom(){
   var el=document.getElementById('chatMsgs');
@@ -1801,9 +1819,14 @@ async function callClaudeChat(msg,p){
   var d=await r.json();
   return JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
 }
+function hideSuggPanel(){
+  var p=document.getElementById('suggPanel');
+  p.classList.remove('show');
+  p.innerHTML='';
+}
 function renderChatSuggs(result){
-  /* 3개 미만이면 자동 재시도 */
-  if(!result.suggs||result.suggs.length<3){
+  /* 3개 미만이면 자동 재시도 1회 */
+  if(!result||!result.suggs||result.suggs.length<3){
     if(lastChatContext){
       showToast('추천 재생성 중...');
       var ctx=lastChatContext;
@@ -1811,7 +1834,8 @@ function renderChatSuggs(result){
       (ctx.type==='vision'?callClaudeChatVision(ctx.imgs,ctx.msg,ctx.p):callClaudeChat(ctx.msg,ctx.p))
         .then(function(r2){
           document.getElementById('chatLoading').classList.remove('show');
-          renderChatSuggs(r2);
+          if(r2&&r2.suggs&&r2.suggs.length>0) renderChatSuggs(r2);
+          else showToast('⚠️ AI 응답 오류. 다시 시도하세요');
         }).catch(function(){
           document.getElementById('chatLoading').classList.remove('show');
           showToast('⚠️ AI 오류. 다시 시도하세요');
@@ -1819,39 +1843,32 @@ function renderChatSuggs(result){
     }
     return;
   }
-  var el=document.getElementById('chatMsgs');
-  var emp=document.getElementById('chatEmpty');
-  var wrap=document.createElement('div');wrap.className='sugg-wrap';
-  var html='<div class="sugg-wrap-hdr">🎯 전략 추천 &nbsp;·&nbsp; <span style="color:#c4b5fd;">'+escH(result.tip||'')+'</span></div>';
-  result.suggs.forEach(function(s){
+  /* 패널에 표시 — 채팅 영역 스크롤 불필요 */
+  var panel=document.getElementById('suggPanel');
+  var html='<div class="sugg-panel-hdr">🎯 전략 추천 <span>'+escH(result.tip||'')+'</span>'
+    +'<button class="sugg-panel-close" onclick="hideSuggPanel()">✕</button></div>';
+  result.suggs.forEach(function(s,i){
     var thE=(s.th||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     var koE=(s.ko||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    html+='<div class="sugg-item">'
-      +'<div class="sugg-item-top">'
-      +'<span class="sugg-item-lbl">'+escH(s.label||'')+'</span>'
-      +'<span class="sugg-item-th">'+escH(s.th||'')+'</span>'
-      +'</div>'
-      +'<div class="sugg-item-ko">🇰🇷 '+escH(s.ko||'')+'</div>'
-      +'<div class="sugg-item-btns">'
-      +'<button class="s-cp" onclick="cp(\''+thE+'\')">복사</button>'
-      +'<button class="s-send" onclick="chatSend(this,\''+thE+'\',\''+koE+'\')">이걸로 보내기 ✓</button>'
+    html+='<div class="sp-item">'
+      +'<div class="sp-lbl">'+escH(s.label||'')+'</div>'
+      +'<div class="sp-th">'+escH(s.th||'')+'</div>'
+      +'<div class="sp-ko">🇰🇷 '+escH(s.ko||'')+'</div>'
+      +'<div class="sp-btns">'
+      +'<button class="sp-cp" onclick="cp(\''+thE+'\')">복사</button>'
+      +'<button class="sp-send" onclick="chatSend(\''+thE+'\',\''+koE+'\')">이걸로 보내기 ✓</button>'
       +'</div></div>';
   });
-  html+='<div style="padding:10px 12px 12px;">'
-    +'<button onclick="retryChatSuggs(this)" style="width:100%;background:#1a1a2e;border:1.5px dashed #3a3a5a;color:#6b7280;padding:11px;border-radius:11px;font-size:0.82rem;cursor:pointer;">🔄 마음에 안들어요 — 다시 추천</button>'
-    +'</div>';
-  wrap.innerHTML=html;
-  el.insertBefore(wrap,emp);
+  html+='<button class="sp-retry" onclick="retryChatSuggs()">🔄 마음에 안들어요 — 다시 추천</button>';
+  panel.innerHTML=html;
+  panel.classList.add('show');
+  panel.scrollTop=0;
   scrollChatBottom();
 }
-async function retryChatSuggs(btn){
+async function retryChatSuggs(){
   if(!lastChatContext)return;
-  /* 현재 sugg-wrap 제거 */
-  var wrap=btn.closest('.sugg-wrap');
-  if(wrap)wrap.parentNode.removeChild(wrap);
-  /* 로딩 표시 */
+  hideSuggPanel();
   document.getElementById('chatLoading').classList.add('show');
-  scrollChatBottom();
   try{
     var ctx=lastChatContext;
     var result=ctx.type==='vision'
@@ -1864,10 +1881,8 @@ async function retryChatSuggs(btn){
     showToast('⚠️ AI 오류. 다시 시도하세요');
   }
 }
-function chatSend(btn,th,ko){
-  /* 선택한 sugg-wrap 전체 제거 → 채팅 버블만 깔끔하게 */
-  var wrap=btn.closest('.sugg-wrap');
-  if(wrap)wrap.parentNode.removeChild(wrap);
+function chatSend(th,ko){
+  hideSuggPanel();
   var p=people[chatIdx];if(!p.chat)p.chat=[];
   p.chat.push({dir:'me',msg:th,ko:ko,ts:Date.now()});
   savePpl();cp(th);renderChatMsgs();
