@@ -129,9 +129,9 @@ html,body { height:100%; width:100%; overflow:hidden; background:var(--dark); co
 .w-empty-text { font-size:0.82rem; color:var(--muted); }
 
 /* ── 이성 편집 모달 ── */
-.edit-modal { display:none; position:fixed; inset:0; z-index:300; background:rgba(0,0,0,0.8); align-items:flex-end; }
+.edit-modal { display:none; position:fixed; top:0; left:0; right:0; bottom:0; z-index:300; background:rgba(0,0,0,0.8); flex-direction:column; justify-content:flex-end; }
 .edit-modal.open { display:flex; }
-.edit-sheet { background:var(--card2); border-radius:24px 24px 0 0; width:100%; padding:20px 20px calc(var(--safe-bot)+20px); max-height:92vh; overflow-y:auto; }
+.edit-sheet { background:#16213e; border-radius:24px 24px 0 0; width:100%; padding:20px 20px calc(var(--safe-bot)+24px); max-height:88vh; overflow-y:auto; -webkit-overflow-scrolling:touch; }
 .edit-handle { width:40px; height:4px; background:var(--border); border-radius:4px; margin:0 auto 20px; }
 .edit-title { font-size:1.1rem; font-weight:800; margin-bottom:20px; display:flex; align-items:center; gap:8px; }
 .edit-field { margin-bottom:16px; }
@@ -447,6 +447,7 @@ function startApp(){
   document.getElementById('mainScreens').style.display='';
   document.getElementById('mainNav').style.display='';
   updateBadges();
+  renderWomen();
 }
 function goSetup(){
   document.getElementById('setupWrap').classList.remove('hidden');
@@ -575,20 +576,28 @@ function renderWomen(){
   var list=document.getElementById('womanList');list.innerHTML='';
   people.forEach(function(p,i){
     var div=document.createElement('div');
+    div.style.cssText='background:#1a1a2e;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;border-bottom:1px solid #2a2a4a;';
+    if(i===9) div.style.borderBottom='none';
     if(!p.name){
-      div.className='w-empty';
-      div.innerHTML='<div class="w-empty-avatar">+</div><div class="w-empty-text"><strong style="color:var(--text)">'+(i+1)+'번</strong> 이성 추가하기</div>';
+      div.innerHTML='<div style="width:50px;height:50px;border-radius:50%;background:rgba(255,255,255,0.04);border:1.5px dashed #2a2a4a;display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:#6b7280;flex-shrink:0;">+</div>'
+        +'<div><div style="font-size:0.95rem;font-weight:700;color:#e8e8f0;">'+(i+1)+'번</div>'
+        +'<div style="font-size:0.75rem;color:#6b7280;margin-top:2px;">탭하여 이성 추가</div></div>';
     } else {
-      div.className='w-item woman-item';
-      var pct=p.score+'%';
-      div.innerHTML='<div class="w-avatar" style="background:rgba('+hexToRgb(stageColors[p.stage])+',0.15)">'
-        +p.emoji+'<span class="w-num">'+(i+1)+'</span></div>'
-        +'<div class="w-info"><div class="w-name">'+p.name+'</div>'
-        +'<div class="w-meta"><span class="w-stage-dot" style="background:'+stageColors[p.stage]+'"></span>'+stageNames[p.stage]+(p.age?' · '+p.age+'세':'')+'</div></div>'
-        +'<div class="w-score-wrap"><div class="w-score" style="color:'+stageColors[p.stage]+'">'+p.score+'</div>'
-        +'<div class="w-bar"><div class="w-bar-fill" style="width:'+pct+'"></div></div></div>';
+      var sc=stageColors[p.stage]||'#6b7280';
+      div.innerHTML='<div style="width:50px;height:50px;border-radius:50%;background:rgba(255,107,138,0.12);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;position:relative;">'
+        +(p.emoji||'👩')+'<span style="position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;background:#2a2a4a;border-radius:50%;font-size:0.6rem;display:flex;align-items:center;justify-content:center;color:#9ca3af;font-weight:700;">'+(i+1)+'</span></div>'
+        +'<div style="flex:1;min-width:0;">'
+        +'<div style="font-size:0.95rem;font-weight:700;color:#e8e8f0;">'+p.name+'</div>'
+        +'<div style="font-size:0.72rem;color:#6b7280;margin-top:3px;display:flex;align-items:center;gap:5px;">'
+        +'<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:'+sc+'"></span>'
+        +stageNames[p.stage||0]+(p.age?' · '+p.age+'세':'')+'</div>'
+        +'<div style="height:4px;background:#2a2a4a;border-radius:4px;margin-top:6px;overflow:hidden;">'
+        +'<div style="height:100%;width:'+p.score+'%;background:linear-gradient(90deg,#ff6b8a,#7c5cbf);border-radius:4px;"></div></div></div>'
+        +'<div style="text-align:right;flex-shrink:0;">'
+        +'<div style="font-size:1.1rem;font-weight:800;color:'+sc+';">'+p.score+'</div>'
+        +'<div style="font-size:0.65rem;color:#6b7280;margin-top:2px;">점</div></div>';
     }
-    div.onclick=function(){openEdit(i);};
+    (function(idx){div.onclick=function(){openEdit(idx);};})(i);
     list.appendChild(div);
   });
 }
