@@ -262,6 +262,88 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 .toast.show{opacity:1;-webkit-transform:translateX(-50%) translateY(0);transform:translateX(-50%) translateY(0);}
 
 .section-gap{height:12px;}
+
+/* ── 사용가이드 ── */
+.guide-hero{background:linear-gradient(135deg,#1a0a2e,#2a1a3e);border-radius:16px;padding:22px 18px;margin-bottom:16px;text-align:center;border:1px solid rgba(124,92,191,0.3);}
+.guide-hero-icon{font-size:3rem;margin-bottom:10px;}
+.guide-hero-title{font-size:1.1rem;font-weight:900;color:#fff;margin-bottom:6px;}
+.guide-hero-sub{font-size:0.75rem;color:#9ca3af;line-height:1.7;}
+.guide-badges{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-pack:center;-webkit-justify-content:center;justify-content:center;margin-top:12px;}
+.guide-badge{font-size:0.65rem;font-weight:700;padding:4px 10px;border-radius:20px;margin:3px;}
+.gb-purple{background:rgba(124,92,191,0.25);color:#c4b5fd;border:1px solid rgba(124,92,191,0.4);}
+.gb-pink{background:rgba(255,107,138,0.15);color:#ff6b8a;border:1px solid rgba(255,107,138,0.3);}
+.gb-teal{background:rgba(78,205,196,0.15);color:#4ecdc4;border:1px solid rgba(78,205,196,0.3);}
+.gb-yellow{background:rgba(255,217,61,0.15);color:#ffd93d;border:1px solid rgba(255,217,61,0.3);}
+
+.guide-section{margin-bottom:18px;}
+.guide-section-title{font-size:0.68rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
+.guide-section-title::after{content:'';-webkit-box-flex:1;-webkit-flex:1;flex:1;height:1px;background:#2a2a4a;margin-left:8px;}
+
+.guide-step{background:#1a1a2e;border-radius:14px;border:1px solid #2a2a4a;margin-bottom:12px;overflow:hidden;}
+.guide-step-hdr{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;padding:12px 14px;border-bottom:1px solid #2a2a4a;}
+.guide-step-num{width:26px;height:26px;border-radius:13px;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);color:#fff;font-size:0.72rem;font-weight:900;text-align:center;line-height:26px;-webkit-flex-shrink:0;flex-shrink:0;margin-right:10px;}
+.guide-step-title{font-size:0.88rem;font-weight:800;color:#fff;-webkit-box-flex:1;-webkit-flex:1;flex:1;}
+.guide-step-tag{font-size:0.6rem;font-weight:700;padding:3px 8px;border-radius:10px;background:rgba(255,107,138,0.15);color:#ff6b8a;-webkit-flex-shrink:0;flex-shrink:0;}
+
+/* 모의 스크린샷 프레임 */
+.mockup-frame{margin:14px;background:#0a0a14;border-radius:12px;border:1px solid #3a3a5a;overflow:hidden;-webkit-box-shadow:0 4px 20px rgba(0,0,0,0.5);box-shadow:0 4px 20px rgba(0,0,0,0.5);}
+.mockup-bar{background:linear-gradient(135deg,#4a1a6b,#8b1a4a);padding:7px 10px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
+.mockup-bar-dot{width:5px;height:5px;border-radius:3px;background:rgba(255,255,255,0.3);margin-right:4px;}
+.mockup-bar-title{font-size:0.65rem;font-weight:700;color:#fff;-webkit-box-flex:1;-webkit-flex:1;flex:1;margin-left:4px;}
+.mockup-bar-badge{font-size:0.55rem;background:rgba(255,255,255,0.15);color:#ffd93d;padding:2px 6px;border-radius:8px;}
+.mockup-body{padding:10px;}
+.mockup-msg-her{background:#1a1a2e;border:1px solid #2a2a4a;border-radius:10px;border-top-left-radius:3px;padding:7px 10px;font-size:0.72rem;color:#e8e8f0;display:inline-block;max-width:75%;margin-bottom:6px;}
+.mockup-msg-me{background:linear-gradient(135deg,#ff6b8a,#7c5cbf);border-radius:10px;border-top-right-radius:3px;padding:7px 10px;font-size:0.72rem;color:#fff;display:inline-block;max-width:75%;float:right;margin-bottom:6px;}
+.mockup-clearfix::after{content:'';display:table;clear:both;}
+.mockup-tag-row{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;margin-bottom:6px;}
+.mockup-tag{font-size:0.58rem;padding:2px 6px;border-radius:8px;margin-right:4px;margin-bottom:3px;}
+.mockup-tag.pos{background:rgba(78,205,196,0.2);color:#4ecdc4;}
+.mockup-tag.warn{background:rgba(255,217,61,0.15);color:#ffd93d;}
+.mockup-ai-box{background:#16213e;border-radius:8px;border:1px solid #2a2a4a;padding:8px 10px;margin-bottom:5px;}
+.mockup-ai-lbl{font-size:0.58rem;color:#ffd93d;font-weight:700;margin-bottom:3px;}
+.mockup-ai-th{font-size:0.72rem;color:#fff;}
+.mockup-ai-ko{font-size:0.6rem;color:#6b7280;margin-top:2px;}
+.mockup-ai-why{font-size:0.58rem;color:#a78bfa;margin-top:2px;font-style:italic;}
+.mockup-tip{background:rgba(124,92,191,0.15);border-radius:7px;padding:6px 9px;font-size:0.62rem;color:#c4b5fd;margin-bottom:6px;}
+.mockup-strat{background:rgba(255,107,138,0.08);border-radius:7px;padding:6px 9px;font-size:0.62rem;color:#fbbf24;margin-bottom:6px;}
+.mockup-rank-row{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;background:#1a1a2e;border-radius:8px;padding:8px 10px;margin-bottom:5px;border:1px solid #2a2a4a;}
+.mockup-rank-medal{font-size:1rem;width:24px;-webkit-flex-shrink:0;flex-shrink:0;}
+.mockup-rank-av{font-size:1rem;width:28px;height:28px;background:rgba(255,107,138,0.1);border-radius:14px;text-align:center;line-height:28px;-webkit-flex-shrink:0;flex-shrink:0;margin:0 6px;}
+.mockup-rank-info{-webkit-box-flex:1;-webkit-flex:1;flex:1;}
+.mockup-rank-name{font-size:0.72rem;font-weight:700;color:#e8e8f0;}
+.mockup-rank-stage{font-size:0.58rem;color:#6b7280;}
+.mockup-rank-score{font-size:1rem;font-weight:900;color:#ff6b8a;}
+.mockup-rank-chat{font-size:0.58rem;color:#4ecdc4;font-weight:700;text-align:center;}
+.mockup-strat-block{background:#1a1a2e;border-radius:8px;border:1px solid #2a2a4a;padding:8px 10px;margin-bottom:5px;}
+.mockup-strat-title{font-size:0.68rem;font-weight:800;color:#ffd93d;margin-bottom:4px;}
+.mockup-strat-tip{font-size:0.6rem;color:#9ca3af;line-height:1.5;margin-bottom:3px;padding-left:8px;border-left:2px solid #7c5cbf;}
+.mockup-expr{background:#0f0f1a;border-radius:6px;padding:5px 8px;margin-top:5px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
+.mockup-expr-tag{font-size:0.55rem;padding:1px 5px;border-radius:6px;margin-right:6px;-webkit-flex-shrink:0;flex-shrink:0;background:rgba(255,107,138,0.2);color:#ff6b8a;}
+.mockup-expr-th{font-size:0.65rem;color:#fff;-webkit-box-flex:1;-webkit-flex:1;flex:1;}
+.mockup-women-row{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;background:#1a1a2e;border-radius:8px;padding:8px 10px;margin-bottom:5px;border:1px solid #2a2a4a;}
+.mockup-women-av{width:32px;height:32px;border-radius:16px;background:#2a1a3e;text-align:center;line-height:32px;font-size:1rem;-webkit-flex-shrink:0;flex-shrink:0;margin-right:8px;}
+.mockup-women-info{-webkit-box-flex:1;-webkit-flex:1;flex:1;}
+.mockup-women-name{font-size:0.72rem;font-weight:700;color:#e8e8f0;}
+.mockup-women-meta{font-size:0.6rem;color:#6b7280;margin-top:1px;}
+.mockup-women-bar{height:3px;background:#2a2a4a;border-radius:2px;margin-top:4px;overflow:hidden;}
+.mockup-women-fill{height:3px;border-radius:2px;background:#ff6b8a;}
+.mockup-women-score{font-size:0.88rem;font-weight:800;color:#ff9f43;-webkit-flex-shrink:0;flex-shrink:0;}
+
+.guide-desc{padding:10px 14px 14px;font-size:0.77rem;color:#9ca3af;line-height:1.7;}
+.guide-desc strong{color:#fff;}
+.guide-desc .point{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:flex-start;-webkit-align-items:flex-start;align-items:flex-start;margin-bottom:5px;}
+.guide-desc .point-icon{margin-right:6px;-webkit-flex-shrink:0;flex-shrink:0;}
+
+.guide-advantage{background:#1a1a2e;border-radius:14px;border:1px solid #2a2a4a;overflow:hidden;margin-bottom:12px;}
+.guide-adv-hdr{background:linear-gradient(135deg,rgba(255,107,138,0.1),rgba(124,92,191,0.1));padding:12px 14px;border-bottom:1px solid #2a2a4a;}
+.guide-adv-title{font-size:0.88rem;font-weight:800;color:#fff;}
+.guide-adv-sub{font-size:0.7rem;color:#6b7280;margin-top:2px;}
+.guide-adv-list{padding:12px 14px;}
+.adv-item{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:flex-start;-webkit-align-items:flex-start;align-items:flex-start;margin-bottom:10px;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.03);}
+.adv-icon{font-size:1.3rem;margin-right:10px;-webkit-flex-shrink:0;flex-shrink:0;}
+.adv-body{-webkit-box-flex:1;-webkit-flex:1;flex:1;}
+.adv-title{font-size:0.82rem;font-weight:800;color:#ffd93d;margin-bottom:3px;}
+.adv-desc{font-size:0.72rem;color:#9ca3af;line-height:1.55;}
 </style>
 </head>
 <body>
@@ -524,6 +606,292 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
       </div>
     </div>
 
+    <!-- 사용가이드 탭 -->
+    <div class="tab" id="tab-guide">
+
+      <!-- 히어로 -->
+      <div class="guide-hero">
+        <div class="guide-hero-icon">💘</div>
+        <div class="guide-hero-title">Thai Flirt Coach v9.0</div>
+        <div class="guide-hero-sub">AI가 태국어 플러팅 전략을 실시간 코치해드립니다.<br>감정 분석부터 단계별 전략까지 — 고수의 연애를 경험하세요.</div>
+        <div class="guide-badges">
+          <span class="guide-badge gb-purple">🤖 AI 감정분석</span>
+          <span class="guide-badge gb-pink">🎯 전략 추천</span>
+          <span class="guide-badge gb-teal">💬 개인 채팅</span>
+          <span class="guide-badge gb-yellow">📌 전략 메모</span>
+          <span class="guide-badge gb-purple">🏆 랭킹 관리</span>
+          <span class="guide-badge gb-pink">📱 iOS/Android</span>
+        </div>
+      </div>
+
+      <!-- 장점 -->
+      <div class="guide-section">
+        <div class="guide-section-title">✨ 핵심 장점</div>
+        <div class="guide-advantage">
+          <div class="guide-adv-hdr">
+            <div class="guide-adv-title">왜 Thai Flirt Coach인가?</div>
+            <div class="guide-adv-sub">다른 번역기·채팅앱과 다른 이유</div>
+          </div>
+          <div class="guide-adv-list">
+            <div class="adv-item">
+              <div class="adv-icon">🧠</div>
+              <div class="adv-body">
+                <div class="adv-title">단순 번역이 아닌 전략 코치</div>
+                <div class="adv-desc">메시지를 번역만 하는 게 아니라 상대방 감정을 분석하고, 지금 상황에 맞는 최적의 플러팅 전략과 이유까지 알려줍니다.</div>
+              </div>
+            </div>
+            <div class="adv-item">
+              <div class="adv-icon">🎭</div>
+              <div class="adv-body">
+                <div class="adv-title">내 스타일에 맞는 맞춤 답변</div>
+                <div class="adv-desc">매력남·재치남·다정남 스타일과 5단계 친밀도를 설정하면 AI가 나의 성격에 꼭 맞는 태국어 답변 3개를 추천합니다.</div>
+              </div>
+            </div>
+            <div class="adv-item">
+              <div class="adv-icon">💬</div>
+              <div class="adv-body">
+                <div class="adv-title">대화 맥락을 기억하는 AI</div>
+                <div class="adv-desc">개인 채팅 모드에서 이전 대화를 최대 14개까지 기억해 자연스럽게 이어지는 답변을 만들어줍니다.</div>
+              </div>
+            </div>
+            <div class="adv-item">
+              <div class="adv-icon">📖</div>
+              <div class="adv-body">
+                <div class="adv-title">고수의 5단계 전략 바이블</div>
+                <div class="adv-desc">첫 연락부터 마음 잡기까지 단계별 플러팅 전략과 실전 태국어 표현을 언제든지 꺼내볼 수 있습니다.</div>
+              </div>
+            </div>
+            <div class="adv-item">
+              <div class="adv-icon">👥</div>
+              <div class="adv-body">
+                <div class="adv-title">최대 10명 동시 관리</div>
+                <div class="adv-desc">여러 이성과 동시에 연락하더라도 각자의 친밀도 단계, 대화 히스토리, 점수를 따로 관리할 수 있습니다.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 1: AI 코치 -->
+      <div class="guide-section">
+        <div class="guide-section-title">📱 화면별 사용 방법</div>
+
+        <div class="guide-step">
+          <div class="guide-step-hdr">
+            <div class="guide-step-num">1</div>
+            <div class="guide-step-title">🤖 AI 코치 — 즉시 답변 받기</div>
+            <div class="guide-step-tag">핵심기능</div>
+          </div>
+          <div class="mockup-frame">
+            <div class="mockup-bar">
+              <div class="mockup-bar-dot"></div>
+              <div class="mockup-bar-title">💘 Thai Flirt Coach</div>
+              <div class="mockup-bar-badge">v9.0</div>
+            </div>
+            <div class="mockup-body">
+              <div style="font-size:0.6rem;color:#6b7280;margin-bottom:5px;">👩 상대방 메시지 입력</div>
+              <div style="background:#0f0f1a;border:1px solid #2a2a4a;border-radius:8px;padding:7px 10px;font-size:0.7rem;color:#6b7280;margin-bottom:8px;">คิดถึงนะ วันนี้ทำอะไรอยู่? 🥰</div>
+              <div class="mockup-tag-row">
+                <span class="mockup-tag pos">❤️ 애정표현</span>
+                <span class="mockup-tag pos">💭 그리움</span>
+                <span class="mockup-tag pos">📝 긴답장=관심</span>
+              </div>
+              <div class="mockup-tip">💡 <strong>전략 조언:</strong> 관심도 높음! 공감하며 질문으로 받아치세요.</div>
+              <div class="mockup-strat">🔥 관심도 매우 높음! 더 적극적으로 감정 표현하세요.</div>
+              <div class="mockup-ai-box">
+                <div class="mockup-ai-lbl">🎯 설렘 유발</div>
+                <div class="mockup-ai-th">คิดถึงเหมือนกันเลย พอดีเลย 😏</div>
+                <div class="mockup-ai-ko">🇰🇷 나도 마침 생각하고 있었어요</div>
+                <div class="mockup-ai-why">✦ 우연의 일치처럼 보여 설레게 만드는 효과</div>
+              </div>
+              <div class="mockup-ai-box">
+                <div class="mockup-ai-lbl">🎯 쿨한 밀기</div>
+                <div class="mockup-ai-th">ยุ่งนิดนึง แต่ก็นึกถึงอยู่ดี 😄</div>
+                <div class="mockup-ai-ko">🇰🇷 좀 바쁜데, 그래도 생각나네요</div>
+                <div class="mockup-ai-why">✦ 여유로움을 보여줘 가치가 높아 보이는 효과</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-desc">
+            <div class="point"><span class="point-icon">①</span><span>상대방이 보낸 태국어 메시지를 그대로 붙여넣기</span></div>
+            <div class="point"><span class="point-icon">②</span><span>▶ 버튼 탭 → AI가 감정 분석 + 전략 힌트 즉시 표시</span></div>
+            <div class="point"><span class="point-icon">③</span><span>마음에 드는 답변의 <strong>"이걸로 보내기"</strong> 탭 → 자동 복사</span></div>
+            <div class="point"><span class="point-icon">④</span><span>카카오톡·라인에 붙여넣기(Paste)하여 전송</span></div>
+          </div>
+        </div>
+
+        <!-- STEP 2: 이성관리 -->
+        <div class="guide-step">
+          <div class="guide-step-hdr">
+            <div class="guide-step-num">2</div>
+            <div class="guide-step-title">👥 이성관리 — 대화 이어가기</div>
+            <div class="guide-step-tag">채팅모드</div>
+          </div>
+          <div class="mockup-frame">
+            <div class="mockup-bar">
+              <div class="mockup-bar-dot"></div>
+              <div class="mockup-bar-title">👥 이성 관리</div>
+              <div class="mockup-bar-badge">최대 10명</div>
+            </div>
+            <div class="mockup-body">
+              <div class="mockup-women-row">
+                <div class="mockup-women-av">🌸</div>
+                <div class="mockup-women-info">
+                  <div class="mockup-women-name">Ssom <span style="font-size:0.6rem;color:#6b7280;">25세</span></div>
+                  <div class="mockup-women-meta">● 호감 형성 &nbsp;💬 12개</div>
+                  <div class="mockup-women-bar"><div class="mockup-women-fill" style="width:72%;"></div></div>
+                </div>
+                <div class="mockup-women-score" style="margin-left:8px;">72</div>
+              </div>
+              <div class="mockup-women-row">
+                <div class="mockup-women-av">💃</div>
+                <div class="mockup-women-info">
+                  <div class="mockup-women-name">Noi <span style="font-size:0.6rem;color:#6b7280;">23세</span></div>
+                  <div class="mockup-women-meta">● 친해지기 &nbsp;💬 5개</div>
+                  <div class="mockup-women-bar"><div class="mockup-women-fill" style="width:45%;"></div></div>
+                </div>
+                <div class="mockup-women-score" style="margin-left:8px;color:#ffd93d;">45</div>
+              </div>
+              <div style="background:linear-gradient(135deg,#4ecdc4,#2a9d8f);border-radius:8px;padding:9px;text-align:center;font-size:0.7rem;font-weight:800;color:#fff;margin-top:8px;">💬 대화 이어가기</div>
+            </div>
+          </div>
+          <div class="guide-desc">
+            <div class="point"><span class="point-icon">①</span><span>이성 슬롯 탭 → 이름·나이·친밀도 단계·점수 입력 후 저장</span></div>
+            <div class="point"><span class="point-icon">②</span><span><strong>"대화 이어가기"</strong> 버튼으로 개인 채팅 화면 진입</span></div>
+            <div class="point"><span class="point-icon">③</span><span>상대 메시지를 입력하면 AI가 이전 대화 맥락을 기억해 자연스러운 답변 추천</span></div>
+            <div class="point"><span class="point-icon">④</span><span>대화 기록과 점수가 자동 저장됨 — 앱 껐다 켜도 유지</span></div>
+          </div>
+        </div>
+
+        <!-- STEP 3: 전략집 -->
+        <div class="guide-step">
+          <div class="guide-step-hdr">
+            <div class="guide-step-num">3</div>
+            <div class="guide-step-title">🎯 전략집 — 고수의 바이블</div>
+            <div class="guide-step-tag">5단계전략</div>
+          </div>
+          <div class="mockup-frame">
+            <div class="mockup-bar">
+              <div class="mockup-bar-dot"></div>
+              <div class="mockup-bar-title">🎯 단계별 플러팅 전략집</div>
+            </div>
+            <div class="mockup-body">
+              <div style="display:-webkit-box;display:-webkit-flex;display:flex;overflow-x:auto;margin-bottom:8px;">
+                <span style="font-size:0.62rem;padding:4px 9px;border-radius:12px;border:1px solid #ff6b8a;color:#ff6b8a;background:rgba(255,107,138,0.1);margin-right:5px;white-space:nowrap;">👋 첫 연락</span>
+                <span style="font-size:0.62rem;padding:4px 9px;border-radius:12px;border:1px solid #2a2a4a;color:#6b7280;margin-right:5px;white-space:nowrap;">😊 친해지기</span>
+                <span style="font-size:0.62rem;padding:4px 9px;border-radius:12px;border:1px solid #2a2a4a;color:#6b7280;white-space:nowrap;">💛 호감 폭발</span>
+              </div>
+              <div class="mockup-strat-block">
+                <div class="mockup-strat-title">① 질문으로 끝내라</div>
+                <div class="mockup-strat-tip">상대가 답하고 싶어지는 가벼운 질문을 붙인다. 대화가 자연스럽게 이어진다.</div>
+              </div>
+              <div class="mockup-strat-block">
+                <div class="mockup-strat-title">② 너무 간절하게 보이지 말라</div>
+                <div class="mockup-strat-tip">여유 있고 자신감 있는 사람처럼 행동할 것. 기다릴 수 있는 사람이 이긴다.</div>
+              </div>
+              <div class="mockup-expr">
+                <span class="mockup-expr-tag">질문유도</span>
+                <span class="mockup-expr-th">วันนี้ทำอะไรอยู่? คิดถึงเลย 😄</span>
+              </div>
+            </div>
+          </div>
+          <div class="guide-desc">
+            <div class="point"><span class="point-icon">①</span><span>상단 단계 칩(첫 연락·친해지기 등)을 탭해 해당 전략 확인</span></div>
+            <div class="point"><span class="point-icon">②</span><span>각 단계별 <strong>3가지 핵심 전략 원칙</strong> + 실전 태국어 표현 제공</span></div>
+            <div class="point"><span class="point-icon">③</span><span>마음에 드는 표현의 <strong>"복사"</strong> 버튼으로 바로 사용</span></div>
+            <div class="point"><span class="point-icon">④</span><span>하단 <strong>📌 나만의 전략 메모</strong>에 중요한 표현 저장 가능</span></div>
+          </div>
+        </div>
+
+        <!-- STEP 4: 랭킹 -->
+        <div class="guide-step">
+          <div class="guide-step-hdr">
+            <div class="guide-step-num">4</div>
+            <div class="guide-step-title">🏆 랭킹 — 탭하면 채팅 바로 이동</div>
+            <div class="guide-step-tag">빠른접근</div>
+          </div>
+          <div class="mockup-frame">
+            <div class="mockup-bar">
+              <div class="mockup-bar-dot"></div>
+              <div class="mockup-bar-title">🏆 친밀도 랭킹</div>
+              <div class="mockup-bar-badge">탭→채팅</div>
+            </div>
+            <div class="mockup-body">
+              <div class="mockup-rank-row">
+                <div class="mockup-rank-medal">🥇</div>
+                <div class="mockup-rank-av">🌸</div>
+                <div class="mockup-rank-info">
+                  <div class="mockup-rank-name">Ssom <span style="font-size:0.6rem;color:#6b7280;">25세</span></div>
+                  <div class="mockup-rank-stage">● 호감 형성 &nbsp;💬 12</div>
+                  <div style="height:3px;background:#2a2a4a;border-radius:2px;margin-top:4px;overflow:hidden;"><div style="height:3px;width:82%;background:linear-gradient(90deg,#ff6b8a,#7c5cbf);border-radius:2px;"></div></div>
+                </div>
+                <div style="text-align:right;margin-left:8px;"><div class="mockup-rank-score">82</div><div class="mockup-rank-chat">💬 채팅</div></div>
+              </div>
+              <div class="mockup-rank-row">
+                <div class="mockup-rank-medal">🥈</div>
+                <div class="mockup-rank-av">💃</div>
+                <div class="mockup-rank-info">
+                  <div class="mockup-rank-name">Noi <span style="font-size:0.6rem;color:#6b7280;">23세</span></div>
+                  <div class="mockup-rank-stage">● 친해지기 &nbsp;💬 5</div>
+                  <div style="height:3px;background:#2a2a4a;border-radius:2px;margin-top:4px;overflow:hidden;"><div style="height:3px;width:55%;background:linear-gradient(90deg,#ff6b8a,#7c5cbf);border-radius:2px;"></div></div>
+                </div>
+                <div style="text-align:right;margin-left:8px;"><div class="mockup-rank-score">55</div><div class="mockup-rank-chat">💬 채팅</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-desc">
+            <div class="point"><span class="point-icon">①</span><span>친밀도 점수 기준으로 자동 정렬된 랭킹 확인</span></div>
+            <div class="point"><span class="point-icon">②</span><span>랭킹 카드를 <strong>탭하면 바로 해당 이성의 채팅 화면</strong>으로 이동</span></div>
+            <div class="point"><span class="point-icon">③</span><span>🥇🥈🥉 메달로 상위 3명 한눈에 파악</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 설치 방법 -->
+      <div class="guide-section">
+        <div class="guide-section-title">📲 앱 설치 방법</div>
+        <div class="guide-advantage">
+          <div class="guide-adv-hdr">
+            <div class="guide-adv-title">홈 화면에 추가하면 진짜 앱처럼!</div>
+            <div class="guide-adv-sub">설치 없이 브라우저에서 바로 홈 화면 추가 가능</div>
+          </div>
+          <div class="guide-adv-list">
+            <div class="adv-item">
+              <div class="adv-icon">🍎</div>
+              <div class="adv-body">
+                <div class="adv-title">iPhone / iPad (iOS)</div>
+                <div class="adv-desc">Safari로 접속 → 하단 공유 버튼(□↑) 탭 → <strong>"홈 화면에 추가"</strong> 선택 → 추가<br><span style="color:#ff6b8a;">※ 반드시 Safari 사용 (Chrome 불가)</span></div>
+              </div>
+            </div>
+            <div class="adv-item">
+              <div class="adv-icon">🤖</div>
+              <div class="adv-body">
+                <div class="adv-title">Android</div>
+                <div class="adv-desc">Chrome으로 접속 → 우측 상단 메뉴(⋮) → <strong>"홈 화면에 추가"</strong> 또는 <strong>"앱 설치"</strong> 선택</div>
+              </div>
+            </div>
+            <div class="adv-item">
+              <div class="adv-icon">📦</div>
+              <div class="adv-body">
+                <div class="adv-title">Android APK 파일로 설치</div>
+                <div class="adv-desc">pwabuilder.com → 앱 URL 입력 → Android 선택 → APK 다운로드 → 설치<br><span style="color:#4ecdc4;">일반 앱처럼 앱서랍에 설치됩니다</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 버전 정보 -->
+      <div style="background:#1a1a2e;border-radius:12px;border:1px solid #2a2a4a;padding:14px;margin-bottom:20px;text-align:center;">
+        <div style="font-size:0.7rem;color:#6b7280;margin-bottom:8px;">현재 버전</div>
+        <div style="font-size:1.3rem;font-weight:900;color:#ffd93d;margin-bottom:4px;">v9.0</div>
+        <div style="font-size:0.68rem;color:#6b7280;line-height:1.7;">닉네임 · AI 감정분석 강화 · 전략집<br>랭킹→채팅 링크 · 전략 메모</div>
+        <div style="margin-top:12px;font-size:0.7rem;color:#4ecdc4;">🔄 업데이트 시 새로고침하면 자동 반영</div>
+      </div>
+
+    </div>
+
   </div>
 
   <!-- 하단 네비 -->
@@ -532,6 +900,7 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
     <button class="nav-item" onclick="switchTab('women',this);renderWomen()"><span class="ni">👥</span>이성관리</button>
     <button class="nav-item" onclick="switchTab('phrases',this);renderMemos()"><span class="ni">🎯</span>전략집</button>
     <button class="nav-item" onclick="switchTab('rank',this);renderRank()"><span class="ni">🏆</span>랭킹</button>
+    <button class="nav-item" onclick="switchTab('guide',this)"><span class="ni">📖</span>가이드</button>
   </div>
 </div>
 
