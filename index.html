@@ -23,49 +23,55 @@ if('serviceWorker' in navigator){
 html{height:100%;}
 body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;}
 
-/* ── 전체 앱 래퍼 ── */
 #app{display:none;height:100%;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
 #app.show{display:-webkit-box;display:-webkit-flex;display:flex;}
 
 /* ── 헤더 ── */
-.hdr{background:linear-gradient(135deg,#4a1a6b,#8b1a4a);padding:10px 14px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;gap:10px;-webkit-box-shadow:0 2px 16px rgba(0,0,0,0.5);box-shadow:0 2px 16px rgba(0,0,0,0.5);flex-shrink:0;}
-.hdr-icon{font-size:1.3rem;}
+.hdr{background:linear-gradient(135deg,#4a1a6b,#8b1a4a);padding:10px 14px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-flex-shrink:0;flex-shrink:0;-webkit-box-shadow:0 2px 16px rgba(0,0,0,0.5);box-shadow:0 2px 16px rgba(0,0,0,0.5);}
+.hdr-icon{font-size:1.3rem;margin-right:10px;}
 .hdr-info{-webkit-box-flex:1;-webkit-flex:1;flex:1;}
-.hdr-title{font-size:0.95rem;font-weight:700;}
-.hdr-badges{display:-webkit-box;display:-webkit-flex;display:flex;gap:4px;margin-top:3px;-webkit-flex-wrap:wrap;flex-wrap:wrap;}
-.badge{font-size:0.6rem;font-weight:700;background:rgba(255,255,255,0.15);border-radius:20px;padding:2px 8px;border:1px solid rgba(255,255,255,0.2);}
+.hdr-title{font-size:0.95rem;font-weight:700;line-height:1.3;}
+.hdr-nick{font-size:0.72rem;color:rgba(255,255,255,0.75);margin-top:1px;}
+.hdr-badges{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;margin-top:3px;}
+.badge{font-size:0.6rem;font-weight:700;background:rgba(255,255,255,0.15);border-radius:20px;padding:2px 8px;border:1px solid rgba(255,255,255,0.2);margin-right:4px;margin-bottom:2px;}
 .badge-ver{color:#ffd93d;}
-.hdr-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:#fff;padding:6px 10px;border-radius:16px;font-size:0.68rem;cursor:pointer;white-space:nowrap;}
+.badge-nick{color:#4ecdc4;background:rgba(78,205,196,0.15);border-color:rgba(78,205,196,0.3);}
+.hdr-btn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.25);color:#fff;padding:6px 10px;border-radius:16px;font-size:0.68rem;cursor:pointer;white-space:nowrap;-webkit-flex-shrink:0;flex-shrink:0;}
 
-/* ── 컨텐츠 영역 ── */
+/* ── 컨텐츠 ── */
 .content{-webkit-box-flex:1;-webkit-flex:1;flex:1;overflow:hidden;position:relative;}
 .tab{display:none;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px 10px;}
 .tab.active{display:block;}
 
 /* ── 하단 네비 ── */
-.nav{display:-webkit-box;display:-webkit-flex;display:flex;background:#16213e;border-top:1px solid #2a2a4a;flex-shrink:0;}
-.nav-item{-webkit-box-flex:1;-webkit-flex:1;flex:1;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;-webkit-box-align:center;-webkit-align-items:center;align-items:center;padding:10px 4px 10px;background:none;border:none;color:#6b7280;font-size:0.6rem;font-weight:600;gap:3px;cursor:pointer;}
-.nav-item .ni{font-size:1.3rem;}
+.nav{display:-webkit-box;display:-webkit-flex;display:flex;background:#16213e;border-top:1px solid #2a2a4a;-webkit-flex-shrink:0;flex-shrink:0;}
+.nav-item{-webkit-box-flex:1;-webkit-flex:1;flex:1;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;-webkit-box-align:center;-webkit-align-items:center;align-items:center;padding:10px 4px;background:none;border:none;color:#6b7280;font-size:0.58rem;font-weight:600;cursor:pointer;}
+.nav-item .ni{font-size:1.2rem;margin-bottom:2px;}
 .nav-item.on{color:#ff6b8a;}
 
-/* ── 카드 공통 ── */
+/* ── 카드 ── */
 .card{background:#1a1a2e;border-radius:14px;border:1px solid #2a2a4a;margin-bottom:12px;overflow:hidden;}
 
 /* ── 입력창 ── */
 .inp-lbl{padding:10px 14px 6px;font-size:0.72rem;color:#6b7280;}
-.inp-row{display:-webkit-box;display:-webkit-flex;display:flex;gap:8px;padding:0 12px 12px;}
-.inp-txt{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:#0f0f1a;border:1px solid #2a2a4a;border-radius:10px;padding:10px 12px;color:#e8e8f0;font-size:0.95rem;font-family:inherit;resize:none;min-height:46px;max-height:100px;}
+.inp-row{display:-webkit-box;display:-webkit-flex;display:flex;padding:0 12px 12px;}
+.inp-txt{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:#0f0f1a;border:1px solid #2a2a4a;border-radius:10px;padding:10px 12px;color:#e8e8f0;font-size:0.95rem;font-family:inherit;resize:none;min-height:46px;max-height:100px;margin-right:8px;}
 .inp-txt:focus{outline:none;border-color:#ff6b8a;}
 .inp-go{background:linear-gradient(135deg,#ff6b8a,#7c5cbf);border:none;color:#fff;width:46px;height:46px;border-radius:10px;font-size:1.2rem;cursor:pointer;-webkit-flex-shrink:0;flex-shrink:0;}
 
 /* ── 신호/팁 ── */
-.sigs{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;gap:5px;padding:8px 14px;}
-.sig{font-size:0.67rem;padding:3px 8px;border-radius:20px;}
+.sigs{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;padding:8px 14px;}
+.sig{font-size:0.67rem;padding:3px 8px;border-radius:20px;margin-right:5px;margin-bottom:4px;}
 .sig.pos{background:rgba(78,205,196,0.15);color:#4ecdc4;}
 .sig.neu{background:rgba(255,217,61,0.1);color:#ffd93d;}
 .sig.neg{background:rgba(255,107,107,0.1);color:#ff6b6b;}
+.sig.warn{background:rgba(255,159,67,0.15);color:#ff9f43;}
 .tipbox{padding:10px 14px;background:rgba(124,92,191,0.1);border-top:1px solid rgba(124,92,191,0.2);font-size:0.78rem;color:#c4b5fd;line-height:1.5;}
 .tipbox strong{color:#ffd93d;}
+.stratbox{padding:10px 14px 12px;background:rgba(255,107,138,0.07);border-top:1px solid rgba(255,107,138,0.15);font-size:0.75rem;line-height:1.6;}
+.strat-row{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:flex-start;-webkit-align-items:flex-start;align-items:flex-start;margin-bottom:4px;}
+.strat-icon{margin-right:6px;-webkit-flex-shrink:0;flex-shrink:0;}
+.strat-text{color:#fbbf24;}
 
 /* ── 추천 카드 ── */
 .sugg{background:#1a1a2e;border-radius:14px;border:1px solid #2a2a4a;margin-bottom:12px;overflow:hidden;}
@@ -73,14 +79,16 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 .sugg-lbl.l1{color:#ff9f43;}
 .sugg-lbl.l2{color:#ff6b8a;}
 .sugg-lbl.l3{color:#4ecdc4;}
+.sugg-lbl.l4{color:#a78bfa;}
 .sugg-body{padding:12px 14px 8px;}
 .thai{font-size:1rem;font-weight:500;color:#fff;line-height:1.6;margin-bottom:8px;}
 .kor{font-size:0.77rem;color:#6b7280;padding-top:8px;border-top:1px solid #2a2a4a;line-height:1.5;}
-.sugg-foot{padding:8px 12px;display:-webkit-box;display:-webkit-flex;display:flex;gap:8px;}
-.btn-cp{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:none;border:1px solid #2a2a4a;color:#e8e8f0;padding:9px;border-radius:9px;font-size:0.77rem;cursor:pointer;}
+.sugg-why{font-size:0.68rem;color:#a78bfa;margin-top:6px;font-style:italic;}
+.sugg-foot{padding:8px 12px;display:-webkit-box;display:-webkit-flex;display:flex;}
+.btn-cp{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:none;border:1px solid #2a2a4a;color:#e8e8f0;padding:9px;border-radius:9px;font-size:0.77rem;cursor:pointer;margin-right:8px;}
 .btn-use{-webkit-box-flex:2;-webkit-flex:2;flex:2;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);border:none;color:#fff;padding:9px;border-radius:9px;font-size:0.77rem;font-weight:700;cursor:pointer;}
 
-/* ── 빈 상태 / 로딩 ── */
+/* ── 빈 상태/로딩 ── */
 .empty{text-align:center;padding:50px 20px;color:#6b7280;}
 .empty .ei{font-size:3rem;margin-bottom:12px;}
 .empty p{font-size:0.85rem;line-height:1.7;}
@@ -95,52 +103,73 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 .reset-row button{background:none;border:1px solid #2a2a4a;color:#6b7280;padding:11px 24px;border-radius:12px;font-size:0.85rem;font-weight:700;cursor:pointer;}
 
 /* ── 이성관리 ── */
-.w-slot{background:#1a1a2e;border-bottom:1px solid #2a2a4a;padding:14px;cursor:pointer;}
+.w-slot{padding:14px;cursor:pointer;border-bottom:1px solid #2a2a4a;}
 .w-slot:last-child{border-bottom:none;}
 .w-slot table{width:100%;border-collapse:collapse;}
 .w-slot td{vertical-align:middle;}
-.w-av{width:50px;padding-right:12px;}
-.w-circle{width:48px;height:48px;border-radius:24px;text-align:center;line-height:46px;font-size:1.3rem;position:relative;}
-.w-num{position:absolute;bottom:0;right:0;width:17px;height:17px;background:#2a2a4a;border-radius:9px;font-size:9px;line-height:17px;text-align:center;color:#9ca3af;font-weight:700;}
-.w-name{font-size:0.95rem;font-weight:700;color:#e8e8f0;}
-.w-meta{font-size:0.72rem;color:#6b7280;margin-top:3px;}
-.w-bar-bg{height:4px;background:#2a2a4a;border-radius:2px;margin-top:6px;overflow:hidden;}
-.w-bar-fg{height:4px;background:#ff6b8a;border-radius:2px;}
-.w-score-cell{width:40px;text-align:right;padding-left:8px;}
-.w-score-num{font-size:1.1rem;font-weight:800;}
-.w-score-lbl{font-size:0.6rem;color:#6b7280;}
 
 /* ── 랭킹 ── */
-.rank-card{background:#1a1a2e;border-radius:14px;border:1px solid #2a2a4a;padding:14px;margin-bottom:10px;}
-.rank-card table{width:100%;border-collapse:collapse;}
-.rank-card td{vertical-align:middle;}
-.rank-n{font-size:1.4rem;font-weight:900;width:36px;}
-.rank-n.gold{color:#ffd93d;}
-.rank-n.silver{color:#b0b8c1;}
-.rank-n.bronze{color:#cd7f32;}
-.rank-n.other{font-size:1rem;color:#6b7280;}
-.rank-av{width:46px;padding:0 10px;}
-.rank-av-c{width:42px;height:42px;border-radius:21px;text-align:center;line-height:42px;font-size:1.1rem;}
-.rank-nm{font-size:0.95rem;font-weight:700;color:#e8e8f0;}
-.rank-mt{font-size:0.72rem;color:#6b7280;margin-top:2px;}
-.rank-bar-bg{height:4px;background:#2a2a4a;border-radius:2px;margin-top:6px;overflow:hidden;}
-.rank-bar-fg{height:4px;background:linear-gradient(90deg,#ff6b8a,#7c5cbf);border-radius:2px;}
-.rank-sc{text-align:right;width:44px;padding-left:8px;font-size:1.3rem;font-weight:900;color:#ff6b8a;}
+.rank-card{background:#1a1a2e;border-radius:14px;border:1px solid #2a2a4a;padding:14px;margin-bottom:10px;cursor:pointer;-webkit-transition:border-color 0.2s;transition:border-color 0.2s;}
+.rank-card:active{border-color:#ff6b8a;background:#1f1f35;}
+.rank-chat-btn{background:linear-gradient(135deg,#4ecdc4,#2a9d8f);border:none;color:#fff;padding:6px 12px;border-radius:8px;font-size:0.65rem;font-weight:700;cursor:pointer;white-space:nowrap;-webkit-flex-shrink:0;flex-shrink:0;}
 
-/* ── 표현집 ── */
-.ph-cat{font-size:0.7rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.8px;margin:0 0 8px;}
-.ph-item{background:#1a1a2e;border-radius:10px;border:1px solid #2a2a4a;padding:10px 12px;margin-bottom:8px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;gap:10px;}
-.ph-txt{-webkit-box-flex:1;-webkit-flex:1;flex:1;}
-.ph-th{font-size:0.88rem;color:#fff;}
-.ph-ko{font-size:0.72rem;color:#6b7280;margin-top:2px;}
-.ph-cp{background:none;border:1px solid #2a2a4a;color:#6b7280;padding:5px 9px;border-radius:7px;font-size:0.7rem;cursor:pointer;white-space:nowrap;}
+/* ── 전략집 ── */
+.strat-tab-hdr{padding:14px 16px 10px;}
+.strat-tab-title{font-size:1rem;font-weight:800;color:#fff;margin-bottom:4px;}
+.strat-tab-sub{font-size:0.72rem;color:#6b7280;line-height:1.5;}
+.stage-selector{display:-webkit-box;display:-webkit-flex;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:0 0 12px;margin-bottom:4px;}
+.stage-selector::-webkit-scrollbar{display:none;}
+.stg-chip{background:none;border:1px solid #2a2a4a;color:#6b7280;padding:6px 12px;border-radius:20px;font-size:0.7rem;font-weight:700;cursor:pointer;white-space:nowrap;margin-right:6px;-webkit-flex-shrink:0;flex-shrink:0;}
+.stg-chip.on{border-color:#ff6b8a;color:#ff6b8a;background:rgba(255,107,138,0.1);}
+.strat-section{display:none;}
+.strat-section.show{display:block;}
+.strat-block{background:#1a1a2e;border-radius:14px;border:1px solid #2a2a4a;margin-bottom:12px;overflow:hidden;}
+.strat-block-hdr{padding:12px 14px;border-bottom:1px solid #2a2a4a;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
+.strat-block-icon{font-size:1.3rem;margin-right:10px;-webkit-flex-shrink:0;flex-shrink:0;}
+.strat-block-title{font-size:0.9rem;font-weight:800;color:#fff;}
+.strat-block-sub{font-size:0.68rem;color:#6b7280;margin-top:2px;}
+.strat-tips{padding:12px 14px;}
+.strat-tip{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:flex-start;-webkit-align-items:flex-start;align-items:flex-start;margin-bottom:10px;padding:10px 12px;background:rgba(124,92,191,0.08);border-radius:10px;border-left:3px solid #7c5cbf;}
+.strat-tip-num{font-size:0.8rem;font-weight:900;color:#7c5cbf;margin-right:8px;-webkit-flex-shrink:0;flex-shrink:0;line-height:1.5;}
+.strat-tip-body{-webkit-box-flex:1;-webkit-flex:1;flex:1;}
+.strat-tip-title{font-size:0.82rem;font-weight:800;color:#ffd93d;margin-bottom:3px;}
+.strat-tip-desc{font-size:0.72rem;color:#9ca3af;line-height:1.55;}
+.strat-exprs{padding:0 14px 14px;}
+.strat-expr-lbl{font-size:0.65rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;}
+.strat-expr{background:#0f0f1a;border:1px solid #2a2a4a;border-radius:10px;padding:10px 12px;margin-bottom:7px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
+.strat-expr-txt{-webkit-box-flex:1;-webkit-flex:1;flex:1;}
+.strat-expr-tag{font-size:0.58rem;font-weight:700;padding:2px 6px;border-radius:10px;margin-bottom:4px;display:inline-block;}
+.strat-expr-tag.t1{background:rgba(255,159,67,0.15);color:#ff9f43;}
+.strat-expr-tag.t2{background:rgba(78,205,196,0.15);color:#4ecdc4;}
+.strat-expr-tag.t3{background:rgba(255,107,138,0.15);color:#ff6b8a;}
+.strat-expr-tag.t4{background:rgba(167,139,250,0.15);color:#a78bfa;}
+.strat-expr-tag.t5{background:rgba(255,217,61,0.15);color:#ffd93d;}
+.strat-expr-th{font-size:0.88rem;color:#fff;font-weight:500;}
+.strat-expr-ko{font-size:0.7rem;color:#6b7280;margin-top:2px;}
+.strat-expr-cp{background:none;border:1px solid #2a2a4a;color:#6b7280;padding:5px 9px;border-radius:7px;font-size:0.68rem;cursor:pointer;white-space:nowrap;-webkit-flex-shrink:0;flex-shrink:0;margin-left:8px;}
 
-/* ── 개인 채팅 화면 ── */
+/* ── 전략 메모 ── */
+.memo-section{background:#1a1a2e;border-radius:14px;border:1px solid #ffd93d;margin-bottom:12px;overflow:hidden;}
+.memo-hdr{padding:12px 14px;background:rgba(255,217,61,0.05);border-bottom:1px solid rgba(255,217,61,0.2);display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
+.memo-hdr-icon{font-size:1.2rem;margin-right:8px;}
+.memo-hdr-title{font-size:0.88rem;font-weight:800;color:#ffd93d;-webkit-box-flex:1;-webkit-flex:1;flex:1;}
+.memo-hdr-count{font-size:0.68rem;color:#6b7280;}
+.memo-inp-area{padding:12px 14px;}
+.memo-inp{width:100%;background:#0f0f1a;border:1px solid #2a2a4a;border-radius:10px;padding:10px 12px;color:#e8e8f0;font-size:0.88rem;font-family:inherit;resize:none;min-height:68px;outline:none;margin-bottom:8px;}
+.memo-inp:focus{border-color:#ffd93d;}
+.memo-add-btn{width:100%;background:linear-gradient(135deg,#ffd93d,#ff9f43);border:none;color:#000;padding:10px;border-radius:9px;font-size:0.82rem;font-weight:800;cursor:pointer;}
+.memo-list{padding:0 14px 14px;}
+.memo-item{background:#0f0f1a;border:1px solid #2a2a4a;border-radius:10px;padding:10px 12px;margin-bottom:7px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:flex-start;-webkit-align-items:flex-start;align-items:flex-start;}
+.memo-item-txt{-webkit-box-flex:1;-webkit-flex:1;flex:1;font-size:0.82rem;color:#e8e8f0;line-height:1.55;margin-right:8px;}
+.memo-item-del{background:none;border:1px solid rgba(255,107,107,0.3);color:#ff6b6b;padding:4px 8px;border-radius:7px;font-size:0.65rem;cursor:pointer;-webkit-flex-shrink:0;flex-shrink:0;}
+.memo-empty{text-align:center;padding:20px;color:#6b7280;font-size:0.78rem;}
+
+/* ── 개인 채팅 ── */
 .chat-screen{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:450;background:#0f0f1a;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
 .chat-screen.show{display:-webkit-box;display:-webkit-flex;display:flex;}
-.chat-hdr{background:linear-gradient(135deg,#4a1a6b,#8b1a4a);padding:14px 16px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;gap:12px;-webkit-flex-shrink:0;flex-shrink:0;}
-.chat-back{background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;padding:4px 8px 4px 0;}
-.chat-av{width:40px;height:40px;border-radius:20px;background:#2a1a3e;text-align:center;line-height:40px;font-size:1.2rem;-webkit-flex-shrink:0;flex-shrink:0;}
+.chat-hdr{background:linear-gradient(135deg,#4a1a6b,#8b1a4a);padding:14px 16px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-flex-shrink:0;flex-shrink:0;}
+.chat-back{background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;padding:4px 8px 4px 0;-webkit-flex-shrink:0;flex-shrink:0;}
+.chat-av{width:40px;height:40px;border-radius:20px;background:#2a1a3e;text-align:center;line-height:40px;font-size:1.2rem;-webkit-flex-shrink:0;flex-shrink:0;margin-right:12px;}
 .chat-hdr-info{-webkit-box-flex:1;-webkit-flex:1;flex:1;}
 .chat-hdr-name{font-size:1rem;font-weight:800;color:#fff;}
 .chat-hdr-meta{font-size:0.68rem;color:rgba(255,255,255,0.65);margin-top:2px;}
@@ -149,7 +178,6 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 .chat-empty{text-align:center;color:#6b7280;padding:40px 20px;margin:auto;}
 .chat-empty .ce{font-size:2.5rem;margin-bottom:10px;}
 .chat-empty p{font-size:0.82rem;line-height:1.7;}
-/* 말풍선 */
 .bubble-wrap{margin-bottom:14px;}
 .bubble-wrap.her{-webkit-box-align:start;-webkit-align-items:flex-start;align-items:flex-start;}
 .bubble-wrap.me{-webkit-box-align:end;-webkit-align-items:flex-end;align-items:flex-end;text-align:right;}
@@ -159,22 +187,21 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 .bubble.me{background:linear-gradient(135deg,#ff6b8a,#7c5cbf);color:#fff;border-top-right-radius:4px;}
 .bubble-ko{font-size:0.68rem;color:#6b7280;margin-top:4px;padding:0 4px;}
 .bubble-ts{font-size:0.6rem;color:#3a3a5a;margin-top:3px;padding:0 4px;}
-/* AI 추천 버블 */
 .sugg-wrap{background:#16213e;border-radius:14px;border:1px solid #2a2a4a;margin-bottom:14px;overflow:hidden;}
-.sugg-wrap-hdr{padding:8px 12px;font-size:0.68rem;color:#6b7280;border-bottom:1px solid #2a2a4a;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;gap:6px;}
+.sugg-wrap-hdr{padding:8px 12px;font-size:0.68rem;color:#6b7280;border-bottom:1px solid #2a2a4a;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
 .sugg-item{padding:10px 12px;border-bottom:1px solid #1a1a2e;}
 .sugg-item:last-child{border-bottom:none;}
 .sugg-item-lbl{font-size:0.62rem;font-weight:700;color:#ffd93d;margin-bottom:5px;}
 .sugg-item-th{font-size:0.9rem;color:#fff;line-height:1.5;}
 .sugg-item-ko{font-size:0.7rem;color:#6b7280;margin-top:3px;}
-.sugg-item-btns{display:-webkit-box;display:-webkit-flex;display:flex;gap:6px;margin-top:8px;}
-.s-cp{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:none;border:1px solid #2a2a4a;color:#e8e8f0;padding:8px;border-radius:8px;font-size:0.72rem;cursor:pointer;}
+.sugg-item-why{font-size:0.65rem;color:#a78bfa;margin-top:3px;font-style:italic;}
+.sugg-item-btns{display:-webkit-box;display:-webkit-flex;display:flex;margin-top:8px;}
+.s-cp{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:none;border:1px solid #2a2a4a;color:#e8e8f0;padding:8px;border-radius:8px;font-size:0.72rem;cursor:pointer;margin-right:6px;}
 .s-send{-webkit-box-flex:2;-webkit-flex:2;flex:2;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);border:none;color:#fff;padding:8px;border-radius:8px;font-size:0.72rem;font-weight:700;cursor:pointer;}
-/* 채팅 입력 */
 .chat-inp-area{background:#16213e;border-top:1px solid #2a2a4a;padding:10px 12px 10px;-webkit-flex-shrink:0;flex-shrink:0;}
 .chat-inp-tip{font-size:0.65rem;color:#6b7280;margin-bottom:7px;padding-left:2px;}
-.chat-inp-row{display:-webkit-box;display:-webkit-flex;display:flex;gap:8px;-webkit-box-align:flex-end;-webkit-align-items:flex-end;align-items:flex-end;}
-.chat-ta{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:#0f0f1a;border:1px solid #2a2a4a;border-radius:12px;padding:10px 12px;color:#e8e8f0;font-size:0.9rem;font-family:inherit;resize:none;min-height:42px;max-height:90px;outline:none;}
+.chat-inp-row{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:flex-end;-webkit-align-items:flex-end;align-items:flex-end;}
+.chat-ta{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:#0f0f1a;border:1px solid #2a2a4a;border-radius:12px;padding:10px 12px;color:#e8e8f0;font-size:0.9rem;font-family:inherit;resize:none;min-height:42px;max-height:90px;outline:none;margin-right:8px;}
 .chat-ta:focus{border-color:#ff6b8a;}
 .chat-go{background:linear-gradient(135deg,#ff6b8a,#7c5cbf);border:none;color:#fff;width:42px;height:42px;border-radius:12px;font-size:1.1rem;cursor:pointer;-webkit-flex-shrink:0;flex-shrink:0;}
 .chat-loading{text-align:center;padding:14px;color:#6b7280;font-size:0.8rem;display:none;}
@@ -189,19 +216,19 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 .field label{display:block;font-size:0.7rem;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:7px;}
 .field input{width:100%;background:#0f0f1a;border:1px solid #2a2a4a;border-radius:10px;padding:11px 13px;color:#e8e8f0;font-size:0.95rem;font-family:inherit;outline:none;}
 .field input:focus{border-color:#ff6b8a;}
-.pills{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;gap:6px;}
-.pill{font-size:0.7rem;padding:6px 12px;border-radius:20px;border:1px solid #2a2a4a;color:#6b7280;background:none;cursor:pointer;}
+.pills{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;}
+.pill{font-size:0.7rem;padding:6px 12px;border-radius:20px;border:1px solid #2a2a4a;color:#6b7280;background:none;cursor:pointer;margin-right:6px;margin-bottom:6px;}
 .pill.on{border-color:#ff6b8a;color:#ff6b8a;background:rgba(255,107,138,0.1);}
-.slider-row{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;gap:10px;}
-.slider{-webkit-box-flex:1;-webkit-flex:1;flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:#2a2a4a;outline:none;}
+.slider-row{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
+.slider{-webkit-box-flex:1;-webkit-flex:1;flex:1;-webkit-appearance:none;height:6px;border-radius:3px;background:#2a2a4a;outline:none;margin-right:10px;}
 .slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:11px;background:#ff6b8a;cursor:pointer;}
 .slider-val{font-size:1.2rem;font-weight:800;color:#ff6b8a;min-width:30px;text-align:right;}
-.sheet-btns{display:-webkit-box;display:-webkit-flex;display:flex;gap:8px;margin-top:18px;}
-.s-cancel{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:#2a2a4a;border:none;color:#e8e8f0;padding:13px;border-radius:11px;font-size:0.88rem;cursor:pointer;}
-.s-del{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.3);color:#ff6b6b;padding:13px;border-radius:11px;font-size:0.88rem;cursor:pointer;}
+.sheet-btns{display:-webkit-box;display:-webkit-flex;display:flex;margin-top:18px;}
+.s-cancel{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:#2a2a4a;border:none;color:#e8e8f0;padding:13px;border-radius:11px;font-size:0.88rem;cursor:pointer;margin-right:8px;}
+.s-del{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.3);color:#ff6b6b;padding:13px;border-radius:11px;font-size:0.88rem;cursor:pointer;margin-right:8px;}
 .s-save{-webkit-box-flex:2;-webkit-flex:2;flex:2;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);border:none;color:#fff;padding:13px;border-radius:11px;font-size:0.88rem;font-weight:800;cursor:pointer;}
 
-/* ── 비밀번호 / 설정 화면 ── */
+/* ── 비밀번호/설정 화면 ── */
 #pwWrap,#setupWrap{position:fixed;top:0;left:0;right:0;bottom:0;z-index:500;background:linear-gradient(160deg,#0d0d1f,#1a0a2e);display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-box-pack:center;-webkit-justify-content:center;justify-content:center;padding:40px 28px;overflow-y:auto;}
 #setupWrap{-webkit-box-pack:start;-webkit-justify-content:flex-start;justify-content:flex-start;padding-top:50px;}
 .hidden{display:none!important;}
@@ -209,27 +236,31 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 .s-title{font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:4px;}
 .s-sub{font-size:0.77rem;color:#6b7280;text-align:center;margin-bottom:28px;}
 .s-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#6b7280;margin-bottom:9px;width:100%;max-width:340px;}
-.stage-grid{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;gap:8px;width:100%;max-width:340px;margin-bottom:22px;}
-.sg-btn{padding:10px 6px;border-radius:11px;border:1.5px solid #2a2a4a;background:none;color:#e8e8f0;font-size:0.7rem;cursor:pointer;text-align:center;width:calc(33.3% - 6px);}
+.pw-nick-input{width:100%;max-width:280px;background:#1a1a2e;border:1.5px solid #2a2a4a;border-radius:13px;padding:13px 18px;color:#e8e8f0;font-size:1rem;text-align:center;outline:none;margin-bottom:12px;}
+.pw-nick-input:focus{border-color:#4ecdc4;}
+.pw-input{width:100%;max-width:280px;background:#1a1a2e;border:1.5px solid #2a2a4a;border-radius:13px;padding:14px 18px;color:#e8e8f0;font-size:1.2rem;text-align:center;letter-spacing:6px;outline:none;margin-bottom:10px;}
+.pw-input:focus{border-color:#ff6b8a;}
+.pw-err{color:#ff6b6b;font-size:0.77rem;margin-bottom:10px;min-height:18px;text-align:center;}
+.pw-btn{width:100%;max-width:280px;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);color:#fff;font-size:1rem;font-weight:800;cursor:pointer;}
+.pw-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#6b7280;margin-bottom:8px;width:100%;max-width:280px;text-align:left;}
+.stage-grid{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;width:100%;max-width:340px;margin-bottom:22px;}
+.sg-btn{padding:10px 6px;border-radius:11px;border:1.5px solid #2a2a4a;background:none;color:#e8e8f0;font-size:0.7rem;cursor:pointer;text-align:center;width:calc(33.3% - 6px);margin-right:6px;margin-bottom:6px;}
 .sg-btn .si{display:block;font-size:1.2rem;margin-bottom:3px;}
 .sg-btn.sel{border-color:#ff6b8a;background:rgba(255,107,138,0.12);color:#ff6b8a;}
-.style-grid{display:-webkit-box;display:-webkit-flex;display:flex;gap:10px;width:100%;max-width:340px;margin-bottom:26px;}
-.st-btn{-webkit-box-flex:1;-webkit-flex:1;flex:1;padding:14px 6px;border-radius:13px;border:1.5px solid #2a2a4a;background:none;color:#e8e8f0;cursor:pointer;text-align:center;}
+.style-grid{display:-webkit-box;display:-webkit-flex;display:flex;width:100%;max-width:340px;margin-bottom:26px;}
+.st-btn{-webkit-box-flex:1;-webkit-flex:1;flex:1;padding:14px 6px;border-radius:13px;border:1.5px solid #2a2a4a;background:none;color:#e8e8f0;cursor:pointer;text-align:center;margin-right:8px;}
+.st-btn:last-child{margin-right:0;}
 .st-btn .sti{display:block;font-size:1.7rem;margin-bottom:5px;}
 .st-btn .stn{display:block;font-size:0.82rem;font-weight:700;}
 .st-btn .std{display:block;font-size:0.62rem;color:#6b7280;margin-top:3px;line-height:1.4;}
 .st-btn.sel{border-color:#7c5cbf;background:rgba(124,92,191,0.18);}
 .st-btn.sel .stn{color:#ffd93d;}
 .start-btn{width:100%;max-width:340px;padding:15px;border-radius:13px;border:none;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);color:#fff;font-size:1rem;font-weight:800;cursor:pointer;margin-top:4px;}
-.pw-input{width:100%;max-width:280px;background:#1a1a2e;border:1.5px solid #2a2a4a;border-radius:13px;padding:14px 18px;color:#e8e8f0;font-size:1.2rem;text-align:center;letter-spacing:6px;outline:none;margin-bottom:10px;}
-.pw-err{color:#ff6b6b;font-size:0.77rem;margin-bottom:10px;min-height:18px;text-align:center;}
-.pw-btn{width:100%;max-width:280px;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);color:#fff;font-size:1rem;font-weight:800;cursor:pointer;}
 
 /* ── 토스트 ── */
 .toast{position:fixed;bottom:80px;left:50%;-webkit-transform:translateX(-50%) translateY(10px);transform:translateX(-50%) translateY(10px);background:#4ecdc4;color:#000;padding:10px 22px;border-radius:30px;font-size:0.82rem;font-weight:700;opacity:0;-webkit-transition:all 0.25s;transition:all 0.25s;pointer-events:none;z-index:999;white-space:nowrap;}
 .toast.show{opacity:1;-webkit-transform:translateX(-50%) translateY(0);transform:translateX(-50%) translateY(0);}
 
-/* ── 구분 ── */
 .section-gap{height:12px;}
 </style>
 </head>
@@ -237,13 +268,17 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 
 <!-- 비밀번호 -->
 <div id="pwWrap">
-  <div class="s-logo">🔐</div>
+  <div class="s-logo">💘</div>
   <div class="s-title">Thai Flirt Coach</div>
-  <div class="s-sub">비밀번호를 입력하세요</div>
+  <div class="s-sub">세계 최고의 플러팅 코치</div>
+  <div class="pw-label">👤 나의 닉네임</div>
+  <input id="nickInput" class="pw-nick-input" type="text" placeholder="닉네임을 입력하세요"
+    onkeydown="if(event.key==='Enter')document.getElementById('pwInput').focus()">
+  <div class="pw-label" style="margin-top:4px;">🔐 비밀번호</div>
   <input id="pwInput" class="pw-input" type="password" inputmode="numeric" placeholder="••••"
     onkeydown="if(event.key==='Enter')checkPw()">
   <div id="pwErr" class="pw-err"></div>
-  <button class="pw-btn" onclick="checkPw()">입력</button>
+  <button class="pw-btn" onclick="checkPw()">✨ 입력</button>
 </div>
 
 <!-- 설정 첫 화면 -->
@@ -262,13 +297,13 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
   <div class="s-label">🎭 나의 대화 스타일</div>
   <div class="style-grid">
     <button class="st-btn sel" onclick="pickStyle('charming',this)">
-      <span class="sti">😏</span><span class="stn">매력남</span><span class="std">자신감 있고 살짝 밀당</span>
+      <span class="sti">😏</span><span class="stn">매력남</span><span class="std">자신감·밀당</span>
     </button>
     <button class="st-btn" onclick="pickStyle('funny',this)">
-      <span class="sti">😄</span><span class="stn">재치남</span><span class="std">유머·장난으로 UP</span>
+      <span class="sti">😄</span><span class="stn">재치남</span><span class="std">유머·장난</span>
     </button>
     <button class="st-btn" onclick="pickStyle('caring',this)">
-      <span class="sti">🥰</span><span class="stn">다정남</span><span class="std">따뜻하고 진심으로</span>
+      <span class="sti">🥰</span><span class="stn">다정남</span><span class="std">따뜻·진심</span>
     </button>
   </div>
   <button class="start-btn" onclick="startApp()">✨ 시작하기</button>
@@ -278,13 +313,14 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 <div id="app">
   <!-- 헤더 -->
   <div class="hdr">
-    <div class="hdr-icon">💬</div>
+    <div class="hdr-icon">💘</div>
     <div class="hdr-info">
       <div class="hdr-title">Thai Flirt Coach</div>
+      <div class="hdr-nick" id="hdrNick"></div>
       <div class="hdr-badges">
         <span class="badge" id="bdStage">첫 연락</span>
         <span class="badge" id="bdStyle">매력남</span>
-        <span class="badge badge-ver">v8.0</span>
+        <span class="badge badge-ver">v9.0</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="goSetup()">⚙️ 재설정</button>
@@ -303,15 +339,16 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
         </div>
         <div id="sigBox" class="sigs" style="display:none;"></div>
         <div id="tipBox" class="tipbox" style="display:none;"></div>
+        <div id="stratBox" class="stratbox" style="display:none;"></div>
       </div>
-      <div class="loading" id="loading"><div class="dots"><span></span><span></span><span></span></div><br>AI 분석 중...</div>
+      <div class="loading" id="loading"><div class="dots"><span></span><span></span><span></span></div><br>AI 전략 분석 중...</div>
       <div id="results"></div>
       <div class="reset-row" id="resetRow" style="display:none;">
         <button onclick="resetCoach()">🔄 새 메시지 분석하기</button>
       </div>
       <div class="empty" id="emptyState">
-        <div class="ei">💬</div>
-        <p>상대방 메시지를 입력하면<br>AI가 맞춤 태국어 답변<br>3개를 즉시 추천합니다</p>
+        <div class="ei">🎯</div>
+        <p>상대방 메시지를 입력하면<br>AI가 감정을 분석하고<br>최적의 플러팅 전략과<br>태국어 답변 3개를 추천합니다</p>
       </div>
     </div>
 
@@ -321,22 +358,165 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
       <div style="background:#1a1a2e;border-radius:14px;border:1px solid #2a2a4a;overflow:hidden;" id="womanList"></div>
     </div>
 
-    <!-- 표현집 탭 -->
+    <!-- 전략집 탭 -->
     <div class="tab" id="tab-phrases">
-      <div class="ph-cat">🌅 인사 / 안부</div><div id="ph-greet"></div>
-      <div class="section-gap"></div>
-      <div class="ph-cat">💕 칭찬 / 설레게</div><div id="ph-flirt"></div>
-      <div class="section-gap"></div>
-      <div class="ph-cat">📍 만남 제안</div><div id="ph-meet"></div>
-      <div class="section-gap"></div>
-      <div class="ph-cat">💬 대화 이어가기</div><div id="ph-talk"></div>
-      <div class="section-gap"></div>
-      <div class="ph-cat">🌙 밤 인사</div><div id="ph-night"></div>
+      <div class="strat-tab-hdr">
+        <div class="strat-tab-title">🎯 단계별 플러팅 전략집</div>
+        <div class="strat-tab-sub">고수처럼 연애하는 5단계 전략 바이블</div>
+      </div>
+      <div class="stage-selector" id="stratStageSelector">
+        <button class="stg-chip on" onclick="showStratStage(0,this)">👋 첫 연락</button>
+        <button class="stg-chip" onclick="showStratStage(1,this)">😊 친해지기</button>
+        <button class="stg-chip" onclick="showStratStage(2,this)">💛 호감 폭발</button>
+        <button class="stg-chip" onclick="showStratStage(3,this)">💕 밀당 고수</button>
+        <button class="stg-chip" onclick="showStratStage(4,this)">❤️ 마음 잡기</button>
+      </div>
+
+      <!-- 1단계: 첫 연락 -->
+      <div class="strat-section show" id="strat-0">
+        <div class="strat-block">
+          <div class="strat-block-hdr">
+            <div class="strat-block-icon">👋</div>
+            <div>
+              <div class="strat-block-title">첫 연락의 기술 — 각인 전략</div>
+              <div class="strat-block-sub">처음 3개 메시지가 첫인상을 결정한다</div>
+            </div>
+          </div>
+          <div class="strat-tips">
+            <div class="strat-tip"><div class="strat-tip-num">01</div><div class="strat-tip-body"><div class="strat-tip-title">질문으로 끝내라</div><div class="strat-tip-desc">상대가 답하고 싶어지는 가벼운 질문을 붙인다. "오늘 어때요?" 보다 "오늘 뭐 먹었어요? 맛있는 거 좋아하는 것 같아서요 😊" 가 훨씬 강하다.</div></div></div>
+            <div class="strat-tip"><div class="strat-tip-num">02</div><div class="strat-tip-body"><div class="strat-tip-title">너무 간절하게 보이지 말라</div><div class="strat-tip-desc">답장이 늦어도 "왜 답장 안 해요?"는 절대 금지. 여유 있고 자신감 있는 사람처럼 행동할 것. 기다릴 수 있는 사람이 이긴다.</div></div></div>
+            <div class="strat-tip"><div class="strat-tip-num">03</div><div class="strat-tip-body"><div class="strat-tip-title">공통점을 빠르게 찾아라</div><div class="strat-tip-desc">음식, 여행, 음악 중 하나를 찾으면 대화가 자연스럽게 흐른다. 공통점이 생기면 "우리 비슷하네요"라는 유대감이 형성된다.</div></div></div>
+          </div>
+          <div class="strat-exprs">
+            <div class="strat-expr-lbl">🌟 핵심 표현</div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t1">첫인사</span><div class="strat-expr-th">สวัสดีครับ เห็นโปรไฟล์แล้วน่าสนใจมาก 😊</div><div class="strat-expr-ko">안녕하세요, 프로필 보고 궁금해서요</div></div><button class="strat-expr-cp" onclick="cp('สวัสดีครับ เห็นโปรไฟล์แล้วน่าสนใจมาก 😊')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t2">질문유도</span><div class="strat-expr-th">วันนี้ทำอะไรอยู่? คิดถึงเลย 😄</div><div class="strat-expr-ko">오늘 뭐 해요? 생각났어요</div></div><button class="strat-expr-cp" onclick="cp('วันนี้ทำอะไรอยู่? คิดถึงเลย 😄')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t1">여유있게</span><div class="strat-expr-th">ไม่รีบนะ ตอบได้เลย ยังคิดถึงอยู่เสมอ 😏</div><div class="strat-expr-ko">급하지 않아요. 답장 언제든 괜찮아요</div></div><button class="strat-expr-cp" onclick="cp('ไม่รีบนะ ตอบได้เลย ยังคิดถึงอยู่เสมอ 😏')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t2">공통점찾기</span><div class="strat-expr-th">ชอบกินอาหารอะไร? อยากรู้จักนิสัยน้องมากขึ้น 🍜</div><div class="strat-expr-ko">뭐 먹는 거 좋아해요? 더 알고 싶어서요</div></div><button class="strat-expr-cp" onclick="cp('ชอบกินอาหารอะไร? อยากรู้จักนิสัยน้องมากขึ้น 🍜')">복사</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2단계: 친해지기 -->
+      <div class="strat-section" id="strat-1">
+        <div class="strat-block">
+          <div class="strat-block-hdr">
+            <div class="strat-block-icon">😊</div>
+            <div>
+              <div class="strat-block-title">친밀감 쌓기 — 공감과 유머의 마법</div>
+              <div class="strat-block-sub">웃겨라, 그럼 마음이 열린다</div>
+            </div>
+          </div>
+          <div class="strat-tips">
+            <div class="strat-tip"><div class="strat-tip-num">01</div><div class="strat-tip-body"><div class="strat-tip-title">공감 먼저, 조언은 나중에</div><div class="strat-tip-desc">상대가 힘들다고 하면 해결책보다 "많이 힘들었겠다"가 먼저다. 공감 받으면 마음이 열리고, 마음이 열리면 호감이 생긴다.</div></div></div>
+            <div class="strat-tip"><div class="strat-tip-num">02</div><div class="strat-tip-body"><div class="strat-tip-title">장난기로 텐션 올리기</div><div class="strat-tip-desc">555(태국식 ㅋㅋ)와 함께 가벼운 장난을 치면 분위기가 밝아진다. 웃긴 사람 옆에 있으면 기분이 좋아지고, 그 기분을 나에게 연결한다.</div></div></div>
+            <div class="strat-tip"><div class="strat-tip-num">03</div><div class="strat-tip-body"><div class="strat-tip-title">별명 만들어주기</div><div class="strat-tip-desc">둘만의 특별한 별명은 친밀감을 급격히 높인다. "น้อง(น้อง이름)" 처럼 앞에 น้อง를 붙이는 것만으로도 특별한 관계처럼 느껴진다.</div></div></div>
+          </div>
+          <div class="strat-exprs">
+            <div class="strat-expr-lbl">🌟 핵심 표현</div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t2">공감</span><div class="strat-expr-th">โอ้โห เหนื่อยมากเลยนะ พี่เข้าใจเลย 🥺</div><div class="strat-expr-ko">오, 많이 힘들겠다. 나 이해해</div></div><button class="strat-expr-cp" onclick="cp('โอ้โห เหนื่อยมากเลยนะ พี่เข้าใจเลย 🥺')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t1">유머</span><div class="strat-expr-th">555 น้องตลกมากเลย ขำไม่หยุดเลย 😂</div><div class="strat-expr-ko">ㅋㅋㅋ 너무 웃겨요, 계속 웃기네</div></div><button class="strat-expr-cp" onclick="cp('555 น้องตลกมากเลย ขำไม่หยุดเลย 😂')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t3">별명</span><div class="strat-expr-th">น้องเป็นคนน่ารักที่สุดในโลกเลย นะน้อง 🌸</div><div class="strat-expr-ko">너는 세상에서 제일 귀여운 사람이야</div></div><button class="strat-expr-cp" onclick="cp('น้องเป็นคนน่ารักที่สุดในโลกเลย นะน้อง 🌸')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t2">관심</span><div class="strat-expr-th">พี่คิดว่าน้องเป็นคนพิเศษมากๆ เลย จริงๆ 😊</div><div class="strat-expr-ko">나는 네가 정말 특별한 사람인 것 같아</div></div><button class="strat-expr-cp" onclick="cp('พี่คิดว่าน้องเป็นคนพิเศษมากๆ เลย จริงๆ 😊')">복사</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3단계: 호감 폭발 -->
+      <div class="strat-section" id="strat-2">
+        <div class="strat-block">
+          <div class="strat-block-hdr">
+            <div class="strat-block-icon">💛</div>
+            <div>
+              <div class="strat-block-title">호감 폭발 — 설렘 유발의 기술</div>
+              <div class="strat-block-sub">특별함을 느끼게 하라, 심장을 두근거리게 하라</div>
+            </div>
+          </div>
+          <div class="strat-tips">
+            <div class="strat-tip"><div class="strat-tip-num">01</div><div class="strat-tip-body"><div class="strat-tip-title">구체적 칭찬이 일반 칭찬을 이긴다</div><div class="strat-tip-desc">"예쁘다"보다 "웃을 때 눈이 초승달 모양이 되는 게 너무 좋다"가 100배 강하다. 상대가 "이 사람은 나를 제대로 보고 있구나"라고 느끼게 한다.</div></div></div>
+            <div class="strat-tip"><div class="strat-tip-num">02</div><div class="strat-tip-body"><div class="strat-tip-title">생각난다고 말하는 타이밍</div><div class="strat-tip-desc">밥 먹다가, 노래 듣다가 생각났다고 연락하면 특별함을 느낀다. "마침 생각하고 있었는데"는 최고의 설레는 메시지다.</div></div></div>
+            <div class="strat-tip"><div class="strat-tip-num">03</div><div class="strat-tip-body"><div class="strat-tip-title">살짝 질투심 자극하기</div><div class="strat-tip-desc">내가 인기 있는 사람이라는 인식을 심어주되 과하지 않게. "오늘 모임에서 칭찬 많이 받았어요" 정도면 충분하다.</div></div></div>
+          </div>
+          <div class="strat-exprs">
+            <div class="strat-expr-lbl">🌟 핵심 표현</div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t3">구체적칭찬</span><div class="strat-expr-th">รอยยิ้มของน้องมันทำให้พี่ใจหายเลยนะ 😍</div><div class="strat-expr-ko">네 미소가 나를 심장이 멎게 만들어</div></div><button class="strat-expr-cp" onclick="cp('รอยยิ้มของน้องมันทำให้พี่ใจหายเลยนะ 😍')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t3">설렘</span><div class="strat-expr-th">เพิ่งกินข้าวอยู่ แต่นึกถึงน้องขึ้นมาเลย 😅</div><div class="strat-expr-ko">밥 먹다가 갑자기 생각났어요</div></div><button class="strat-expr-cp" onclick="cp('เพิ่งกินข้าวอยู่ แต่นึกถึงน้องขึ้นมาเลย 😅')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t5">특별함</span><div class="strat-expr-th">ไม่รู้ทำไม แต่น้องทำให้พี่รู้สึกดีมากเลย ✨</div><div class="strat-expr-ko">왜인지 모르겠지만 네가 있으면 기분이 너무 좋아</div></div><button class="strat-expr-cp" onclick="cp('ไม่รู้ทำไม แต่น้องทำให้พี่รู้สึกดีมากเลย ✨')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t1">질투유발</span><div class="strat-expr-th">วันนี้เพื่อนบอกว่าพี่เปลี่ยนไป แต่ไม่รู้ทำไม 😏</div><div class="strat-expr-ko">오늘 친구가 내가 달라졌다는데 이유를 모르겠어요</div></div><button class="strat-expr-cp" onclick="cp('วันนี้เพื่อนบอกว่าพี่เปลี่ยนไป แต่ไม่รู้ทำไม 😏')">복사</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4단계: 밀당 고수 -->
+      <div class="strat-section" id="strat-3">
+        <div class="strat-block">
+          <div class="strat-block-hdr">
+            <div class="strat-block-icon">💕</div>
+            <div>
+              <div class="strat-block-title">밀당 고수 — 당기고 미는 예술</div>
+              <div class="strat-block-sub">간절해 보이는 순간 가치가 떨어진다</div>
+            </div>
+          </div>
+          <div class="strat-tips">
+            <div class="strat-tip"><div class="strat-tip-num">01</div><div class="strat-tip-body"><div class="strat-tip-title">2:1 법칙 — 당기면 한 번 밀어라</div><div class="strat-tip-desc">달달한 말 두 번 했으면 한 번은 쿨하게. "바빠요~" "오늘 피곤해서"처럼 자신만의 시간이 있는 사람처럼 보여야 가치가 높아 보인다.</div></div></div>
+            <div class="strat-tip"><div class="strat-tip-num">02</div><div class="strat-tip-body"><div class="strat-tip-title">데이트 제안은 구체적으로</div><div class="strat-tip-desc">"언제 밥 먹어요"보다 "다음 주 토요일 저녁 같이 밥 먹어요, 맛있는 곳 알아"가 훨씬 성공률이 높다. 구체성이 진지함을 보여준다.</div></div></div>
+            <div class="strat-tip"><div class="strat-tip-num">03</div><div class="strat-tip-body"><div class="strat-tip-title">기대감을 남겨라</div><div class="strat-tip-desc">대화를 먼저 끊어라. "나중에 더 이야기해요~"로 끝내면 상대가 다음 연락을 기다리게 된다. 항상 여운을 남기는 사람이 이긴다.</div></div></div>
+          </div>
+          <div class="strat-exprs">
+            <div class="strat-expr-lbl">🌟 핵심 표현</div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t4">밀기</span><div class="strat-expr-th">วันนี้ยุ่งนิดนึงนะ แต่ก็นึกถึงอยู่ดี 😏</div><div class="strat-expr-ko">오늘 좀 바쁜데, 그래도 생각은 나네요</div></div><button class="strat-expr-cp" onclick="cp('วันนี้ยุ่งนิดนึงนะ แต่ก็นึกถึงอยู่ดี 😏')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t3">데이트제안</span><div class="strat-expr-th">เสาร์นี้ว่างไหม? พี่รู้ร้านอร่อยมากอยู่ อยากพาไป 🍜</div><div class="strat-expr-ko">이번 토요일 돼요? 맛있는 데 알아서 데려가고 싶어요</div></div><button class="strat-expr-cp" onclick="cp('เสาร์นี้ว่างไหม? พี่รู้ร้านอร่อยมากอยู่ อยากพาไป 🍜')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t4">여운남기기</span><div class="strat-expr-th">คุยกันพรุ่งนี้ต่อนะ มีเรื่องอยากเล่าให้ฟัง 😊</div><div class="strat-expr-ko">내일 계속 얘기해요, 해줄 이야기 있어요</div></div><button class="strat-expr-cp" onclick="cp('คุยกันพรุ่งนี้ต่อนะ มีเรื่องอยากเล่าให้ฟัง 😊')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t1">쿨하게</span><div class="strat-expr-th">โอเค ไม่เป็นไรนะ พี่ก็มีธุระอยู่เหมือนกัน 😄</div><div class="strat-expr-ko">괜찮아요, 나도 할 일 있어요</div></div><button class="strat-expr-cp" onclick="cp('โอเค ไม่เป็นไรนะ พี่ก็มีธุระอยู่เหมือนกัน 😄')">복사</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5단계: 마음 잡기 -->
+      <div class="strat-section" id="strat-4">
+        <div class="strat-block">
+          <div class="strat-block-hdr">
+            <div class="strat-block-icon">❤️</div>
+            <div>
+              <div class="strat-block-title">마음 잡기 — 깊은 연결의 완성</div>
+              <div class="strat-block-sub">진심이 통하는 순간, 관계가 확정된다</div>
+            </div>
+          </div>
+          <div class="strat-tips">
+            <div class="strat-tip"><div class="strat-tip-num">01</div><div class="strat-tip-body"><div class="strat-tip-title">감정을 직접 말하라</div><div class="strat-tip-desc">이 단계에서 돌려 말하면 기회를 잃는다. "좋아요"를 직접 말할 수 있는 용기가 관계를 확정짓는다. 진심은 언제나 통한다.</div></div></div>
+            <div class="strat-tip"><div class="strat-tip-num">02</div><div class="strat-tip-body"><div class="strat-tip-title">미래를 함께 그려라</div><div class="strat-tip-desc">"언제 같이 여행 가요" "같이 보고 싶은 영화 있어요"처럼 미래를 함께 상상하게 만들면 자연스럽게 '우리'라는 인식이 생긴다.</div></div></div>
+            <div class="strat-tip"><div class="strat-tip-num">03</div><div class="strat-tip-body"><div class="strat-tip-title">독점욕을 자극하라</div><div class="strat-tip-desc">"나는 너한테만 이런 말 한다"는 독점감을 준다. 상대를 특별하게 대한다는 인식이 상대방의 독점욕과 애착을 강하게 만든다.</div></div></div>
+          </div>
+          <div class="strat-exprs">
+            <div class="strat-expr-lbl">🌟 핵심 표현</div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t3">직접표현</span><div class="strat-expr-th">พี่ชอบน้องนะ บอกตรงๆ เลย 💕</div><div class="strat-expr-ko">나 너 좋아해, 솔직하게 말할게요</div></div><button class="strat-expr-cp" onclick="cp('พี่ชอบน้องนะ บอกตรงๆ เลย 💕')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t5">미래그리기</span><div class="strat-expr-th">อยากพาน้องไปเที่ยวด้วยกันสักที จริงๆ นะ 🌏</div><div class="strat-expr-ko">언젠가 같이 여행 가고 싶어요, 진심으로</div></div><button class="strat-expr-cp" onclick="cp('อยากพาน้องไปเที่ยวด้วยกันสักที จริงๆ นะ 🌏')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t4">독점감</span><div class="strat-expr-th">พี่บอกแค่น้องคนเดียวนะ ไม่ได้บอกใครอื่น 🤫</div><div class="strat-expr-ko">너한테만 하는 말이야, 다른 사람한텐 안 해</div></div><button class="strat-expr-cp" onclick="cp('พี่บอกแค่น้องคนเดียวนะ ไม่ได้บอกใครอื่น 🤫')">복사</button></div>
+            <div class="strat-expr"><div class="strat-expr-txt"><span class="strat-expr-tag t3">애정확인</span><div class="strat-expr-th">น้องคิดถึงพี่บ้างไหม? พี่คิดถึงทุกวันเลย ❤️</div><div class="strat-expr-ko">나 생각나요? 나는 매일 생각해요</div></div><button class="strat-expr-cp" onclick="cp('น้องคิดถึงพี่บ้างไหม? พี่คิดถึงทุกวันเลย ❤️')">복사</button></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 나만의 전략 메모 -->
+      <div class="memo-section">
+        <div class="memo-hdr">
+          <div class="memo-hdr-icon">📌</div>
+          <div class="memo-hdr-title">나만의 전략 메모</div>
+          <div class="memo-hdr-count" id="memoCount">0개</div>
+        </div>
+        <div class="memo-inp-area">
+          <textarea class="memo-inp" id="memoInp" placeholder="써먹어야 할 표현이나 전략을 메모하세요&#10;예: 처음 연락할 때 질문으로 끝내기 효과 최고!"></textarea>
+          <button class="memo-add-btn" onclick="addMemo()">📌 메모 저장</button>
+        </div>
+        <div class="memo-list" id="memoList"></div>
+      </div>
+
     </div>
 
     <!-- 랭킹 탭 -->
     <div class="tab" id="tab-rank">
-      <p style="font-size:0.72rem;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;">친밀도 점수 기준 랭킹</p>
+      <p style="font-size:0.72rem;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;">친밀도 점수 기준 랭킹</p>
+      <p style="font-size:0.68rem;color:#6b7280;margin-bottom:12px;">👆 탭하면 채팅으로 바로 이동</p>
       <div id="rankList"></div>
       <div class="empty" id="rankEmpty" style="display:none;">
         <div class="ei">🏆</div>
@@ -348,9 +528,9 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 
   <!-- 하단 네비 -->
   <div class="nav">
-    <button class="nav-item on" onclick="switchTab('coach',this)"><span class="ni">🤖</span>코치</button>
+    <button class="nav-item on" onclick="switchTab('coach',this)"><span class="ni">🤖</span>AI코치</button>
     <button class="nav-item" onclick="switchTab('women',this);renderWomen()"><span class="ni">👥</span>이성관리</button>
-    <button class="nav-item" onclick="switchTab('phrases',this)"><span class="ni">📖</span>표현집</button>
+    <button class="nav-item" onclick="switchTab('phrases',this);renderMemos()"><span class="ni">🎯</span>전략집</button>
     <button class="nav-item" onclick="switchTab('rank',this);renderRank()"><span class="ni">🏆</span>랭킹</button>
   </div>
 </div>
@@ -374,10 +554,10 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
   </div>
   <div class="chat-loading" id="chatLoading">
     <div class="dots"><span></span><span></span><span></span></div>
-    AI 분석 중...
+    AI 전략 분석 중...
   </div>
   <div class="chat-inp-area">
-    <div class="chat-inp-tip">👩 상대방 메시지 입력 → AI가 답변 추천</div>
+    <div class="chat-inp-tip">👩 상대방 메시지 → AI가 전략적 답변 추천</div>
     <div class="chat-inp-row">
       <textarea class="chat-ta" id="chatTa" placeholder="상대방 태국어 메시지..." rows="1"
         oninput="autoH(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();chatAnalyze();}"></textarea>
@@ -432,14 +612,14 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 /* ── 상수 ── */
 var SN=['첫 연락','친해지기','호감 형성','설레는 단계','깊은 연결'];
 var SC=['#6b7280','#4ecdc4','#ffd93d','#ff9f43','#ff6b8a'];
-var SD=['막 연락을 시작한 단계. 너무 적극적이지 않게, 가볍고 자연스럽게.',
-  '어느 정도 친해진 단계. 장난기 가능, 가벼운 칭찬 OK.',
-  '서로 호감이 생긴 단계. 좀 더 적극적으로, 설레게.',
-  '서로 좋아하는 감정이 생긴 단계. 달달하게, 직접 표현 가능.',
-  '깊이 연결된 단계. 친밀하고 솔직하게, 감정 표현 자유롭게.'];
-var PD={charming:'자신감 있고 세련된 매력남 스타일. 살짝 밀당, 너무 간절하지 않게.',
-  funny:'유머와 장난기로 분위기를 UP시키는 재치남 스타일.',
-  caring:'진심 어린 관심과 따뜻함의 다정남 스타일.'};
+var SD=['막 연락을 시작한 단계. 너무 적극적이지 않게, 가볍고 자연스럽게. 질문으로 끝내 대화를 유도할 것.',
+  '어느 정도 친해진 단계. 장난기 가능, 공감과 유머로 친밀감을 높일 것.',
+  '서로 호감이 생긴 단계. 구체적 칭찬, 생각난다는 표현으로 설레게 할 것.',
+  '서로 좋아하는 감정이 생긴 단계. 밀당을 활용하고 데이트를 구체적으로 제안할 것.',
+  '깊이 연결된 단계. 감정을 직접 표현하고 미래를 함께 그릴 것.'];
+var PD={charming:'자신감 있고 세련된 매력남 스타일. 살짝 밀당, 너무 간절하지 않게. 여유와 자신감으로.',
+  funny:'유머와 장난기로 분위기를 UP시키는 재치남 스타일. 웃기는 사람이 이긴다.',
+  caring:'진심 어린 관심과 따뜻함의 다정남 스타일. 공감과 배려로 마음을 연다.'};
 var PN={charming:'매력남 😏',funny:'재치남 😄',caring:'다정남 🥰'};
 var AE=['👩','👧','💁','🙋','👱','💃','🌸','🦋','🌺','⭐'];
 
@@ -451,11 +631,15 @@ var PW='6726';
 var stage=0,persona='charming',editIdx=-1,editStage=0;
 var people=JSON.parse(localStorage.getItem('ppl')||'[]');
 while(people.length<10) people.push({n:'',a:'',s:0,sc:0,e:AE[people.length]});
+var memos=JSON.parse(localStorage.getItem('memos')||'[]');
+var nickname=localStorage.getItem('nickname')||'';
 
 /* ── 비밀번호 ── */
 function checkPw(){
+  var nick=document.getElementById('nickInput').value.trim();
   var v=document.getElementById('pwInput').value.trim();
   if(v===PW){
+    if(nick) { nickname=nick; localStorage.setItem('nickname',nick); }
     localStorage.setItem('auth','1');
     document.getElementById('pwWrap').classList.add('hidden');
     document.getElementById('setupWrap').classList.remove('hidden');
@@ -465,6 +649,7 @@ function checkPw(){
   }
 }
 (function init(){
+  if(nickname) document.getElementById('nickInput').value=nickname;
   if(localStorage.getItem('auth')==='1'){
     document.getElementById('pwWrap').classList.add('hidden');
     document.getElementById('setupWrap').classList.remove('hidden');
@@ -487,7 +672,17 @@ function startApp(){
   document.getElementById('app').classList.add('show');
   document.getElementById('bdStage').textContent=SN[stage];
   document.getElementById('bdStyle').textContent=PN[persona];
+  updateNickDisplay();
   renderWomen();
+  renderMemos();
+}
+function updateNickDisplay(){
+  var el=document.getElementById('hdrNick');
+  if(nickname){
+    el.textContent='👤 '+nickname+'님의 코치';
+  } else {
+    el.textContent='';
+  }
 }
 function goSetup(){
   document.getElementById('app').classList.remove('show');
@@ -513,36 +708,70 @@ function cp(text){
   else{var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast();}
 }
 
-/* ── 신호 분석 ── */
+/* ── 감정 신호 분석 (강화) ── */
 function detectSigs(msg){
   var sigs=[],lo=msg.toLowerCase();
-  if(/[🥰😍💕❤💓💗💞]/.test(msg))sigs.push({c:'pos',l:'❤️ 애정'});
-  if(/คิดถึง|miss/.test(lo))sigs.push({c:'pos',l:'💭 그리움'});
-  if(/น่ารัก|สวย|หล่อ/.test(lo))sigs.push({c:'pos',l:'✨ 칭찬'});
-  if(/มาไหม|เจอกัน|ไปกิน/.test(lo))sigs.push({c:'pos',l:'📍 만남'});
-  if(/555|🤣|😂/.test(msg))sigs.push({c:'pos',l:'😂 웃음'});
-  if(/ทำอะไร|กินข้าว/.test(lo))sigs.push({c:'neu',l:'💬 일상'});
-  if(/แฟน|boyfriend/.test(lo))sigs.push({c:'neu',l:'💑 연애'});
-  if(/ไม่ว่าง|busy/.test(lo))sigs.push({c:'neg',l:'⚠️ 바쁨'});
-  if(msg.trim().length<6)sigs.push({c:'neu',l:'📏 짧은 답장'});
-  if(msg.length>50)sigs.push({c:'pos',l:'📝 긴 답장=관심'});
-  if(!sigs.length)sigs.push({c:'neu',l:'💬 일반 메시지'});
-  return sigs;
+  var score=0;
+  if(/[🥰😍💕❤💓💗💞💋]/.test(msg)){sigs.push({c:'pos',l:'❤️ 애정표현'});score+=3;}
+  if(/คิดถึง|miss/.test(lo)){sigs.push({c:'pos',l:'💭 그리움'});score+=2;}
+  if(/น่ารัก|สวย|หล่อ|เก่ง/.test(lo)){sigs.push({c:'pos',l:'✨ 칭찬'});score+=2;}
+  if(/มาไหม|เจอกัน|ไปกิน|นัด/.test(lo)){sigs.push({c:'pos',l:'📍 만남원해'});score+=3;}
+  if(/555|🤣|😂|ฮ่า/.test(msg)){sigs.push({c:'pos',l:'😂 좋은분위기'});score+=1;}
+  if(/ทำอะไร|กินข้าว|อยู่ที่ไหน/.test(lo)){sigs.push({c:'neu',l:'💬 일상공유'});score+=1;}
+  if(/แฟน|boyfriend|girlfriend|แต่งงาน/.test(lo)){sigs.push({c:'neu',l:'💑 연애언급'});score+=0;}
+  if(/ไม่ว่าง|busy|ยุ่ง/.test(lo)){sigs.push({c:'neg',l:'⚠️ 바쁨'});score-=1;}
+  if(/ไม่ได้|ไม่ไป|ยกเลิก/.test(lo)){sigs.push({c:'neg',l:'❌ 거절신호'});score-=2;}
+  if(msg.trim().length<5){sigs.push({c:'neg',l:'📏 매우짧은답장'});score-=1;}
+  else if(msg.trim().length<15){sigs.push({c:'neu',l:'📏 짧은답장'});}
+  if(msg.length>60){sigs.push({c:'pos',l:'📝 긴답장=관심'});score+=2;}
+  if(!sigs.length){sigs.push({c:'neu',l:'💬 일반메시지'});}
+  return {sigs:sigs,score:score};
+}
+
+function getStratHints(sigResult,stageIdx,personaKey){
+  var hints=[];
+  var sc=sigResult.score;
+  if(sc>=4){
+    hints.push({icon:'🔥',text:'관심도 매우 높음! 더 적극적으로 감정 표현하세요.'});
+  } else if(sc>=2){
+    hints.push({icon:'✅',text:'긍정적 반응. 한 단계 더 나아갈 타이밍입니다.'});
+  } else if(sc<0){
+    hints.push({icon:'⚠️',text:'다소 차가운 반응. 압박하지 말고 가볍게 접근하세요.'});
+  }
+  if(stageIdx<=1){
+    hints.push({icon:'💡',text:'질문으로 끝내 대화를 이어가세요. 간절해 보이지 말 것.'});
+  } else if(stageIdx===2){
+    hints.push({icon:'💡',text:'구체적 칭찬이 일반 칭찬보다 10배 효과적입니다.'});
+  } else if(stageIdx===3){
+    hints.push({icon:'💡',text:'달달한 말 후 쿨하게 밀기(2:1 법칙)를 적용하세요.'});
+  } else {
+    hints.push({icon:'💡',text:'감정을 직접 표현하는 타이밍입니다. 용기를 내세요.'});
+  }
+  if(personaKey==='charming'){
+    hints.push({icon:'😏',text:'여유 있는 톤 유지. "~인 것 같아요"보다 "~이에요"가 더 매력적.'});
+  } else if(personaKey==='funny'){
+    hints.push({icon:'😄',text:'한 마디 웃긴 표현을 섞으면 분위기가 확 살아납니다.'});
+  }
+  return hints;
 }
 
 /* ── Claude API ── */
 async function callClaude(msg){
-  var sys='태국/라오스 여성과 대화하는 한국 남성의 태국어 플러팅 코치.\n'
+  var sys='당신은 태국/라오스 여성과 대화하는 한국 남성의 플러팅 전략 코치입니다.\n'
     +'관계단계: '+SD[stage]+'\n스타일: '+PD[persona]+'\n\n'
-    +'규칙: 답장은 짧게(1~2문장), 자연스러운 구어체, 이모티콘 1~2개, 3개만 추천.\n'
-    +'JSON만 반환:\n{"tip":"한줄조언(한국어)","suggs":['
-    +'{"label":"장난기있게","th":"태국어","ko":"한국어"},'
-    +'{"label":"따뜻하게","th":"태국어","ko":"한국어"},'
-    +'{"label":"직접적으로","th":"태국어","ko":"한국어"}]}';
+    +'규칙:\n'
+    +'- 답장은 짧게(1~2문장), 자연스러운 구어체, 이모티콘 1~2개\n'
+    +'- 각 답변마다 "왜 이 답변이 효과적인지" 한 줄 이유(why)를 한국어로\n'
+    +'- 전략적으로 다른 각도의 답변 3개 추천\n'
+    +'- 답변 레이블은 전략명으로 (예: 쿨한 밀기, 설레게 하기, 유머 반격)\n'
+    +'JSON만 반환:\n{"tip":"한줄전략조언(한국어)","suggs":['
+    +'{"label":"전략명1","th":"태국어","ko":"한국어","why":"효과이유"},'
+    +'{"label":"전략명2","th":"태국어","ko":"한국어","why":"효과이유"},'
+    +'{"label":"전략명3","th":"태국어","ko":"한국어","why":"효과이유"}]}';
   var r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:600,system:sys,messages:[{role:'user',content:'상대방: '+msg}]})
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:700,system:sys,messages:[{role:'user',content:'상대방 메시지: '+msg}]})
   });
   var d=await r.json();
   return JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
@@ -556,13 +785,16 @@ async function analyze(){
   document.getElementById('resetRow').style.display='none';
   document.getElementById('sigBox').style.display='none';
   document.getElementById('tipBox').style.display='none';
+  document.getElementById('stratBox').style.display='none';
   document.getElementById('loading').classList.add('show');
   try{
     var r=await callClaude(msg);
     document.getElementById('loading').classList.remove('show');
-    renderSigs(detectSigs(msg));
-    document.getElementById('tipBox').innerHTML='💡 '+r.tip;
+    var sigResult=detectSigs(msg);
+    renderSigs(sigResult.sigs);
+    document.getElementById('tipBox').innerHTML='💡 <strong>전략 조언:</strong> '+r.tip;
     document.getElementById('tipBox').style.display='block';
+    renderStratHints(getStratHints(sigResult,stage,persona));
     renderSuggs(r.suggs);
     document.getElementById('resetRow').style.display='block';
   }catch(e){
@@ -574,23 +806,36 @@ async function analyze(){
 }
 function renderSigs(sigs){
   var el=document.getElementById('sigBox');
-  el.innerHTML='<span style="font-size:0.65rem;color:#6b7280;margin-right:4px">분석:</span>';
+  el.innerHTML='<span style="font-size:0.65rem;color:#6b7280;margin-right:4px;">감정분석:</span>';
   sigs.forEach(function(s){
     var sp=document.createElement('span');sp.className='sig '+s.c;sp.textContent=s.l;el.appendChild(sp);
   });
   el.style.display='';
 }
+function renderStratHints(hints){
+  var box=document.getElementById('stratBox');
+  if(!hints.length){box.style.display='none';return;}
+  box.innerHTML='';
+  hints.forEach(function(h){
+    box.innerHTML+='<div class="strat-row"><span class="strat-icon">'+h.icon+'</span><span class="strat-text">'+h.text+'</span></div>';
+  });
+  box.style.display='block';
+}
 function renderSuggs(suggs){
   var area=document.getElementById('results');area.innerHTML='';
-  var lc=['l1','l2','l3'];
+  var lc=['l1','l2','l3','l4'];
   suggs.forEach(function(s,i){
-    var th=s.th.replace(/'/g,"&#39;");
+    var th=(s.th||'').replace(/'/g,"&#39;");
     area.innerHTML+='<div class="sugg">'
-      +'<div class="sugg-lbl '+lc[i]+'">'+s.label+'</div>'
-      +'<div class="sugg-body"><div class="thai">'+s.th+'</div><div class="kor">🇰🇷 '+s.ko+'</div></div>'
+      +'<div class="sugg-lbl '+lc[i]+'">🎯 '+escH(s.label||'')+'</div>'
+      +'<div class="sugg-body">'
+      +'<div class="thai">'+escH(s.th||'')+'</div>'
+      +'<div class="kor">🇰🇷 '+escH(s.ko||'')+'</div>'
+      +(s.why?'<div class="sugg-why">✦ '+escH(s.why)+'</div>':'')
+      +'</div>'
       +'<div class="sugg-foot">'
-      +'<button class="btn-cp" onclick="cp(\''+th+'\')">복사</button>'
-      +'<button class="btn-use" onclick="useMeg(\''+th+'\')">이걸로 보내기 ✓</button>'
+      +'<button class="btn-cp" onclick="cp(\''+th.replace(/'/g,"\\'") +'\')">복사</button>'
+      +'<button class="btn-use" onclick="useMeg(\''+th.replace(/'/g,"\\'")+'\')">이걸로 보내기 ✓</button>'
       +'</div></div>';
   });
 }
@@ -604,8 +849,9 @@ function resetCoach(){
   document.getElementById('results').innerHTML='';
   document.getElementById('sigBox').style.display='none';
   document.getElementById('tipBox').style.display='none';
+  document.getElementById('stratBox').style.display='none';
   document.getElementById('resetRow').style.display='none';
-  document.getElementById('emptyState').innerHTML='<div class="ei">💬</div><p>상대방 메시지를 입력하면<br>AI가 맞춤 태국어 답변<br>3개를 즉시 추천합니다</p>';
+  document.getElementById('emptyState').innerHTML='<div class="ei">🎯</div><p>상대방 메시지를 입력하면<br>AI가 감정을 분석하고<br>최적의 플러팅 전략과<br>태국어 답변 3개를 추천합니다</p>';
   document.getElementById('emptyState').style.display='block';
 }
 
@@ -630,6 +876,7 @@ function renderWomen(){
     } else {
       var sc2=SC[p.s||0]||'#6b7280';
       var pct=Math.min(100,Math.max(0,p.sc||0));
+      var chatCnt=(p.chat||[]).length;
       html+='<div onclick="openEdit('+i+')" style="'+bb+'padding:14px;cursor:pointer;">'
         +'<table style="width:100%;border-collapse:collapse;"><tr>'
         +'<td style="width:52px;vertical-align:middle;">'
@@ -637,7 +884,7 @@ function renderWomen(){
         +'<span style="position:absolute;bottom:0;right:0;width:16px;height:16px;background:#2a2a4a;border-radius:8px;font-size:9px;line-height:16px;text-align:center;color:#9ca3af;">'+(i+1)+'</span></div></td>'
         +'<td style="vertical-align:middle;padding-left:12px;">'
         +'<div style="font-size:0.95rem;font-weight:700;color:#e8e8f0;">'+p.n+(p.a?' <span style="font-size:0.72rem;font-weight:400;color:#6b7280;">'+p.a+'세</span>':'')+'</div>'
-        +'<div style="font-size:0.72rem;color:#6b7280;margin-top:3px;">● '+SN[p.s||0]+'</div>'
+        +'<div style="font-size:0.72rem;color:#6b7280;margin-top:3px;">● '+SN[p.s||0]+(chatCnt?' &nbsp;💬 '+chatCnt+'개':'')+'</div>'
         +'<div style="height:4px;background:#2a2a4a;border-radius:2px;margin-top:5px;overflow:hidden;">'
         +'<div style="height:4px;width:'+pct+'%;background:#ff6b8a;border-radius:2px;"></div></div></td>'
         +'<td style="width:44px;text-align:right;vertical-align:middle;padding-left:8px;">'
@@ -690,7 +937,7 @@ function openChat(i){
   var p=people[i];
   document.getElementById('chatAv').textContent=p.e||AE[i];
   document.getElementById('chatName').textContent=p.n;
-  document.getElementById('chatMeta').textContent=SN[p.s||0]+' · 점수 '+p.sc+'점';
+  document.getElementById('chatMeta').textContent=SN[p.s||0]+' · '+p.sc+'점';
   renderChatMsgs();
   document.getElementById('chatScreen').classList.add('show');
   document.getElementById('chatTa').value='';
@@ -720,7 +967,7 @@ function renderChatMsgs(){
         +'<div class="bubble-ts">'+fmtTime(c.ts)+'</div>';
     } else {
       wrap.className='bubble-wrap me';
-      wrap.innerHTML='<div class="bubble-label">나</div>'
+      wrap.innerHTML='<div class="bubble-label">'+(nickname||'나')+'</div>'
         +'<div class="bubble me">'+escH(c.msg)+'</div>'
         +(c.ko?'<div class="bubble-ko">🇰🇷 '+escH(c.ko)+'</div>':'')
         +'<div class="bubble-ts">'+fmtTime(c.ts)+'</div>';
@@ -748,17 +995,19 @@ async function chatAnalyze(){
   }
 }
 async function callClaudeChat(msg,p){
-  var recent=(p.chat||[]).slice(-12);
-  var history=recent.map(function(c){return(c.dir==='her'?'상대: ':'나: ')+c.msg;}).join('\n');
-  var sys='태국/라오스 여성과 대화하는 한국 남성의 태국어 플러팅 코치.\n'
-    +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계: '+SD[p.s||0]+' / 스타일: '+PD[persona]+'\n'
-    +'최근 대화:\n'+history+'\n\n'
-    +'위 맥락을 참고해 자연스럽게 이어지는 답장 3개. 짧은 구어체(1~2문장), 이모티콘 1~2개.\n'
-    +'JSON만 반환: {"tip":"한줄조언(한국어)","suggs":[{"label":"장난기있게","th":"태국어","ko":"한국어"},{"label":"따뜻하게","th":"태국어","ko":"한국어"},{"label":"직접적으로","th":"태국어","ko":"한국어"}]}';
+  var recent=(p.chat||[]).slice(-14);
+  var history=recent.map(function(c){return(c.dir==='her'?'상대('+p.n+'): ':'나: ')+c.msg;}).join('\n');
+  var sys='당신은 태국/라오스 여성과 대화하는 한국 남성의 플러팅 전략 코치입니다.\n'
+    +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계: '+SD[p.s||0]+' / 내 스타일: '+PD[persona]+'\n'
+    +'최근 대화 맥락:\n'+history+'\n\n'
+    +'위 맥락과 관계 단계를 고려해 전략적으로 다른 각도의 답장 3개를 추천하세요.\n'
+    +'각 답변은 짧은 구어체(1~2문장), 이모티콘 1~2개.\n'
+    +'각 답변마다 전략명(label)과 효과 이유(why)를 한국어로.\n'
+    +'JSON만 반환: {"tip":"한줄전략조언(한국어)","suggs":[{"label":"전략명","th":"태국어","ko":"한국어","why":"이유"},{"label":"전략명","th":"태국어","ko":"한국어","why":"이유"},{"label":"전략명","th":"태국어","ko":"한국어","why":"이유"}]}';
   var r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:700,system:sys,messages:[{role:'user',content:'상대: '+msg}]})
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:800,system:sys,messages:[{role:'user',content:'상대 최신 메시지: '+msg}]})
   });
   var d=await r.json();
   return JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
@@ -767,14 +1016,15 @@ function renderChatSuggs(result){
   var el=document.getElementById('chatMsgs');
   var emp=document.getElementById('chatEmpty');
   var wrap=document.createElement('div');wrap.className='sugg-wrap';
-  var html='<div class="sugg-wrap-hdr">🤖 AI 추천 &nbsp;·&nbsp; <span style="color:#c4b5fd;">'+escH(result.tip)+'</span></div>';
-  result.suggs.forEach(function(s,i){
+  var html='<div class="sugg-wrap-hdr">🎯 전략 추천 &nbsp;·&nbsp; <span style="color:#c4b5fd;">'+escH(result.tip||'')+'</span></div>';
+  result.suggs.forEach(function(s){
     var thE=(s.th||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     var koE=(s.ko||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     html+='<div class="sugg-item">'
-      +'<div class="sugg-item-lbl">'+escH(s.label||'')+'</div>'
+      +'<div class="sugg-item-lbl">🎯 '+escH(s.label||'')+'</div>'
       +'<div class="sugg-item-th">'+escH(s.th||'')+'</div>'
       +'<div class="sugg-item-ko">🇰🇷 '+escH(s.ko||'')+'</div>'
+      +(s.why?'<div class="sugg-item-why">✦ '+escH(s.why)+'</div>':'')
       +'<div class="sugg-item-btns">'
       +'<button class="s-cp" onclick="cp(\''+thE+'\')">복사</button>'
       +'<button class="s-send" onclick="chatSend(\''+thE+'\',\''+koE+'\')">이걸로 보내기 ✓</button>'
@@ -791,68 +1041,86 @@ function chatSend(th,ko){
   showToast('복사 완료! 상대에게 보내세요 ✓');
 }
 
-/* ── 랭킹 ── */
+/* ── 랭킹 (클릭 → 채팅 연결) ── */
 function renderRank(){
-  var filled=people.filter(function(p){return p.n;});
-  var sorted=filled.slice().sort(function(a,b){return b.sc-a.sc;});
+  var filled=[];
+  for(var i=0;i<people.length;i++){
+    if(people[i].n) filled.push({p:people[i],idx:i});
+  }
+  filled.sort(function(a,b){return b.p.sc-a.p.sc;});
   var list=document.getElementById('rankList');
   var emp=document.getElementById('rankEmpty');
   list.innerHTML='';
-  if(!sorted.length){emp.style.display='block';return;}
+  if(!filled.length){emp.style.display='block';return;}
   emp.style.display='none';
   var medals=['🥇','🥈','🥉'];
-  sorted.forEach(function(p,i){
-    var sc2=SC[p.s||0]||'#6b7280';
+  filled.forEach(function(item,i){
+    var p=item.p;var pidx=item.idx;
     var pct=Math.min(100,p.sc||0);
-    var numHtml=i<3?'<td class="rank-n '+(i===0?'gold':i===1?'silver':'bronze')+'">'+medals[i]+'</td>'
-      :'<td class="rank-n other">#'+(i+1)+'</td>';
-    list.innerHTML+='<div class="rank-card">'
-      +'<table style="width:100%;border-collapse:collapse;"><tr>'
+    var numHtml=i<3
+      ?'<td style="font-size:1.4rem;font-weight:900;width:36px;color:'+(i===0?'#ffd93d':i===1?'#b0b8c1':'#cd7f32')+';">'+medals[i]+'</td>'
+      :'<td style="font-size:1rem;font-weight:900;width:36px;color:#6b7280;">#'+(i+1)+'</td>';
+    var chatCnt=(p.chat||[]).length;
+    var div=document.createElement('div');
+    div.className='rank-card';
+    div.onclick=function(){openChat(pidx);};
+    div.innerHTML='<table style="width:100%;border-collapse:collapse;"><tr>'
       +numHtml
       +'<td style="width:52px;padding:0 10px;vertical-align:middle;">'
       +'<div style="width:44px;height:44px;border-radius:22px;background:rgba(255,107,138,0.12);text-align:center;line-height:44px;font-size:1.1rem;">'+(p.e||'👩')+'</div></td>'
       +'<td style="vertical-align:middle;">'
-      +'<div style="font-size:0.95rem;font-weight:700;color:#e8e8f0;">'+p.n+(p.a?' <span style="font-size:0.72rem;font-weight:400;color:#6b7280;">'+p.a+'세</span>':'')+'</div>'
-      +'<div style="font-size:0.72rem;color:#6b7280;margin-top:2px;">● '+SN[p.s||0]+'</div>'
+      +'<div style="font-size:0.95rem;font-weight:700;color:#e8e8f0;">'+escH(p.n)+(p.a?' <span style="font-size:0.72rem;font-weight:400;color:#6b7280;">'+p.a+'세</span>':'')+'</div>'
+      +'<div style="font-size:0.72rem;color:#6b7280;margin-top:2px;">● '+SN[p.s||0]+(chatCnt?' &nbsp;💬 '+chatCnt:'')+'</div>'
       +'<div style="height:4px;background:#2a2a4a;border-radius:2px;margin-top:5px;overflow:hidden;">'
       +'<div style="height:4px;width:'+pct+'%;background:linear-gradient(90deg,#ff6b8a,#7c5cbf);border-radius:2px;"></div></div></td>'
-      +'<td style="width:44px;text-align:right;vertical-align:middle;padding-left:8px;">'
-      +'<div style="font-size:1.3rem;font-weight:900;color:#ff6b8a;">'+pct+'</div></td>'
-      +'</tr></table></div>';
+      +'<td style="text-align:right;vertical-align:middle;padding-left:8px;white-space:nowrap;">'
+      +'<div style="font-size:1.3rem;font-weight:900;color:#ff6b8a;">'+pct+'</div>'
+      +'<div style="font-size:0.58rem;color:#4ecdc4;margin-top:4px;font-weight:700;">💬 채팅</div></td>'
+      +'</tr></table>';
+    list.appendChild(div);
   });
 }
 
-/* ── 표현집 ── */
-var phrases={
-  greet:[{th:'มอร์นิ่งนะ วันนี้จะเป็นวันดีๆ ☀️',ko:'굿모닝~ 오늘 좋은 하루 되세요'},
-    {th:'สวัสดีตอนเช้า หลับสบายไหม?',ko:'좋은 아침이에요. 잘 잤어요?'},
-    {th:'ตื่นนอนรึยัง? นึกถึงน้องเลย 😊',ko:'일어났어요? 생각났어요'},
-    {th:'สบายดีไหม? ช่วงนี้เป็นยังไงบ้าง',ko:'잘 지내요? 요즘 어때요?'}],
-  flirt:[{th:'น้องน่ารักมากเลยนะ 🥰',ko:'너무 귀여워요'},
-    {th:'ทำไมน้องน่ารักขนาดนี้ 😆',ko:'왜 이렇게 귀여운 거예요'},
-    {th:'คิดถึงน้องทั้งวันเลย 😅',ko:'하루 종일 생각났어요'},
-    {th:'เพิ่งนึกถึงน้องพอดีเลย 😏',ko:'마침 생각하고 있었어요'}],
-  meet:[{th:'เมื่อไหร่จะว่าง อยากเจอน้องจัง',ko:'언제 시간 돼요? 보고 싶어요'},
-    {th:'ไปกินอะไรอร่อยๆด้วยกันไหม?',ko:'맛있는 거 같이 먹으러 가요?'},
-    {th:'ว่างวันไหน? พี่จะได้วางแผนให้ถูก 😆',ko:'언제 시간 돼요? 계획 세울게요'}],
-  talk:[{th:'วันนี้เป็นยังไงบ้าง? มีอะไรสนุกๆไหม',ko:'오늘 어땠어요? 재미있는 일 있어요?'},
-    {th:'น้องชอบทำอะไรตอนว่าง?',ko:'쉬는 날엔 보통 뭐 해요?'},
-    {th:'น้องเป็นคนยังไงในชีวิตจริง อยากรู้จักมากขึ้น',ko:'실제로 어떤 사람인지 더 알고 싶어요'}],
-  night:[{th:'ฝันดีนะ 🌙',ko:'좋은 꿈 꿔요'},
-    {th:'ราตรีสวัสดิ์ครับ นึกถึงน้องก่อนนอน 😊',ko:'잘 자요. 자기 전에 생각했어요'},
-    {th:'ฝันถึงพี่ด้วยนะ 😏 ราตรีสวัสดิ์',ko:'꿈에서 나 나오게 해줘요. 잘 자요'}]
-};
-var phMap={greet:'ph-greet',flirt:'ph-flirt',meet:'ph-meet',talk:'ph-talk',night:'ph-night'};
-for(var key in phMap){
-  var cont=document.getElementById(phMap[key]);
-  if(!cont)continue;
-  phrases[key].forEach(function(p){
-    var thS=p.th.replace(/'/g,"&#39;");
-    var div=document.createElement('div');div.className='ph-item';
-    div.innerHTML='<div class="ph-txt"><div class="ph-th">'+p.th+'</div><div class="ph-ko">'+p.ko+'</div></div>'
-      +'<button class="ph-cp" onclick="cp(\''+thS+'\')">복사</button>';
-    cont.appendChild(div);
+/* ── 전략집 단계 선택 ── */
+function showStratStage(n,btn){
+  document.querySelectorAll('.stg-chip').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  document.querySelectorAll('.strat-section').forEach(function(s){s.classList.remove('show');});
+  document.getElementById('strat-'+n).classList.add('show');
+}
+
+/* ── 전략 메모 ── */
+function saveMemos(){localStorage.setItem('memos',JSON.stringify(memos));}
+function renderMemos(){
+  var list=document.getElementById('memoList');
+  var cnt=document.getElementById('memoCount');
+  if(!list)return;
+  cnt.textContent=memos.length+'개';
+  if(!memos.length){
+    list.innerHTML='<div class="memo-empty">📌 중요한 표현이나 전략을 메모해두면<br>여기에 저장됩니다</div>';
+    return;
+  }
+  list.innerHTML='';
+  memos.forEach(function(m,i){
+    var div=document.createElement('div');div.className='memo-item';
+    div.innerHTML='<div class="memo-item-txt">'+escH(m)+'</div>'
+      +'<button class="memo-item-del" onclick="deleteMemo('+i+')">삭제</button>';
+    list.appendChild(div);
   });
+}
+function addMemo(){
+  var txt=document.getElementById('memoInp').value.trim();
+  if(!txt)return;
+  memos.unshift(txt);
+  saveMemos();
+  document.getElementById('memoInp').value='';
+  renderMemos();
+  showToast('메모 저장! 📌');
+}
+function deleteMemo(i){
+  memos.splice(i,1);
+  saveMemos();
+  renderMemos();
 }
 </script>
 </body>
