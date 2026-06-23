@@ -438,7 +438,7 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
       <div class="hdr-badges">
         <span class="badge" id="bdStage">첫 연락</span>
         <span class="badge" id="bdStyle">매력남</span>
-        <span class="badge badge-ver">v9.6</span>
+        <span class="badge badge-ver">v9.7</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="goSetup()">⚙️ 재설정</button>
@@ -1586,7 +1586,13 @@ function clearChat(){
   if(!confirm('이 이성과의 대화를 모두 삭제할까요?'))return;
   people[chatIdx].chat=[];savePpl();renderChatMsgs();
 }
-function scrollChatBottom(){var el=document.getElementById('chatMsgs');requestAnimationFrame(function(){requestAnimationFrame(function(){el.scrollTop=el.scrollHeight;});});}
+function scrollChatBottom(){
+  var el=document.getElementById('chatMsgs');
+  function _do(){el.scrollTop=el.scrollHeight;}
+  requestAnimationFrame(function(){requestAnimationFrame(_do);});
+  setTimeout(_do,200);
+  setTimeout(_do,500);
+}
 function fmtTime(ts){var d=new Date(ts),h=d.getHours(),m=d.getMinutes();return(h<10?'0':'')+h+':'+(m<10?'0':'')+m;}
 function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function renderChatMsgs(){
@@ -1746,16 +1752,16 @@ async function callClaudeChatVision(imgs,extraText,p){
   var sys='당신은 세계 최고의 태국/라오스 여성 플러팅 전략 코치입니다.\n'
     +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계단계: '+SD[p.s||0]+' / 스타일: '+PD[persona]+'\n'
     +'이전 대화:\n'+history+'\n\n'
-    +'[핵심 지시]\n'
-    +'스크린샷(카카오톡·라인 등)의 대화 흐름을 읽고 상대방 마지막 메시지를 파악하세요.\n'
-    +'답변 3개: 각 1문장, 구어체, 이모지 1~2개, 서로 완전히 다른 각도(유머/칭찬/밀당 등).\n'
-    +'★ 재치·센스·임팩트 최우선. 뻔한 표현 금지. 상대가 웃거나 설레게 만드는 한방.\n'
-    +'why는 10자 이내 핵심만. tip은 지금 대화 흐름 분석한 한줄 전략.\n'
-    +'JSON만 반환:\n'
-    +'{"tip":"한줄전략(한국어)","lastMsg":"상대마지막메시지원문","suggs":['
-    +'{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내이유"},'
-    +'{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내이유"},'
-    +'{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내이유"}]}';
+    +'[절대 규칙]\n'
+    +'① suggs 배열에 반드시 정확히 3개 — 1개나 2개면 오답이므로 절대 금지.\n'
+    +'② 스크린샷에서 상대방 마지막 메시지를 찾아 lastMsg에 원문 그대로 입력.\n'
+    +'③ 각 답변: 1문장 이내 구어체, 이모지 1~2개, 세 답변은 완전히 다른 전략(유머/칭찬/밀당 등).\n'
+    +'④ 재치·임팩트 최우선. 뻔한 표현 금지. why는 한국어 10자 이내.\n'
+    +'JSON만 반환(다른 텍스트 없이):\n'
+    +'{"tip":"한줄전략","lastMsg":"상대마지막메시지원문","suggs":['
+    +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"10자이내"},'
+    +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"10자이내"},'
+    +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"10자이내"}]}';
 
   var content=[];
   imgs.forEach(function(img,i){
@@ -1769,7 +1775,7 @@ async function callClaudeChatVision(imgs,extraText,p){
   var r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:900,system:sys,messages:[{role:'user',content:content}]})
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1800,system:sys,messages:[{role:'user',content:content}]})
   });
   var d=await r.json();
   return JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
@@ -1781,19 +1787,38 @@ async function callClaudeChat(msg,p){
   var sys='당신은 세계 최고의 태국/라오스 여성 플러팅 전략 코치입니다.\n'
     +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계단계: '+SD[p.s||0]+' / 스타일: '+PD[persona]+'\n'
     +'최근 대화:\n'+history+'\n\n'
-    +'답변 3개: 각 1문장, 구어체, 이모지 1~2개, 서로 완전히 다른 각도(유머/칭찬/밀당 등).\n'
-    +'★ 재치·센스·임팩트 최우선. 뻔한 표현 금지. 상대가 웃거나 설레게 만드는 한방.\n'
-    +'why는 10자 이내 핵심만. tip은 지금 대화 흐름의 한줄 전략 조언.\n'
-    +'JSON만 반환: {"tip":"한줄전략(한국어)","suggs":[{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"}]}';
+    +'[절대 규칙]\n'
+    +'① suggs 배열에 반드시 정확히 3개 — 1개나 2개면 오답이므로 절대 금지.\n'
+    +'② 각 답변: 1문장 이내 구어체, 이모지 1~2개, 세 답변은 완전히 다른 전략(유머/칭찬/밀당 등).\n'
+    +'③ 재치·임팩트 최우선. 뻔한 표현 금지. why는 한국어 10자 이내.\n'
+    +'JSON만 반환(다른 텍스트 없이):\n'
+    +'{"tip":"한줄전략","suggs":[{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"}]}';
   var r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:800,system:sys,messages:[{role:'user',content:'상대 최신 메시지: '+msg}]})
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1400,system:sys,messages:[{role:'user',content:'상대 최신 메시지: '+msg}]})
   });
   var d=await r.json();
   return JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
 }
 function renderChatSuggs(result){
+  /* 3개 미만이면 자동 재시도 */
+  if(!result.suggs||result.suggs.length<3){
+    if(lastChatContext){
+      showToast('추천 재생성 중...');
+      var ctx=lastChatContext;
+      document.getElementById('chatLoading').classList.add('show');
+      (ctx.type==='vision'?callClaudeChatVision(ctx.imgs,ctx.msg,ctx.p):callClaudeChat(ctx.msg,ctx.p))
+        .then(function(r2){
+          document.getElementById('chatLoading').classList.remove('show');
+          renderChatSuggs(r2);
+        }).catch(function(){
+          document.getElementById('chatLoading').classList.remove('show');
+          showToast('⚠️ AI 오류. 다시 시도하세요');
+        });
+    }
+    return;
+  }
   var el=document.getElementById('chatMsgs');
   var emp=document.getElementById('chatEmpty');
   var wrap=document.createElement('div');wrap.className='sugg-wrap';
