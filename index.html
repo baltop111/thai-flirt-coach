@@ -135,6 +135,51 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 .ph-ko{font-size:0.72rem;color:#6b7280;margin-top:2px;}
 .ph-cp{background:none;border:1px solid #2a2a4a;color:#6b7280;padding:5px 9px;border-radius:7px;font-size:0.7rem;cursor:pointer;white-space:nowrap;}
 
+/* ── 개인 채팅 화면 ── */
+.chat-screen{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:450;background:#0f0f1a;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
+.chat-screen.show{display:-webkit-box;display:-webkit-flex;display:flex;}
+.chat-hdr{background:linear-gradient(135deg,#4a1a6b,#8b1a4a);padding:14px 16px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;gap:12px;-webkit-flex-shrink:0;flex-shrink:0;}
+.chat-back{background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;padding:4px 8px 4px 0;}
+.chat-av{width:40px;height:40px;border-radius:20px;background:#2a1a3e;text-align:center;line-height:40px;font-size:1.2rem;-webkit-flex-shrink:0;flex-shrink:0;}
+.chat-hdr-info{-webkit-box-flex:1;-webkit-flex:1;flex:1;}
+.chat-hdr-name{font-size:1rem;font-weight:800;color:#fff;}
+.chat-hdr-meta{font-size:0.68rem;color:rgba(255,255,255,0.65);margin-top:2px;}
+.chat-hdr-clr{background:none;border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.7);padding:5px 9px;border-radius:10px;font-size:0.65rem;cursor:pointer;}
+.chat-msgs{-webkit-box-flex:1;-webkit-flex:1;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 12px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
+.chat-empty{text-align:center;color:#6b7280;padding:40px 20px;margin:auto;}
+.chat-empty .ce{font-size:2.5rem;margin-bottom:10px;}
+.chat-empty p{font-size:0.82rem;line-height:1.7;}
+/* 말풍선 */
+.bubble-wrap{margin-bottom:14px;}
+.bubble-wrap.her{-webkit-box-align:start;-webkit-align-items:flex-start;align-items:flex-start;}
+.bubble-wrap.me{-webkit-box-align:end;-webkit-align-items:flex-end;align-items:flex-end;text-align:right;}
+.bubble-label{font-size:0.62rem;color:#6b7280;margin-bottom:4px;padding:0 4px;}
+.bubble{display:inline-block;max-width:78%;padding:10px 13px;border-radius:16px;font-size:0.88rem;line-height:1.55;text-align:left;word-break:break-word;}
+.bubble.her{background:#1a1a2e;border:1px solid #2a2a4a;color:#e8e8f0;border-top-left-radius:4px;}
+.bubble.me{background:linear-gradient(135deg,#ff6b8a,#7c5cbf);color:#fff;border-top-right-radius:4px;}
+.bubble-ko{font-size:0.68rem;color:#6b7280;margin-top:4px;padding:0 4px;}
+.bubble-ts{font-size:0.6rem;color:#3a3a5a;margin-top:3px;padding:0 4px;}
+/* AI 추천 버블 */
+.sugg-wrap{background:#16213e;border-radius:14px;border:1px solid #2a2a4a;margin-bottom:14px;overflow:hidden;}
+.sugg-wrap-hdr{padding:8px 12px;font-size:0.68rem;color:#6b7280;border-bottom:1px solid #2a2a4a;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;gap:6px;}
+.sugg-item{padding:10px 12px;border-bottom:1px solid #1a1a2e;}
+.sugg-item:last-child{border-bottom:none;}
+.sugg-item-lbl{font-size:0.62rem;font-weight:700;color:#ffd93d;margin-bottom:5px;}
+.sugg-item-th{font-size:0.9rem;color:#fff;line-height:1.5;}
+.sugg-item-ko{font-size:0.7rem;color:#6b7280;margin-top:3px;}
+.sugg-item-btns{display:-webkit-box;display:-webkit-flex;display:flex;gap:6px;margin-top:8px;}
+.s-cp{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:none;border:1px solid #2a2a4a;color:#e8e8f0;padding:8px;border-radius:8px;font-size:0.72rem;cursor:pointer;}
+.s-send{-webkit-box-flex:2;-webkit-flex:2;flex:2;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);border:none;color:#fff;padding:8px;border-radius:8px;font-size:0.72rem;font-weight:700;cursor:pointer;}
+/* 채팅 입력 */
+.chat-inp-area{background:#16213e;border-top:1px solid #2a2a4a;padding:10px 12px 10px;-webkit-flex-shrink:0;flex-shrink:0;}
+.chat-inp-tip{font-size:0.65rem;color:#6b7280;margin-bottom:7px;padding-left:2px;}
+.chat-inp-row{display:-webkit-box;display:-webkit-flex;display:flex;gap:8px;-webkit-box-align:flex-end;-webkit-align-items:flex-end;align-items:flex-end;}
+.chat-ta{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:#0f0f1a;border:1px solid #2a2a4a;border-radius:12px;padding:10px 12px;color:#e8e8f0;font-size:0.9rem;font-family:inherit;resize:none;min-height:42px;max-height:90px;outline:none;}
+.chat-ta:focus{border-color:#ff6b8a;}
+.chat-go{background:linear-gradient(135deg,#ff6b8a,#7c5cbf);border:none;color:#fff;width:42px;height:42px;border-radius:12px;font-size:1.1rem;cursor:pointer;-webkit-flex-shrink:0;flex-shrink:0;}
+.chat-loading{text-align:center;padding:14px;color:#6b7280;font-size:0.8rem;display:none;}
+.chat-loading.show{display:block;}
+
 /* ── 편집 모달 ── */
 .overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:400;background:rgba(0,0,0,0.8);}
 .overlay.show{display:block;}
@@ -239,7 +284,7 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
       <div class="hdr-badges">
         <span class="badge" id="bdStage">첫 연락</span>
         <span class="badge" id="bdStyle">매력남</span>
-        <span class="badge badge-ver">v7.0</span>
+        <span class="badge badge-ver">v8.0</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="goSetup()">⚙️ 재설정</button>
@@ -310,6 +355,37 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
   </div>
 </div>
 
+<!-- 개인 채팅 화면 -->
+<div class="chat-screen" id="chatScreen">
+  <div class="chat-hdr">
+    <button class="chat-back" onclick="closeChat()">←</button>
+    <div class="chat-av" id="chatAv">👩</div>
+    <div class="chat-hdr-info">
+      <div class="chat-hdr-name" id="chatName">이름</div>
+      <div class="chat-hdr-meta" id="chatMeta">단계</div>
+    </div>
+    <button class="chat-hdr-clr" onclick="clearChat()">대화삭제</button>
+  </div>
+  <div class="chat-msgs" id="chatMsgs">
+    <div class="chat-empty" id="chatEmpty">
+      <div class="ce">💬</div>
+      <p>상대방이 보낸 메시지를<br>아래에 입력하세요.<br>이전 대화를 기억해<br>자연스럽게 이어집니다.</p>
+    </div>
+  </div>
+  <div class="chat-loading" id="chatLoading">
+    <div class="dots"><span></span><span></span><span></span></div>
+    AI 분석 중...
+  </div>
+  <div class="chat-inp-area">
+    <div class="chat-inp-tip">👩 상대방 메시지 입력 → AI가 답변 추천</div>
+    <div class="chat-inp-row">
+      <textarea class="chat-ta" id="chatTa" placeholder="상대방 태국어 메시지..." rows="1"
+        oninput="autoH(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();chatAnalyze();}"></textarea>
+      <button class="chat-go" onclick="chatAnalyze()">▶</button>
+    </div>
+  </div>
+</div>
+
 <!-- 편집 오버레이 -->
 <div class="overlay" id="editOverlay" onclick="if(event.target===this)closeEdit()">
   <div class="sheet">
@@ -346,6 +422,7 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
       <button class="s-del" onclick="deleteW()">삭제</button>
       <button class="s-save" onclick="saveW()">저장</button>
     </div>
+    <button id="chatOpenBtn" onclick="openChat(editIdx)" style="display:none;width:100%;margin-top:10px;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,#4ecdc4,#2a9d8f);color:#fff;font-size:0.95rem;font-weight:800;cursor:pointer;">💬 대화 이어가기</button>
   </div>
 </div>
 
@@ -582,6 +659,7 @@ function openEdit(i){
   document.getElementById('scoreShow').textContent=p.sc||0;
   document.getElementById('scoreDisp').textContent=p.sc||0;
   document.querySelectorAll('#stagePills .pill').forEach(function(b,idx){b.classList.toggle('on',idx===editStage);});
+  document.getElementById('chatOpenBtn').style.display=p.n?'block':'none';
   document.getElementById('editOverlay').classList.add('show');
 }
 function setES(n,btn){
@@ -603,6 +681,115 @@ function deleteW(){
   savePpl();closeEdit();renderWomen();showToast('삭제됨');
 }
 function closeEdit(){document.getElementById('editOverlay').classList.remove('show');}
+
+/* ── 개인 채팅 ── */
+var chatIdx=-1;
+function openChat(i){
+  chatIdx=i;
+  closeEdit();
+  var p=people[i];
+  document.getElementById('chatAv').textContent=p.e||AE[i];
+  document.getElementById('chatName').textContent=p.n;
+  document.getElementById('chatMeta').textContent=SN[p.s||0]+' · 점수 '+p.sc+'점';
+  renderChatMsgs();
+  document.getElementById('chatScreen').classList.add('show');
+  document.getElementById('chatTa').value='';
+  setTimeout(function(){scrollChatBottom();},100);
+}
+function closeChat(){document.getElementById('chatScreen').classList.remove('show');}
+function clearChat(){
+  if(!confirm('이 이성과의 대화를 모두 삭제할까요?'))return;
+  people[chatIdx].chat=[];savePpl();renderChatMsgs();
+}
+function scrollChatBottom(){var el=document.getElementById('chatMsgs');el.scrollTop=el.scrollHeight;}
+function fmtTime(ts){var d=new Date(ts),h=d.getHours(),m=d.getMinutes();return(h<10?'0':'')+h+':'+(m<10?'0':'')+m;}
+function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function renderChatMsgs(){
+  var p=people[chatIdx];if(!p.chat)p.chat=[];
+  var el=document.getElementById('chatMsgs');
+  var emp=document.getElementById('chatEmpty');
+  el.innerHTML='';
+  if(!p.chat.length){emp.style.display='block';el.appendChild(emp);return;}
+  emp.style.display='none';
+  p.chat.forEach(function(c){
+    var wrap=document.createElement('div');
+    if(c.dir==='her'){
+      wrap.className='bubble-wrap her';
+      wrap.innerHTML='<div class="bubble-label">👩 '+escH(p.n||'상대')+'</div>'
+        +'<div class="bubble her">'+escH(c.msg)+'</div>'
+        +'<div class="bubble-ts">'+fmtTime(c.ts)+'</div>';
+    } else {
+      wrap.className='bubble-wrap me';
+      wrap.innerHTML='<div class="bubble-label">나</div>'
+        +'<div class="bubble me">'+escH(c.msg)+'</div>'
+        +(c.ko?'<div class="bubble-ko">🇰🇷 '+escH(c.ko)+'</div>':'')
+        +'<div class="bubble-ts">'+fmtTime(c.ts)+'</div>';
+    }
+    el.appendChild(wrap);
+  });
+  el.appendChild(emp);
+  setTimeout(scrollChatBottom,50);
+}
+async function chatAnalyze(){
+  var msg=document.getElementById('chatTa').value.trim();if(!msg)return;
+  var p=people[chatIdx];if(!p.chat)p.chat=[];
+  p.chat.push({dir:'her',msg:msg,ts:Date.now()});
+  savePpl();renderChatMsgs();
+  document.getElementById('chatTa').value='';
+  document.getElementById('chatLoading').classList.add('show');
+  scrollChatBottom();
+  try{
+    var result=await callClaudeChat(msg,p);
+    document.getElementById('chatLoading').classList.remove('show');
+    renderChatSuggs(result);
+  }catch(e){
+    document.getElementById('chatLoading').classList.remove('show');
+    showToast('⚠️ AI 오류. 다시 시도하세요');
+  }
+}
+async function callClaudeChat(msg,p){
+  var recent=(p.chat||[]).slice(-12);
+  var history=recent.map(function(c){return(c.dir==='her'?'상대: ':'나: ')+c.msg;}).join('\n');
+  var sys='태국/라오스 여성과 대화하는 한국 남성의 태국어 플러팅 코치.\n'
+    +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계: '+SD[p.s||0]+' / 스타일: '+PD[persona]+'\n'
+    +'최근 대화:\n'+history+'\n\n'
+    +'위 맥락을 참고해 자연스럽게 이어지는 답장 3개. 짧은 구어체(1~2문장), 이모티콘 1~2개.\n'
+    +'JSON만 반환: {"tip":"한줄조언(한국어)","suggs":[{"label":"장난기있게","th":"태국어","ko":"한국어"},{"label":"따뜻하게","th":"태국어","ko":"한국어"},{"label":"직접적으로","th":"태국어","ko":"한국어"}]}';
+  var r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:700,system:sys,messages:[{role:'user',content:'상대: '+msg}]})
+  });
+  var d=await r.json();
+  return JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
+}
+function renderChatSuggs(result){
+  var el=document.getElementById('chatMsgs');
+  var emp=document.getElementById('chatEmpty');
+  var wrap=document.createElement('div');wrap.className='sugg-wrap';
+  var html='<div class="sugg-wrap-hdr">🤖 AI 추천 &nbsp;·&nbsp; <span style="color:#c4b5fd;">'+escH(result.tip)+'</span></div>';
+  result.suggs.forEach(function(s,i){
+    var thE=(s.th||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    var koE=(s.ko||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    html+='<div class="sugg-item">'
+      +'<div class="sugg-item-lbl">'+escH(s.label||'')+'</div>'
+      +'<div class="sugg-item-th">'+escH(s.th||'')+'</div>'
+      +'<div class="sugg-item-ko">🇰🇷 '+escH(s.ko||'')+'</div>'
+      +'<div class="sugg-item-btns">'
+      +'<button class="s-cp" onclick="cp(\''+thE+'\')">복사</button>'
+      +'<button class="s-send" onclick="chatSend(\''+thE+'\',\''+koE+'\')">이걸로 보내기 ✓</button>'
+      +'</div></div>';
+  });
+  wrap.innerHTML=html;
+  el.insertBefore(wrap,emp);
+  scrollChatBottom();
+}
+function chatSend(th,ko){
+  var p=people[chatIdx];if(!p.chat)p.chat=[];
+  p.chat.push({dir:'me',msg:th,ko:ko,ts:Date.now()});
+  savePpl();cp(th);renderChatMsgs();
+  showToast('복사 완료! 상대에게 보내세요 ✓');
+}
 
 /* ── 랭킹 ── */
 function renderRank(){
