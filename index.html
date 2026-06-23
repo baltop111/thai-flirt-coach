@@ -174,7 +174,7 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 .chat-hdr-name{font-size:1rem;font-weight:800;color:#fff;}
 .chat-hdr-meta{font-size:0.68rem;color:rgba(255,255,255,0.65);margin-top:2px;}
 .chat-hdr-clr{background:none;border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.7);padding:5px 9px;border-radius:10px;font-size:0.65rem;cursor:pointer;}
-.chat-msgs{-webkit-box-flex:1;-webkit-flex:1;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 12px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
+.chat-msgs{-webkit-box-flex:1;-webkit-flex:1;flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 12px 32px 12px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
 .chat-empty{text-align:center;color:#6b7280;padding:40px 20px;margin:auto;}
 .chat-empty .ce{font-size:2.5rem;margin-bottom:10px;}
 .chat-empty p{font-size:0.82rem;line-height:1.7;}
@@ -438,7 +438,7 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
       <div class="hdr-badges">
         <span class="badge" id="bdStage">첫 연락</span>
         <span class="badge" id="bdStyle">매력남</span>
-        <span class="badge badge-ver">v9.4</span>
+        <span class="badge badge-ver">v9.5</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="goSetup()">⚙️ 재설정</button>
@@ -1115,6 +1115,7 @@ var memos=JSON.parse(localStorage.getItem('memos')||'[]');
 var nickname=localStorage.getItem('nickname')||'';
 var userPhone=localStorage.getItem('userPhone')||'';
 var registeredUsers=JSON.parse(localStorage.getItem('registeredUsers')||'[]');
+var lastChatContext=null;
 
 /* ── 핸드폰 번호 포맷 ── */
 function fmtPhone(el){
@@ -1585,7 +1586,7 @@ function clearChat(){
   if(!confirm('이 이성과의 대화를 모두 삭제할까요?'))return;
   people[chatIdx].chat=[];savePpl();renderChatMsgs();
 }
-function scrollChatBottom(){var el=document.getElementById('chatMsgs');el.scrollTop=el.scrollHeight;}
+function scrollChatBottom(){var el=document.getElementById('chatMsgs');setTimeout(function(){el.scrollTop=el.scrollHeight;},120);}
 function fmtTime(ts){var d=new Date(ts),h=d.getHours(),m=d.getMinutes();return(h<10?'0':'')+h+':'+(m<10?'0':'')+m;}
 function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function renderChatMsgs(){
@@ -1706,6 +1707,7 @@ async function chatAnalyze(){
     scrollChatBottom();
     var imgs=chatImages.slice();
     clearChatImages();
+    lastChatContext={type:'vision',imgs:imgs,msg:msg,p:p};
     try{
       var result=await callClaudeChatVision(imgs,msg,p);
       document.getElementById('chatLoading').classList.remove('show');
@@ -1726,6 +1728,7 @@ async function chatAnalyze(){
     document.getElementById('chatTa').value='';
     document.getElementById('chatLoading').classList.add('show');
     scrollChatBottom();
+    lastChatContext={type:'text',imgs:[],msg:msg,p:p};
     try{
       var result=await callClaudeChat(msg,p);
       document.getElementById('chatLoading').classList.remove('show');
@@ -1740,21 +1743,19 @@ async function chatAnalyze(){
 async function callClaudeChatVision(imgs,extraText,p){
   var recent=(p.chat||[]).slice(-10);
   var history=recent.length?recent.map(function(c){return(c.dir==='her'?'상대: ':'나: ')+c.msg;}).join('\n'):'(이전 대화 없음)';
-  var sys='당신은 태국/라오스 여성과 대화하는 한국 남성의 플러팅 전략 코치입니다.\n'
-    +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계: '+SD[p.s||0]+' / 내 스타일: '+PD[persona]+'\n'
-    +'이전 저장된 대화:\n'+history+'\n\n'
-    +'[중요 지시사항]\n'
-    +'1. 첨부된 스크린샷은 카카오톡·라인 등 채팅앱의 대화 캡쳐입니다.\n'
-    +'2. 스크린샷 속 대화를 읽고 흐름과 상대방의 마지막 메시지를 파악하세요.\n'
-    +'3. 상대방(태국/라오스 여성)이 마지막으로 보낸 메시지에 대한 전략적 답변 3개를 추천하세요.\n'
-    +'4. lastMsg 필드에 상대방의 마지막 메시지(원문 그대로)를 넣으세요.\n'
-    +'5. 각 답변은 짧은 구어체(1~2문장), 이모티콘 1~2개.\n'
-    +'6. 각 답변마다 전략명(label)과 효과 이유(why)를 한국어로.\n'
+  var sys='당신은 세계 최고의 태국/라오스 여성 플러팅 전략 코치입니다.\n'
+    +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계단계: '+SD[p.s||0]+' / 스타일: '+PD[persona]+'\n'
+    +'이전 대화:\n'+history+'\n\n'
+    +'[핵심 지시]\n'
+    +'스크린샷(카카오톡·라인 등)의 대화 흐름을 읽고 상대방 마지막 메시지를 파악하세요.\n'
+    +'답변 3개: 각 1문장, 구어체, 이모지 1~2개, 서로 완전히 다른 각도(유머/칭찬/밀당 등).\n'
+    +'★ 재치·센스·임팩트 최우선. 뻔한 표현 금지. 상대가 웃거나 설레게 만드는 한방.\n'
+    +'why는 10자 이내 핵심만. tip은 지금 대화 흐름 분석한 한줄 전략.\n'
     +'JSON만 반환:\n'
-    +'{"tip":"한줄전략조언(한국어)","lastMsg":"상대방마지막메시지원문","suggs":['
-    +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"효과이유"},'
-    +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"효과이유"},'
-    +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"효과이유"}]}';
+    +'{"tip":"한줄전략(한국어)","lastMsg":"상대마지막메시지원문","suggs":['
+    +'{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내이유"},'
+    +'{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내이유"},'
+    +'{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내이유"}]}';
 
   var content=[];
   imgs.forEach(function(img,i){
@@ -1777,13 +1778,13 @@ async function callClaudeChatVision(imgs,extraText,p){
 async function callClaudeChat(msg,p){
   var recent=(p.chat||[]).slice(-14);
   var history=recent.map(function(c){return(c.dir==='her'?'상대('+p.n+'): ':'나: ')+c.msg;}).join('\n');
-  var sys='당신은 태국/라오스 여성과 대화하는 한국 남성의 플러팅 전략 코치입니다.\n'
-    +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계: '+SD[p.s||0]+' / 내 스타일: '+PD[persona]+'\n'
-    +'최근 대화 맥락:\n'+history+'\n\n'
-    +'위 맥락과 관계 단계를 고려해 전략적으로 다른 각도의 답장 3개를 추천하세요.\n'
-    +'각 답변은 짧은 구어체(1~2문장), 이모티콘 1~2개.\n'
-    +'각 답변마다 전략명(label)과 효과 이유(why)를 한국어로.\n'
-    +'JSON만 반환: {"tip":"한줄전략조언(한국어)","suggs":[{"label":"전략명","th":"태국어","ko":"한국어","why":"이유"},{"label":"전략명","th":"태국어","ko":"한국어","why":"이유"},{"label":"전략명","th":"태국어","ko":"한국어","why":"이유"}]}';
+  var sys='당신은 세계 최고의 태국/라오스 여성 플러팅 전략 코치입니다.\n'
+    +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계단계: '+SD[p.s||0]+' / 스타일: '+PD[persona]+'\n'
+    +'최근 대화:\n'+history+'\n\n'
+    +'답변 3개: 각 1문장, 구어체, 이모지 1~2개, 서로 완전히 다른 각도(유머/칭찬/밀당 등).\n'
+    +'★ 재치·센스·임팩트 최우선. 뻔한 표현 금지. 상대가 웃거나 설레게 만드는 한방.\n'
+    +'why는 10자 이내 핵심만. tip은 지금 대화 흐름의 한줄 전략 조언.\n'
+    +'JSON만 반환: {"tip":"한줄전략(한국어)","suggs":[{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"}]}';
   var r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
@@ -1810,9 +1811,32 @@ function renderChatSuggs(result){
       +'<button class="s-send" onclick="chatSend(\''+thE+'\',\''+koE+'\')">이걸로 보내기 ✓</button>'
       +'</div></div>';
   });
+  html+='<div style="padding:10px 12px 12px;">'
+    +'<button onclick="retryChatSuggs(this)" style="width:100%;background:#1a1a2e;border:1.5px dashed #3a3a5a;color:#6b7280;padding:11px;border-radius:11px;font-size:0.82rem;cursor:pointer;">🔄 마음에 안들어요 — 다시 추천</button>'
+    +'</div>';
   wrap.innerHTML=html;
   el.insertBefore(wrap,emp);
   scrollChatBottom();
+}
+async function retryChatSuggs(btn){
+  if(!lastChatContext)return;
+  /* 현재 sugg-wrap 제거 */
+  var wrap=btn.closest('.sugg-wrap');
+  if(wrap)wrap.parentNode.removeChild(wrap);
+  /* 로딩 표시 */
+  document.getElementById('chatLoading').classList.add('show');
+  scrollChatBottom();
+  try{
+    var ctx=lastChatContext;
+    var result=ctx.type==='vision'
+      ?await callClaudeChatVision(ctx.imgs,ctx.msg,ctx.p)
+      :await callClaudeChat(ctx.msg,ctx.p);
+    document.getElementById('chatLoading').classList.remove('show');
+    renderChatSuggs(result);
+  }catch(e){
+    document.getElementById('chatLoading').classList.remove('show');
+    showToast('⚠️ AI 오류. 다시 시도하세요');
+  }
 }
 function chatSend(th,ko){
   var p=people[chatIdx];if(!p.chat)p.chat=[];
