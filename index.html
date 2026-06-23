@@ -188,16 +188,16 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 .bubble-ko{font-size:0.68rem;color:#6b7280;margin-top:4px;padding:0 4px;}
 .bubble-ts{font-size:0.6rem;color:#3a3a5a;margin-top:3px;padding:0 4px;}
 .sugg-wrap{background:#16213e;border-radius:14px;border:1px solid #2a2a4a;margin-bottom:14px;overflow:hidden;}
-.sugg-wrap-hdr{padding:8px 12px;font-size:0.68rem;color:#6b7280;border-bottom:1px solid #2a2a4a;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
-.sugg-item{padding:10px 12px;border-bottom:1px solid #1a1a2e;}
+.sugg-wrap-hdr{padding:7px 12px;font-size:0.65rem;color:#6b7280;border-bottom:1px solid #1a1a2e;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
+.sugg-item{padding:9px 12px 10px;border-bottom:1px solid #1a1a2e;}
 .sugg-item:last-child{border-bottom:none;}
-.sugg-item-lbl{font-size:0.62rem;font-weight:700;color:#ffd93d;margin-bottom:5px;}
-.sugg-item-th{font-size:0.9rem;color:#fff;line-height:1.5;}
-.sugg-item-ko{font-size:0.7rem;color:#6b7280;margin-top:3px;}
-.sugg-item-why{font-size:0.65rem;color:#a78bfa;margin-top:3px;font-style:italic;}
-.sugg-item-btns{display:-webkit-box;display:-webkit-flex;display:flex;margin-top:8px;}
-.s-cp{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:none;border:1px solid #2a2a4a;color:#e8e8f0;padding:8px;border-radius:8px;font-size:0.72rem;cursor:pointer;margin-right:6px;}
-.s-send{-webkit-box-flex:2;-webkit-flex:2;flex:2;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);border:none;color:#fff;padding:8px;border-radius:8px;font-size:0.72rem;font-weight:700;cursor:pointer;}
+.sugg-item-top{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;margin-bottom:3px;}
+.sugg-item-lbl{font-size:0.58rem;font-weight:700;color:#ffd93d;background:rgba(255,217,61,0.1);padding:2px 6px;border-radius:4px;white-space:nowrap;margin-right:6px;-webkit-flex-shrink:0;flex-shrink:0;}
+.sugg-item-th{font-size:0.88rem;color:#fff;line-height:1.45;-webkit-box-flex:1;-webkit-flex:1;flex:1;}
+.sugg-item-ko{font-size:0.68rem;color:#6b7280;margin-bottom:7px;padding-left:2px;}
+.sugg-item-btns{display:-webkit-box;display:-webkit-flex;display:flex;}
+.s-cp{background:none;border:1px solid #2a2a4a;color:#9ca3af;padding:7px 14px;border-radius:8px;font-size:0.7rem;cursor:pointer;margin-right:6px;-webkit-flex-shrink:0;flex-shrink:0;}
+.s-send{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);border:none;color:#fff;padding:7px 10px;border-radius:8px;font-size:0.72rem;font-weight:700;cursor:pointer;}
 .chat-inp-area{background:#16213e;border-top:1px solid #2a2a4a;padding:10px 12px 10px;-webkit-flex-shrink:0;flex-shrink:0;}
 .chat-inp-tip{font-size:0.65rem;color:#6b7280;margin-bottom:7px;padding-left:2px;}
 .chat-inp-row{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:flex-end;-webkit-align-items:flex-end;align-items:flex-end;}
@@ -438,7 +438,7 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
       <div class="hdr-badges">
         <span class="badge" id="bdStage">첫 연락</span>
         <span class="badge" id="bdStyle">매력남</span>
-        <span class="badge badge-ver">v9.5</span>
+        <span class="badge badge-ver">v9.6</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="goSetup()">⚙️ 재설정</button>
@@ -1586,7 +1586,7 @@ function clearChat(){
   if(!confirm('이 이성과의 대화를 모두 삭제할까요?'))return;
   people[chatIdx].chat=[];savePpl();renderChatMsgs();
 }
-function scrollChatBottom(){var el=document.getElementById('chatMsgs');setTimeout(function(){el.scrollTop=el.scrollHeight;},120);}
+function scrollChatBottom(){var el=document.getElementById('chatMsgs');requestAnimationFrame(function(){requestAnimationFrame(function(){el.scrollTop=el.scrollHeight;});});}
 function fmtTime(ts){var d=new Date(ts),h=d.getHours(),m=d.getMinutes();return(h<10?'0':'')+h+':'+(m<10?'0':'')+m;}
 function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function renderChatMsgs(){
@@ -1802,13 +1802,14 @@ function renderChatSuggs(result){
     var thE=(s.th||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     var koE=(s.ko||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     html+='<div class="sugg-item">'
-      +'<div class="sugg-item-lbl">🎯 '+escH(s.label||'')+'</div>'
-      +'<div class="sugg-item-th">'+escH(s.th||'')+'</div>'
+      +'<div class="sugg-item-top">'
+      +'<span class="sugg-item-lbl">'+escH(s.label||'')+'</span>'
+      +'<span class="sugg-item-th">'+escH(s.th||'')+'</span>'
+      +'</div>'
       +'<div class="sugg-item-ko">🇰🇷 '+escH(s.ko||'')+'</div>'
-      +(s.why?'<div class="sugg-item-why">✦ '+escH(s.why)+'</div>':'')
       +'<div class="sugg-item-btns">'
       +'<button class="s-cp" onclick="cp(\''+thE+'\')">복사</button>'
-      +'<button class="s-send" onclick="chatSend(\''+thE+'\',\''+koE+'\')">이걸로 보내기 ✓</button>'
+      +'<button class="s-send" onclick="chatSend(this,\''+thE+'\',\''+koE+'\')">이걸로 보내기 ✓</button>'
       +'</div></div>';
   });
   html+='<div style="padding:10px 12px 12px;">'
@@ -1838,7 +1839,10 @@ async function retryChatSuggs(btn){
     showToast('⚠️ AI 오류. 다시 시도하세요');
   }
 }
-function chatSend(th,ko){
+function chatSend(btn,th,ko){
+  /* 선택한 sugg-wrap 전체 제거 → 채팅 버블만 깔끔하게 */
+  var wrap=btn.closest('.sugg-wrap');
+  if(wrap)wrap.parentNode.removeChild(wrap);
   var p=people[chatIdx];if(!p.chat)p.chat=[];
   p.chat.push({dir:'me',msg:th,ko:ko,ts:Date.now()});
   savePpl();cp(th);renderChatMsgs();
