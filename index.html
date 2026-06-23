@@ -263,6 +263,22 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 
 .section-gap{height:12px;}
 
+/* ── 채팅 이미지 업로드 ── */
+.chat-img-preview{display:-webkit-box;display:-webkit-flex;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;padding:0 0 8px;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;}
+.chat-img-preview:empty{display:none;}
+.chat-img-preview::-webkit-scrollbar{display:none;}
+.chat-img-thumb{position:relative;-webkit-flex-shrink:0;flex-shrink:0;margin-right:8px;}
+.chat-img-thumb img{width:64px;height:64px;object-fit:cover;border-radius:10px;border:2px solid #4ecdc4;display:block;}
+.chat-img-del{position:absolute;top:-6px;right:-6px;width:18px;height:18px;background:#ff6b6b;border-radius:9px;border:none;color:#fff;font-size:0.6rem;font-weight:900;cursor:pointer;text-align:center;line-height:18px;padding:0;}
+.chat-img-btn{width:42px;height:42px;background:#16213e;border:1px dashed #4ecdc4;color:#4ecdc4;border-radius:12px;font-size:1.2rem;cursor:pointer;text-align:center;line-height:42px;-webkit-flex-shrink:0;flex-shrink:0;margin-right:8px;display:block;}
+.chat-img-btn:active{background:rgba(78,205,196,0.15);}
+.chat-img-count{position:absolute;top:-5px;right:-5px;background:#ff6b8a;color:#fff;font-size:0.55rem;font-weight:900;width:16px;height:16px;border-radius:8px;text-align:center;line-height:16px;}
+.chat-img-btn-wrap{position:relative;-webkit-flex-shrink:0;flex-shrink:0;margin-right:8px;}
+.img-mode-banner{background:linear-gradient(135deg,rgba(78,205,196,0.15),rgba(124,92,191,0.15));border:1px solid rgba(78,205,196,0.3);border-radius:10px;padding:7px 11px;font-size:0.68rem;color:#4ecdc4;margin-bottom:8px;display:none;}
+.img-mode-banner.show{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
+.img-mode-banner span{-webkit-box-flex:1;-webkit-flex:1;flex:1;}
+.img-mode-clear{background:none;border:1px solid rgba(78,205,196,0.4);color:#4ecdc4;padding:3px 8px;border-radius:7px;font-size:0.6rem;cursor:pointer;-webkit-flex-shrink:0;flex-shrink:0;margin-left:8px;}
+
 /* ── 사용가이드 ── */
 .guide-hero{background:linear-gradient(135deg,#1a0a2e,#2a1a3e);border-radius:16px;padding:22px 18px;margin-bottom:16px;text-align:center;border:1px solid rgba(124,92,191,0.3);}
 .guide-hero-icon{font-size:3rem;margin-bottom:10px;}
@@ -402,7 +418,7 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
       <div class="hdr-badges">
         <span class="badge" id="bdStage">첫 연락</span>
         <span class="badge" id="bdStyle">매력남</span>
-        <span class="badge badge-ver">v9.0</span>
+        <span class="badge badge-ver">v9.2</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="goSetup()">⚙️ 재설정</button>
@@ -618,6 +634,7 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
           <span class="guide-badge gb-purple">🤖 AI 감정분석</span>
           <span class="guide-badge gb-pink">🎯 전략 추천</span>
           <span class="guide-badge gb-teal">💬 개인 채팅</span>
+          <span class="guide-badge gb-teal">📷 사진 캡쳐 분석</span>
           <span class="guide-badge gb-yellow">📌 전략 메모</span>
           <span class="guide-badge gb-purple">🏆 랭킹 관리</span>
           <span class="guide-badge gb-pink">📱 iOS/Android</span>
@@ -659,6 +676,13 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
               <div class="adv-body">
                 <div class="adv-title">고수의 5단계 전략 바이블</div>
                 <div class="adv-desc">첫 연락부터 마음 잡기까지 단계별 플러팅 전략과 실전 태국어 표현을 언제든지 꺼내볼 수 있습니다.</div>
+              </div>
+            </div>
+            <div class="adv-item">
+              <div class="adv-icon">📷</div>
+              <div class="adv-body">
+                <div class="adv-title">대화 캡쳐 사진으로 바로 분석</div>
+                <div class="adv-desc">카카오톡·라인 대화 화면을 캡쳐해 사진으로 올리면 AI가 직접 읽고 분석합니다. 여러 장 동시 업로드도 가능해 긴 대화 흐름도 한 번에 파악합니다.</div>
               </div>
             </div>
             <div class="adv-item">
@@ -717,6 +741,50 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
             <div class="point"><span class="point-icon">②</span><span>▶ 버튼 탭 → AI가 감정 분석 + 전략 힌트 즉시 표시</span></div>
             <div class="point"><span class="point-icon">③</span><span>마음에 드는 답변의 <strong>"이걸로 보내기"</strong> 탭 → 자동 복사</span></div>
             <div class="point"><span class="point-icon">④</span><span>카카오톡·라인에 붙여넣기(Paste)하여 전송</span></div>
+          </div>
+        </div>
+
+        <!-- STEP 1-B: 사진 캡쳐 업로드 -->
+        <div class="guide-step">
+          <div class="guide-step-hdr">
+            <div class="guide-step-num" style="background:linear-gradient(135deg,#4ecdc4,#2a9d8f);">📷</div>
+            <div class="guide-step-title">📷 대화 캡쳐 사진으로 분석</div>
+            <div class="guide-step-tag" style="background:rgba(78,205,196,0.15);color:#4ecdc4;">신기능</div>
+          </div>
+          <div class="mockup-frame">
+            <div class="mockup-bar">
+              <div class="mockup-bar-dot"></div>
+              <div class="mockup-bar-title">💬 Ssom과의 채팅</div>
+              <div class="mockup-bar-badge" style="color:#4ecdc4;">📷 사진모드</div>
+            </div>
+            <div class="mockup-body">
+              <!-- 이미지 모드 배너 -->
+              <div style="background:rgba(78,205,196,0.12);border:1px solid rgba(78,205,196,0.3);border-radius:8px;padding:7px 10px;font-size:0.65rem;color:#4ecdc4;margin-bottom:8px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;">
+                <span style="-webkit-box-flex:1;-webkit-flex:1;flex:1;">📷 사진 2장 선택됨 — AI가 대화 내용을 읽어 분석합니다</span>
+                <span style="font-size:0.6rem;border:1px solid rgba(78,205,196,0.4);padding:2px 6px;border-radius:6px;">전체삭제</span>
+              </div>
+              <!-- 썸네일 미리보기 -->
+              <div style="display:-webkit-box;display:-webkit-flex;display:flex;margin-bottom:8px;">
+                <div style="width:58px;height:58px;border-radius:9px;background:linear-gradient(135deg,#1a2a3a,#2a3a4a);border:2px solid #4ecdc4;margin-right:7px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-box-pack:center;-webkit-justify-content:center;justify-content:center;font-size:1.3rem;">💬</div>
+                <div style="width:58px;height:58px;border-radius:9px;background:linear-gradient(135deg,#2a1a3a,#3a2a4a);border:2px solid #4ecdc4;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-box-pack:center;-webkit-justify-content:center;justify-content:center;font-size:1.3rem;">📱</div>
+              </div>
+              <!-- AI 분석 결과 -->
+              <div style="background:#16213e;border-radius:8px;border:1px solid #2a2a4a;padding:8px 10px;margin-bottom:5px;">
+                <div style="font-size:0.6rem;color:#6b7280;margin-bottom:4px;">🤖 사진 속 마지막 메시지 감지:</div>
+                <div style="font-size:0.75rem;color:#fff;margin-bottom:6px;">คิดถึงนะ วันนี้ทำอะไรอยู่? 🥰</div>
+                <div style="font-size:0.6rem;color:#ffd93d;font-weight:700;margin-bottom:3px;">🎯 설렘 유발</div>
+                <div style="font-size:0.7rem;color:#fff;">เพิ่งนึกถึงน้องพอดีเลย 😏</div>
+                <div style="font-size:0.6rem;color:#6b7280;margin-top:2px;">🇰🇷 마침 생각하고 있었어요</div>
+                <div style="font-size:0.58rem;color:#a78bfa;margin-top:2px;font-style:italic;">✦ 우연의 일치처럼 보여 설레게 만드는 효과</div>
+              </div>
+            </div>
+          </div>
+          <div class="guide-desc">
+            <div class="point"><span class="point-icon">①</span><span>채팅 화면 하단 입력창 왼쪽 <strong>📷 버튼</strong> 탭</span></div>
+            <div class="point"><span class="point-icon">②</span><span>카카오톡·라인 대화 캡쳐 사진을 선택 — <strong>여러 장도 가능</strong></span></div>
+            <div class="point"><span class="point-icon">③</span><span>선택한 사진 썸네일 확인 후 <strong>▶ 버튼</strong> 탭</span></div>
+            <div class="point"><span class="point-icon">④</span><span>AI가 사진 속 태국어 대화를 직접 읽고 상대방 마지막 메시지를 파악해 전략적 답변 3개 추천</span></div>
+            <div class="point"><span class="point-icon">⑤</span><span>텍스트 입력 없이 사진만 올려도 되고, 사진+메모 텍스트를 함께 입력해도 됩니다</span></div>
           </div>
         </div>
 
@@ -885,8 +953,8 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
       <!-- 버전 정보 -->
       <div style="background:#1a1a2e;border-radius:12px;border:1px solid #2a2a4a;padding:14px;margin-bottom:20px;text-align:center;">
         <div style="font-size:0.7rem;color:#6b7280;margin-bottom:8px;">현재 버전</div>
-        <div style="font-size:1.3rem;font-weight:900;color:#ffd93d;margin-bottom:4px;">v9.0</div>
-        <div style="font-size:0.68rem;color:#6b7280;line-height:1.7;">닉네임 · AI 감정분석 강화 · 전략집<br>랭킹→채팅 링크 · 전략 메모</div>
+        <div style="font-size:1.3rem;font-weight:900;color:#ffd93d;margin-bottom:4px;">v9.2</div>
+        <div style="font-size:0.68rem;color:#6b7280;line-height:1.7;">닉네임 · AI 감정분석 강화 · 전략집<br>랭킹→채팅 링크 · 전략 메모<br>📷 대화 캡쳐 사진 분석</div>
         <div style="margin-top:12px;font-size:0.7rem;color:#4ecdc4;">🔄 업데이트 시 새로고침하면 자동 반영</div>
       </div>
 
@@ -926,9 +994,20 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
     AI 전략 분석 중...
   </div>
   <div class="chat-inp-area">
-    <div class="chat-inp-tip">👩 상대방 메시지 → AI가 전략적 답변 추천</div>
+    <div class="img-mode-banner" id="imgModeBanner">
+      <span>📷 사진 <span id="imgModeCount">0</span>장 선택됨 — AI가 대화 내용을 읽어 분석합니다</span>
+      <button class="img-mode-clear" onclick="clearChatImages()">전체삭제</button>
+    </div>
+    <div class="chat-img-preview" id="chatImgPreview"></div>
+    <div class="chat-inp-tip">👩 메시지 입력 또는 📷 대화 캡쳐 사진 업로드</div>
     <div class="chat-inp-row">
-      <textarea class="chat-ta" id="chatTa" placeholder="상대방 태국어 메시지..." rows="1"
+      <div class="chat-img-btn-wrap">
+        <label class="chat-img-btn" for="chatImgInput" title="대화 캡쳐 업로드">📷</label>
+        <input type="file" id="chatImgInput" accept="image/*" multiple style="display:none"
+          onchange="handleChatImageUpload(this)">
+        <span class="chat-img-count" id="chatImgBadge" style="display:none;"></span>
+      </div>
+      <textarea class="chat-ta" id="chatTa" placeholder="메시지 입력 또는 📷 사진만 올려도 됩니다" rows="1"
         oninput="autoH(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();chatAnalyze();}"></textarea>
       <button class="chat-go" onclick="chatAnalyze()">▶</button>
     </div>
@@ -1300,6 +1379,8 @@ function closeEdit(){document.getElementById('editOverlay').classList.remove('sh
 
 /* ── 개인 채팅 ── */
 var chatIdx=-1;
+var chatImages=[];   // [{data:base64, type:'image/jpeg', thumb:objectURL}, ...]
+
 function openChat(i){
   chatIdx=i;
   closeEdit();
@@ -1346,23 +1427,166 @@ function renderChatMsgs(){
   el.appendChild(emp);
   setTimeout(scrollChatBottom,50);
 }
-async function chatAnalyze(){
-  var msg=document.getElementById('chatTa').value.trim();if(!msg)return;
-  var p=people[chatIdx];if(!p.chat)p.chat=[];
-  p.chat.push({dir:'her',msg:msg,ts:Date.now()});
-  savePpl();renderChatMsgs();
-  document.getElementById('chatTa').value='';
+/* ── 이미지 업로드 핸들러 ── */
+function resizeImageToBase64(file){
+  return new Promise(function(resolve,reject){
+    var reader=new FileReader();
+    reader.onload=function(e){
+      var img=new Image();
+      img.onload=function(){
+        var MAX=1400;
+        var w=img.width,h=img.height;
+        if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+        if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
+        var canvas=document.createElement('canvas');
+        canvas.width=w;canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        var b64=canvas.toDataURL('image/jpeg',0.85).split(',')[1];
+        resolve({data:b64,type:'image/jpeg'});
+      };
+      img.onerror=reject;
+      img.src=e.target.result;
+    };
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+function handleChatImageUpload(input){
+  var files=Array.prototype.slice.call(input.files);
+  if(!files.length)return;
   document.getElementById('chatLoading').classList.add('show');
-  scrollChatBottom();
-  try{
-    var result=await callClaudeChat(msg,p);
+  document.getElementById('chatLoading').innerHTML='<div class="dots"><span></span><span></span><span></span></div> 사진 처리 중...';
+  Promise.all(files.map(function(f){return resizeImageToBase64(f);}))
+  .then(function(results){
+    results.forEach(function(r,i){
+      var thumb=URL.createObjectURL(files[i]);
+      chatImages.push({data:r.data,type:r.type,thumb:thumb});
+    });
     document.getElementById('chatLoading').classList.remove('show');
-    renderChatSuggs(result);
-  }catch(e){
+    document.getElementById('chatLoading').innerHTML='<div class="dots"><span></span><span></span><span></span></div> AI 전략 분석 중...';
+    renderChatImagePreview();
+    input.value='';
+  })
+  .catch(function(){
     document.getElementById('chatLoading').classList.remove('show');
-    showToast('⚠️ AI 오류. 다시 시도하세요');
+    document.getElementById('chatLoading').innerHTML='<div class="dots"><span></span><span></span><span></span></div> AI 전략 분석 중...';
+    showToast('⚠️ 이미지 처리 실패');
+    input.value='';
+  });
+}
+function renderChatImagePreview(){
+  var preview=document.getElementById('chatImgPreview');
+  var banner=document.getElementById('imgModeBanner');
+  var badge=document.getElementById('chatImgBadge');
+  preview.innerHTML='';
+  if(!chatImages.length){
+    banner.classList.remove('show');
+    badge.style.display='none';
+    return;
+  }
+  chatImages.forEach(function(img,i){
+    var wrap=document.createElement('div');wrap.className='chat-img-thumb';
+    wrap.innerHTML='<img src="'+img.thumb+'" alt="캡쳐'+(i+1)+'">'
+      +'<button class="chat-img-del" onclick="removeChatImage('+i+')">✕</button>';
+    preview.appendChild(wrap);
+  });
+  banner.classList.add('show');
+  document.getElementById('imgModeCount').textContent=chatImages.length;
+  badge.textContent=chatImages.length;
+  badge.style.display='block';
+}
+function removeChatImage(i){
+  URL.revokeObjectURL(chatImages[i].thumb);
+  chatImages.splice(i,1);
+  renderChatImagePreview();
+}
+function clearChatImages(){
+  chatImages.forEach(function(img){URL.revokeObjectURL(img.thumb);});
+  chatImages=[];
+  renderChatImagePreview();
+}
+
+async function chatAnalyze(){
+  var msg=document.getElementById('chatTa').value.trim();
+  var hasImages=chatImages.length>0;
+  if(!msg&&!hasImages)return;
+  var p=people[chatIdx];if(!p.chat)p.chat=[];
+
+  if(hasImages){
+    /* 이미지 모드 — 사진 속 대화를 AI가 직접 읽음 */
+    document.getElementById('chatTa').value='';
+    document.getElementById('chatLoading').classList.add('show');
+    scrollChatBottom();
+    var imgs=chatImages.slice();
+    clearChatImages();
+    try{
+      var result=await callClaudeChatVision(imgs,msg,p);
+      document.getElementById('chatLoading').classList.remove('show');
+      /* 분석된 마지막 메시지를 히스토리에 추가 */
+      if(result.lastMsg){
+        p.chat.push({dir:'her',msg:result.lastMsg,ts:Date.now()});
+        savePpl();renderChatMsgs();
+      }
+      renderChatSuggs(result);
+    }catch(e){
+      document.getElementById('chatLoading').classList.remove('show');
+      showToast('⚠️ AI 오류. 다시 시도하세요');
+    }
+  } else {
+    /* 텍스트 모드 — 기존 방식 */
+    p.chat.push({dir:'her',msg:msg,ts:Date.now()});
+    savePpl();renderChatMsgs();
+    document.getElementById('chatTa').value='';
+    document.getElementById('chatLoading').classList.add('show');
+    scrollChatBottom();
+    try{
+      var result=await callClaudeChat(msg,p);
+      document.getElementById('chatLoading').classList.remove('show');
+      renderChatSuggs(result);
+    }catch(e){
+      document.getElementById('chatLoading').classList.remove('show');
+      showToast('⚠️ AI 오류. 다시 시도하세요');
+    }
   }
 }
+
+async function callClaudeChatVision(imgs,extraText,p){
+  var recent=(p.chat||[]).slice(-10);
+  var history=recent.length?recent.map(function(c){return(c.dir==='her'?'상대: ':'나: ')+c.msg;}).join('\n'):'(이전 대화 없음)';
+  var sys='당신은 태국/라오스 여성과 대화하는 한국 남성의 플러팅 전략 코치입니다.\n'
+    +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계: '+SD[p.s||0]+' / 내 스타일: '+PD[persona]+'\n'
+    +'이전 저장된 대화:\n'+history+'\n\n'
+    +'[중요 지시사항]\n'
+    +'1. 첨부된 스크린샷은 카카오톡·라인 등 채팅앱의 대화 캡쳐입니다.\n'
+    +'2. 스크린샷 속 대화를 읽고 흐름과 상대방의 마지막 메시지를 파악하세요.\n'
+    +'3. 상대방(태국/라오스 여성)이 마지막으로 보낸 메시지에 대한 전략적 답변 3개를 추천하세요.\n'
+    +'4. lastMsg 필드에 상대방의 마지막 메시지(원문 그대로)를 넣으세요.\n'
+    +'5. 각 답변은 짧은 구어체(1~2문장), 이모티콘 1~2개.\n'
+    +'6. 각 답변마다 전략명(label)과 효과 이유(why)를 한국어로.\n'
+    +'JSON만 반환:\n'
+    +'{"tip":"한줄전략조언(한국어)","lastMsg":"상대방마지막메시지원문","suggs":['
+    +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"효과이유"},'
+    +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"효과이유"},'
+    +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"효과이유"}]}';
+
+  var content=[];
+  imgs.forEach(function(img,i){
+    content.push({type:'text',text:i===0?'채팅 스크린샷 '+(i+1)+'장:':'추가 스크린샷 '+(i+1)+'장:'});
+    content.push({type:'image',source:{type:'base64',media_type:img.type,data:img.data}});
+  });
+  var userText='위 스크린샷의 대화를 분석해 전략적 답변을 JSON으로 추천해주세요.';
+  if(extraText)userText+=' 추가 메모: '+extraText;
+  content.push({type:'text',text:userText});
+
+  var r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:900,system:sys,messages:[{role:'user',content:content}]})
+  });
+  var d=await r.json();
+  return JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
+}
+
 async function callClaudeChat(msg,p){
   var recent=(p.chat||[]).slice(-14);
   var history=recent.map(function(c){return(c.dir==='her'?'상대('+p.n+'): ':'나: ')+c.msg;}).join('\n');
