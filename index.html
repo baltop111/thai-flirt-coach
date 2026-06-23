@@ -381,7 +381,47 @@ function detectSigs(msg){
   if(!sigs.length)sigs.push({c:'neu',l:'💬 일반 메시지'});
   return sigs;
 }
-function analyze(){
+var CLAUDE_KEY=localStorage.getItem('ck')||'';
+var stageLabels=['첫 연락 단계','친해지는 단계','호감 형성 단계','설레는 단계','깊은 연결 단계'];
+var personaLabels={charming:'매력적이고 세련된',witty:'재치있고 유머러스한',warm:'따뜻하고 진심어린',bold:'직접적이고 자신감있는'};
+
+async function callClaude(msg){
+  var sysPrompt='당신은 태국/라오스 여성과 대화하는 한국 남성을 위한 태국어 플러팅 코치입니다.\n'
+    +'현재 관계 단계: '+stageLabels[stage]+'\n'
+    +'현재 페르소나: '+personaLabels[persona]+' 스타일\n\n'
+    +'상대방이 보낸 태국어 메시지를 분석하고, 자연스럽고 매력적인 태국어 답장 4개를 JSON으로 반환하세요.\n'
+    +'반드시 아래 JSON 형식만 반환하고 다른 텍스트는 절대 포함하지 마세요:\n'
+    +'{"tip":"한국어로 이 상황에 대한 짧은 조언","suggs":['
+    +'{"t":"play","lv":3,"th":"태국어 답장","ko":"한국어 번역"},'
+    +'{"t":"warm","lv":2,"th":"태국어 답장","ko":"한국어 번역"},'
+    +'{"t":"wit","lv":3,"th":"태국어 답장","ko":"한국어 번역"},'
+    +'{"t":"dir","lv":2,"th":"태국어 답장","ko":"한국어 번역"}]}\n'
+    +'t 타입: play=장난기형, warm=따뜻형, wit=재치형, dir=직접형\n'
+    +'lv: 1-5 강도 (1=가장 자연스럽게, 5=매우 적극적)\n'
+    +'태국어는 실제로 쓰이는 자연스러운 구어체로 작성하세요. 이모티콘 적극 활용.';
+
+  var resp=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':CLAUDE_KEY,
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({
+      model:'claude-haiku-4-5-20251001',
+      max_tokens:800,
+      messages:[{role:'user',content:'상대방 메시지: '+msg}],
+      system:sysPrompt
+    })
+  });
+  var data=await resp.json();
+  var text=data.content[0].text.trim();
+  var jsonStr=text.replace(/^```json\s*/,'').replace(/\s*```$/,'');
+  return JSON.parse(jsonStr);
+}
+
+async function analyze(){
   var msg=document.getElementById('herMsg').value.trim();if(!msg)return;
   document.getElementById('emptyState').style.display='none';
   document.getElementById('results').innerHTML='';
@@ -392,11 +432,15 @@ function analyze(){
   b.innerHTML=msg+'<span class="btime">방금</span>';
   document.getElementById('chatCtx').appendChild(b);
   document.getElementById('chatCtx').scrollTop=9999;
-  setTimeout(function(){
+  try{
+    var r=await callClaude(msg);
     document.getElementById('loading').classList.remove('show');
-    var r=gen(msg,stage,persona);
-    renderSigs(r.sigs);renderTip(r.tip);renderSuggs(r.suggs);
-  },800);
+    renderSigs(detectSigs(msg));renderTip(r.tip);renderSuggs(r.suggs);
+  }catch(e){
+    document.getElementById('loading').classList.remove('show');
+    var r2=gen(msg,stage,persona);
+    renderSigs(r2.sigs);renderTip(r2.tip);renderSuggs(r2.suggs);
+  }
 }
 function renderSigs(sigs){
   var el=document.getElementById('signals');
@@ -562,6 +606,35 @@ for(var key in phMap){
 }
 
 if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(function(){});}
+
+function saveKey(){
+  var k=document.getElementById('keyInput').value.trim();
+  if(!k){alert('키를 입력하세요');return;}
+  localStorage.setItem('ck',k);
+  CLAUDE_KEY=k;
+  document.getElementById('keyModal').style.display='none';
+  showToast('AI 연동 완료! ✓');
+}
+function showKeyModal(){document.getElementById('keyModal').style.display='flex';}
+function closeKeyModal(){document.getElementById('keyModal').style.display='none';}
+
+if(!CLAUDE_KEY){
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(function(){showKeyModal();},500);
+  });
+}
 </script>
+
+<!-- API 키 입력 모달 -->
+<div id="keyModal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#1a1a2e;border:1px solid #7c5cbf;border-radius:20px;padding:24px;width:100%;max-width:340px;">
+    <div style="font-size:1.5rem;text-align:center;margin-bottom:8px;">🤖</div>
+    <div style="font-size:1rem;font-weight:700;text-align:center;margin-bottom:6px;color:#e8e8f0;">AI 코치 설정</div>
+    <div style="font-size:0.78rem;color:#9ca3af;text-align:center;margin-bottom:16px;line-height:1.5;">Claude API 키를 입력하면<br>모든 태국어 상황에 AI가 즉시 답변합니다</div>
+    <input id="keyInput" type="password" placeholder="sk-ant-api03-..." style="width:100%;background:#0f0f1a;border:1px solid #2a2a4a;border-radius:10px;padding:11px 12px;color:#e8e8f0;font-size:0.82rem;margin-bottom:12px;outline:none;">
+    <button onclick="saveKey()" style="width:100%;background:linear-gradient(135deg,#7c5cbf,#ff6b8a);border:none;border-radius:10px;padding:12px;color:#fff;font-size:0.9rem;font-weight:700;cursor:pointer;margin-bottom:8px;">저장하고 시작</button>
+    <button onclick="closeKeyModal()" style="width:100%;background:transparent;border:1px solid #2a2a4a;border-radius:10px;padding:10px;color:#6b7280;font-size:0.82rem;cursor:pointer;">나중에</button>
+  </div>
+</div>
 </body>
 </html>
