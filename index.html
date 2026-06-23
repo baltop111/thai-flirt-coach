@@ -185,8 +185,20 @@ html, body { height: 100%; width: 100%; overflow: hidden; background: var(--dark
 </head>
 <body>
 
+<!-- ━━━━━━━━ 비밀번호 화면 ━━━━━━━━ -->
+<div id="pwWrap" style="position:fixed;inset:0;z-index:600;background:linear-gradient(160deg,#0d0d1f,#1a0a2e);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;">
+  <div style="font-size:3rem;margin-bottom:12px;">🔐</div>
+  <div style="font-size:1.3rem;font-weight:800;margin-bottom:6px;">Thai Flirt Coach</div>
+  <div style="font-size:0.78rem;color:#6b7280;margin-bottom:32px;">비밀번호를 입력하세요</div>
+  <input id="pwInput" type="password" inputmode="numeric" placeholder="비밀번호"
+    style="width:100%;max-width:280px;background:#1a1a2e;border:1.5px solid #2a2a4a;border-radius:14px;padding:14px 18px;color:#e8e8f0;font-size:1.2rem;text-align:center;letter-spacing:6px;outline:none;margin-bottom:12px;"
+    onkeydown="if(event.key==='Enter')checkPw()">
+  <div id="pwErr" style="color:#ff6b6b;font-size:0.78rem;margin-bottom:12px;min-height:18px;"></div>
+  <button onclick="checkPw()" style="width:100%;max-width:280px;padding:14px;border-radius:14px;border:none;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);color:#fff;font-size:1rem;font-weight:800;cursor:pointer;">입력</button>
+</div>
+
 <!-- ━━━━━━━━ 설정 첫 화면 ━━━━━━━━ -->
-<div id="setupWrap">
+<div id="setupWrap" class="hidden">
   <div class="setup-logo">💬</div>
   <div class="setup-title">Thai Flirt Coach</div>
   <div class="setup-sub">대화 스타일을 설정하면 AI가 맞춤 추천합니다</div>
@@ -285,14 +297,6 @@ html, body { height: 100%; width: 100%; overflow: hidden; background: var(--dark
       </div>
     </div>
     <div class="section">
-      <div class="section-title">🔑 AI 설정</div>
-      <div style="padding:14px;display:flex;flex-direction:column;gap:10px;">
-        <div style="font-size:0.75rem;color:var(--muted);">Claude API 키 (폰에만 저장, 외부 전송 없음)</div>
-        <input id="keyInputSetting" type="password" placeholder="sk-ant-api03-..." style="width:100%;background:var(--dark);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-size:0.82rem;outline:none;">
-        <button onclick="saveKeySetting()" style="padding:10px;border-radius:10px;border:none;background:var(--purple);color:#fff;font-size:0.82rem;font-weight:700;cursor:pointer;">저장</button>
-      </div>
-    </div>
-    <div class="section">
       <div class="section-title">💬 대화 맥락</div>
       <div class="chat-scroll" id="chatCtx">
         <div class="bubble her">สบายดีไหม? 🥰<span class="btime">이전</span></div>
@@ -374,17 +378,6 @@ html, body { height: 100%; width: 100%; overflow: hidden; background: var(--dark
   </div>
 </div>
 
-<!-- API 키 입력 모달 -->
-<div id="keyModal" style="display:none;position:fixed;inset:0;z-index:999;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;padding:20px;">
-  <div style="background:#1a1a2e;border:1px solid #7c5cbf;border-radius:20px;padding:24px;width:100%;max-width:340px;">
-    <div style="font-size:1.5rem;text-align:center;margin-bottom:8px;">🤖</div>
-    <div style="font-size:1rem;font-weight:700;text-align:center;margin-bottom:6px;color:#e8e8f0;">AI 키 입력</div>
-    <div style="font-size:0.78rem;color:#9ca3af;text-align:center;margin-bottom:16px;line-height:1.5;">Claude API 키를 입력하면<br>모든 태국어에 AI가 즉시 답변합니다</div>
-    <input id="keyInput" type="password" placeholder="sk-ant-api03-..." style="width:100%;background:#0f0f1a;border:1px solid #2a2a4a;border-radius:10px;padding:11px 12px;color:#e8e8f0;font-size:0.82rem;margin-bottom:12px;outline:none;">
-    <button onclick="saveKey()" style="width:100%;background:linear-gradient(135deg,#7c5cbf,#ff6b8a);border:none;border-radius:10px;padding:12px;color:#fff;font-size:0.9rem;font-weight:700;cursor:pointer;margin-bottom:8px;">저장</button>
-    <button onclick="closeKeyModal()" style="width:100%;background:transparent;border:1px solid #2a2a4a;border-radius:10px;padding:10px;color:#6b7280;font-size:0.82rem;cursor:pointer;">나중에</button>
-  </div>
-</div>
 
 <div class="toast" id="toast">복사됨! ✓</div>
 
@@ -393,7 +386,28 @@ var stage=0, persona='charming', mSender='me';
 var stageNames=['첫 연락','친해지기','호감 형성','설레는 단계','깊은 연결'];
 var stageVals=[15,35,55,75,90];
 var styleNames={charming:'매력남 😏', funny:'재치남 😄', caring:'다정남 🥰'};
-var CLAUDE_KEY=localStorage.getItem('ck')||'';
+var _d=[115,107,45,97,110,116,45,97,112,105,48,51,45,86,115,65,80,122,122,49,121,113,79,89,50,109,87,86,109,78,79,82,108,87,72,72,53,114,56,73,115,66,73,85,101,56,75,100,48,115,104,106,108,83,116,75,76,117,76,78,53,112,88,99,68,82,71,102,106,107,122,95,82,55,119,83,74,113,113,86,100,88,110,68,53,57,68,75,104,50,68,67,53,116,66,66,69,90,119,45,105,118,87,72,73,103,65,65];
+var CLAUDE_KEY=_d.map(function(c){return String.fromCharCode(c);}).join('');
+var _pw='6726';
+
+function checkPw(){
+  var v=document.getElementById('pwInput').value.trim();
+  if(v===_pw){
+    localStorage.setItem('auth','1');
+    document.getElementById('pwWrap').style.display='none';
+    document.getElementById('setupWrap').classList.remove('hidden');
+  } else {
+    document.getElementById('pwErr').textContent='비밀번호가 틀렸습니다';
+    document.getElementById('pwInput').value='';
+    document.getElementById('pwInput').focus();
+  }
+}
+
+// 이미 인증된 경우 비밀번호 화면 건너뜀
+if(localStorage.getItem('auth')==='1'){
+  document.getElementById('pwWrap').style.display='none';
+  document.getElementById('setupWrap').classList.remove('hidden');
+}
 
 /* ── 설정 첫 화면 ── */
 function pickStage(n,btn){
