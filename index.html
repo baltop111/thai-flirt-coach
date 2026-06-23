@@ -236,13 +236,19 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 .s-title{font-size:1.3rem;font-weight:800;text-align:center;margin-bottom:4px;}
 .s-sub{font-size:0.77rem;color:#6b7280;text-align:center;margin-bottom:28px;}
 .s-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#6b7280;margin-bottom:9px;width:100%;max-width:340px;}
-.pw-nick-input{width:100%;max-width:280px;background:#1a1a2e;border:1.5px solid #2a2a4a;border-radius:13px;padding:13px 18px;color:#e8e8f0;font-size:1rem;text-align:center;outline:none;margin-bottom:12px;}
+.pw-nick-input{width:100%;max-width:300px;background:#1a1a2e;border:1.5px solid #2a2a4a;border-radius:13px;padding:13px 18px;color:#e8e8f0;font-size:1rem;text-align:center;outline:none;margin-bottom:12px;}
 .pw-nick-input:focus{border-color:#4ecdc4;}
-.pw-input{width:100%;max-width:280px;background:#1a1a2e;border:1.5px solid #2a2a4a;border-radius:13px;padding:14px 18px;color:#e8e8f0;font-size:1.2rem;text-align:center;letter-spacing:6px;outline:none;margin-bottom:10px;}
-.pw-input:focus{border-color:#ff6b8a;}
+.pw-phone-input{width:100%;max-width:300px;background:#1a1a2e;border:1.5px solid #2a2a4a;border-radius:13px;padding:13px 18px;color:#e8e8f0;font-size:1.1rem;text-align:center;letter-spacing:2px;outline:none;margin-bottom:10px;}
+.pw-phone-input:focus{border-color:#ff6b8a;}
 .pw-err{color:#ff6b6b;font-size:0.77rem;margin-bottom:10px;min-height:18px;text-align:center;}
-.pw-btn{width:100%;max-width:280px;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);color:#fff;font-size:1rem;font-weight:800;cursor:pointer;}
-.pw-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#6b7280;margin-bottom:8px;width:100%;max-width:280px;text-align:left;}
+.pw-btn{width:100%;max-width:300px;padding:14px;border-radius:13px;border:none;background:linear-gradient(135deg,#ff6b8a,#7c5cbf);color:#fff;font-size:1rem;font-weight:800;cursor:pointer;}
+.pw-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#6b7280;margin-bottom:8px;width:100%;max-width:300px;text-align:left;}
+.pw-privacy{width:100%;max-width:300px;font-size:0.62rem;color:#4b5563;line-height:1.6;text-align:center;margin-top:6px;padding:0 4px;}
+.pw-privacy a{color:#6b7280;text-decoration:underline;}
+.pw-agree-row{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;width:100%;max-width:300px;margin-bottom:14px;}
+.pw-agree-cb{width:16px;height:16px;margin-right:8px;-webkit-flex-shrink:0;flex-shrink:0;accent-color:#ff6b8a;cursor:pointer;}
+.pw-agree-lbl{font-size:0.7rem;color:#9ca3af;cursor:pointer;line-height:1.4;-webkit-box-flex:1;-webkit-flex:1;flex:1;}
+.pw-agree-lbl strong{color:#c4b5fd;}
 .stage-grid{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;width:100%;max-width:340px;margin-bottom:22px;}
 .sg-btn{padding:10px 6px;border-radius:11px;border:1.5px solid #2a2a4a;background:none;color:#e8e8f0;font-size:0.7rem;cursor:pointer;text-align:center;width:calc(33.3% - 6px);margin-right:6px;margin-bottom:6px;}
 .sg-btn .si{display:block;font-size:1.2rem;margin-bottom:3px;}
@@ -364,19 +370,24 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 </head>
 <body>
 
-<!-- 비밀번호 -->
+<!-- 입장 화면 -->
 <div id="pwWrap">
   <div class="s-logo">💘</div>
   <div class="s-title">Thai Flirt Coach</div>
-  <div class="s-sub">세계 최고의 플러팅 코치</div>
-  <div class="pw-label">👤 나의 닉네임</div>
-  <input id="nickInput" class="pw-nick-input" type="text" placeholder="닉네임을 입력하세요"
-    onkeydown="if(event.key==='Enter')document.getElementById('pwInput').focus()">
-  <div class="pw-label" style="margin-top:4px;">🔐 비밀번호</div>
-  <input id="pwInput" class="pw-input" type="password" inputmode="numeric" placeholder="••••"
-    onkeydown="if(event.key==='Enter')checkPw()">
+  <div class="s-sub">세계 최고의 AI 플러팅 코치</div>
+  <div class="pw-label">👤 닉네임</div>
+  <input id="nickInput" class="pw-nick-input" type="text" placeholder="사용할 닉네임 입력"
+    onkeydown="if(event.key==='Enter')document.getElementById('phoneInput').focus()">
+  <div class="pw-label" style="margin-top:4px;">📱 핸드폰 번호</div>
+  <input id="phoneInput" class="pw-phone-input" type="tel" placeholder="010-0000-0000"
+    oninput="fmtPhone(this)" onkeydown="if(event.key==='Enter')checkPw()">
   <div id="pwErr" class="pw-err"></div>
-  <button class="pw-btn" onclick="checkPw()">✨ 입력</button>
+  <div class="pw-agree-row">
+    <input type="checkbox" id="agreeChk" class="pw-agree-cb">
+    <label for="agreeChk" class="pw-agree-lbl"><strong>개인정보 수집에 동의합니다</strong><br>닉네임·연락처는 앱 운영 목적으로만 사용되며 제3자에게 제공되지 않습니다.</label>
+  </div>
+  <button class="pw-btn" onclick="checkPw()">✨ 입장하기</button>
+  <div class="pw-privacy">※ 본 앱은 서비스 이용을 위해 닉네임과 핸드폰 번호를 수집합니다.<br>수집된 정보는 운영자만 열람하며, 앱 종료 후에도 기기 내 보관됩니다.<br>동의하지 않으실 경우 서비스 이용이 제한됩니다.</div>
 </div>
 
 <!-- 설정 첫 화면 -->
@@ -405,6 +416,15 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
     </button>
   </div>
   <button class="start-btn" onclick="startApp()">✨ 시작하기</button>
+  <div style="width:100%;max-width:340px;margin-top:20px;border-top:1px solid #2a2a4a;padding-top:16px;">
+    <div class="s-label" style="color:#4b5563;">🔧 관리자 설정 (선택)</div>
+    <input id="webhookInput" class="pw-nick-input" type="url"
+      placeholder="Discord 웹훅 URL (선택사항)"
+      style="font-size:0.75rem;letter-spacing:0;text-align:left;color:#9ca3af;margin-bottom:8px;"
+      onkeydown="if(event.key==='Enter')saveWebhook()">
+    <button onclick="saveWebhook()" style="width:100%;background:#2a2a4a;border:none;color:#9ca3af;padding:10px;border-radius:10px;font-size:0.78rem;cursor:pointer;">💾 웹훅 URL 저장</button>
+    <div id="webhookMsg" style="font-size:0.65rem;color:#4ecdc4;text-align:center;margin-top:6px;min-height:16px;"></div>
+  </div>
 </div>
 
 <!-- 메인 앱 -->
@@ -418,7 +438,7 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
       <div class="hdr-badges">
         <span class="badge" id="bdStage">첫 연락</span>
         <span class="badge" id="bdStyle">매력남</span>
-        <span class="badge badge-ver">v9.3</span>
+        <span class="badge badge-ver">v9.4</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="goSetup()">⚙️ 재설정</button>
@@ -1084,7 +1104,8 @@ var AE=['👩','👧','💁','🙋','👱','💃','🌸','🦋','🌺','⭐'];
 
 var _d=[115,107,45,97,110,116,45,97,112,105,48,51,45,86,115,65,80,122,122,49,121,113,79,89,50,109,87,86,109,78,79,82,108,87,72,72,53,114,56,73,115,66,73,85,101,56,75,100,48,115,104,106,108,83,116,75,76,117,76,78,53,112,88,99,68,82,71,102,106,107,122,95,82,55,119,83,74,113,113,86,100,88,110,68,53,57,68,75,104,50,68,67,53,116,66,66,69,90,119,45,105,118,87,72,73,103,65,65];
 var CK=_d.map(function(c){return String.fromCharCode(c);}).join('');
-var PW='6726';
+/* Discord 웹훅 URL — 설정 후 git push 하면 자동 적용됩니다 */
+var WEBHOOK_URL=localStorage.getItem('webhookUrl')||'';
 
 /* ── 상태 ── */
 var stage=0,persona='charming',editIdx=-1,editStage=0;
@@ -1092,23 +1113,70 @@ var people=JSON.parse(localStorage.getItem('ppl')||'[]');
 while(people.length<10) people.push({n:'',a:'',s:0,sc:0,e:AE[people.length]});
 var memos=JSON.parse(localStorage.getItem('memos')||'[]');
 var nickname=localStorage.getItem('nickname')||'';
+var userPhone=localStorage.getItem('userPhone')||'';
+var registeredUsers=JSON.parse(localStorage.getItem('registeredUsers')||'[]');
 
-/* ── 비밀번호 ── */
+/* ── 핸드폰 번호 포맷 ── */
+function fmtPhone(el){
+  var v=el.value.replace(/\D/g,'');
+  if(v.length<=3) el.value=v;
+  else if(v.length<=7) el.value=v.slice(0,3)+'-'+v.slice(3);
+  else el.value=v.slice(0,3)+'-'+v.slice(3,7)+'-'+v.slice(7,11);
+}
+
+/* ── Discord 웹훅 알림 ── */
+function sendWebhook(nick,phone){
+  if(!WEBHOOK_URL) return;
+  var now=new Date();
+  var dateStr=now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
+  var timeStr=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+  var body=JSON.stringify({
+    embeds:[{
+      title:'💘 Thai Flirt Coach — 신규 사용자 등록',
+      color:0xff6b8a,
+      fields:[
+        {name:'👤 닉네임',value:nick,inline:true},
+        {name:'📱 연락처',value:phone,inline:true},
+        {name:'🕐 등록 시각',value:dateStr+' '+timeStr,inline:false}
+      ],
+      footer:{text:'Thai Flirt Coach v9.4'}
+    }]
+  });
+  fetch(WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:body}).catch(function(){});
+}
+
+/* ── 입장 처리 ── */
 function checkPw(){
   var nick=document.getElementById('nickInput').value.trim();
-  var v=document.getElementById('pwInput').value.trim();
-  if(v===PW){
-    if(nick) { nickname=nick; localStorage.setItem('nickname',nick); }
-    localStorage.setItem('auth','1');
-    document.getElementById('pwWrap').classList.add('hidden');
-    document.getElementById('setupWrap').classList.remove('hidden');
-  } else {
-    document.getElementById('pwErr').textContent='비밀번호가 틀렸습니다';
-    document.getElementById('pwInput').value='';
+  var phone=document.getElementById('phoneInput').value.trim();
+  var agreed=document.getElementById('agreeChk').checked;
+  var err=document.getElementById('pwErr');
+  if(!nick){err.textContent='닉네임을 입력해주세요';return;}
+  if(!phone||phone.replace(/\D/g,'').length<10){err.textContent='핸드폰 번호를 정확히 입력해주세요';return;}
+  if(!agreed){err.textContent='개인정보 수집 동의가 필요합니다';return;}
+  err.textContent='';
+  nickname=nick;
+  userPhone=phone;
+  localStorage.setItem('nickname',nick);
+  localStorage.setItem('userPhone',phone);
+  localStorage.setItem('auth','1');
+  /* 신규 사용자이면 목록에 추가 + 웹훅 발송 */
+  var existing=registeredUsers.find(function(u){return u.phone===phone;});
+  if(!existing){
+    var now=new Date();
+    var entry={nick:nick,phone:phone,ts:now.getTime(),
+      date:now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0')};
+    registeredUsers.push(entry);
+    localStorage.setItem('registeredUsers',JSON.stringify(registeredUsers));
+    sendWebhook(nick,phone);
   }
+  document.getElementById('pwWrap').classList.add('hidden');
+  document.getElementById('setupWrap').classList.remove('hidden');
 }
+
 (function init(){
   if(nickname) document.getElementById('nickInput').value=nickname;
+  if(userPhone) document.getElementById('phoneInput').value=userPhone;
   if(localStorage.getItem('auth')==='1'){
     document.getElementById('pwWrap').classList.add('hidden');
     document.getElementById('setupWrap').classList.remove('hidden');
@@ -1146,6 +1214,15 @@ function updateNickDisplay(){
 function goSetup(){
   document.getElementById('app').classList.remove('show');
   document.getElementById('setupWrap').classList.remove('hidden');
+  document.getElementById('webhookInput').value=WEBHOOK_URL||'';
+}
+function saveWebhook(){
+  var url=document.getElementById('webhookInput').value.trim();
+  WEBHOOK_URL=url;
+  localStorage.setItem('webhookUrl',url);
+  var msg=document.getElementById('webhookMsg');
+  msg.textContent=url?'✓ 저장됨 — 신규 사용자 등록 시 Discord 알림 발송':'웹훅 URL 삭제됨';
+  setTimeout(function(){msg.textContent='';},2500);
 }
 
 /* ── 탭 전환 ── */
