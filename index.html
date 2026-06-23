@@ -8,8 +8,22 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="FlirtCoach">
 <meta name="theme-color" content="#7c5cbf">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <link rel="manifest" href="manifest.json">
 <title>Thai Flirt Coach</title>
+<script>
+// 모든 이전 서비스워커 강제 해제
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(function(regs){
+    regs.forEach(function(r){r.unregister();});
+  });
+  caches.keys().then(function(keys){
+    keys.forEach(function(k){caches.delete(k);});
+  });
+}
+</script>
 <style>
 :root {
   --pink: #ff6b8a; --purple: #7c5cbf; --dark: #0f0f1a;
