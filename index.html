@@ -186,7 +186,11 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
 .bubble.her{background:#1a1a2e;border:1px solid #2a2a4a;color:#e8e8f0;border-top-left-radius:4px;}
 .bubble.me{background:linear-gradient(135deg,#ff6b8a,#7c5cbf);color:#fff;border-top-right-radius:4px;}
 .bubble-ko{font-size:0.68rem;color:#6b7280;margin-top:4px;padding:0 4px;}
+.bubble-ko-her{font-size:0.67rem;color:#4ecdc4;margin-top:3px;padding:0 4px;line-height:1.4;}
 .bubble-ts{font-size:0.6rem;color:#3a3a5a;margin-top:3px;padding:0 4px;}
+.bubble-summary-wrap{margin:10px 6px;background:rgba(167,139,250,0.08);border:1px dashed #4a3a7a;border-radius:12px;padding:10px 12px;}
+.bubble-summary-lbl{font-size:0.6rem;color:#7c5cbf;font-weight:700;margin-bottom:5px;letter-spacing:0.5px;}
+.bubble-summary-txt{font-size:0.75rem;color:#c4b5fd;line-height:1.65;}
 .sugg-wrap{background:#16213e;border-radius:14px;border:1px solid #2a2a4a;margin-bottom:14px;overflow:hidden;}
 .sugg-wrap-hdr{padding:7px 12px;font-size:0.65rem;color:#6b7280;border-bottom:1px solid #1a1a2e;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
 .sugg-item{padding:9px 12px 10px;border-bottom:1px solid #1a1a2e;}
@@ -453,7 +457,7 @@ body{height:100%;background:#0f0f1a;color:#e8e8f0;font-family:-apple-system,Blin
       <div class="hdr-badges">
         <span class="badge" id="bdStage">첫 연락</span>
         <span class="badge" id="bdStyle">매력남</span>
-        <span class="badge badge-ver">v9.8</span>
+        <span class="badge badge-ver">v9.9</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="goSetup()">⚙️ 재설정</button>
@@ -1622,10 +1626,15 @@ function renderChatMsgs(){
   emp.style.display='none';
   p.chat.forEach(function(c){
     var wrap=document.createElement('div');
-    if(c.dir==='her'){
+    if(c.dir==='summary'){
+      wrap.className='bubble-summary-wrap';
+      wrap.innerHTML='<div class="bubble-summary-lbl">📋 대화 맥락 요약</div>'
+        +'<div class="bubble-summary-txt">'+escH(c.msg)+'</div>';
+    } else if(c.dir==='her'){
       wrap.className='bubble-wrap her';
       wrap.innerHTML='<div class="bubble-label">👩 '+escH(p.n||'상대')+'</div>'
         +'<div class="bubble her">'+escH(c.msg)+'</div>'
+        +(c.ko?'<div class="bubble-ko-her">🇰🇷 '+escH(c.ko)+'</div>':'')
         +'<div class="bubble-ts">'+fmtTime(c.ts)+'</div>';
     } else {
       wrap.className='bubble-wrap me';
@@ -1735,11 +1744,15 @@ async function chatAnalyze(){
     try{
       var result=await callClaudeChatVision(imgs,msg,p);
       document.getElementById('chatLoading').classList.remove('show');
-      /* 분석된 마지막 메시지를 히스토리에 추가 */
-      if(result.lastMsg){
-        p.chat.push({dir:'her',msg:result.lastMsg,ts:Date.now()});
-        savePpl();renderChatMsgs();
+      /* 대화 요약 말풍선 — 사진 분석 시 대화 첫머리에 삽입 */
+      if(result.summary){
+        p.chat.push({dir:'summary',msg:result.summary,ts:Date.now()-1});
       }
+      /* 분석된 마지막 메시지 + 한국어 번역 */
+      if(result.lastMsg){
+        p.chat.push({dir:'her',msg:result.lastMsg,ko:result.lastMsgKo||'',ts:Date.now()});
+      }
+      savePpl();renderChatMsgs();
       renderChatSuggs(result);
     }catch(e){
       document.getElementById('chatLoading').classList.remove('show');
@@ -1747,6 +1760,7 @@ async function chatAnalyze(){
     }
   } else {
     /* 텍스트 모드 — 기존 방식 */
+    var herIdx=p.chat.length;
     p.chat.push({dir:'her',msg:msg,ts:Date.now()});
     savePpl();renderChatMsgs();
     document.getElementById('chatTa').value='';
@@ -1756,6 +1770,11 @@ async function chatAnalyze(){
     try{
       var result=await callClaudeChat(msg,p);
       document.getElementById('chatLoading').classList.remove('show');
+      /* 상대 메시지 한국어 번역 저장 */
+      if(result.herKo&&p.chat[herIdx]){
+        p.chat[herIdx].ko=result.herKo;
+        savePpl();renderChatMsgs();
+      }
       renderChatSuggs(result);
     }catch(e){
       document.getElementById('chatLoading').classList.remove('show');
@@ -1772,11 +1791,12 @@ async function callClaudeChatVision(imgs,extraText,p){
     +'이전 대화:\n'+history+'\n\n'
     +'[절대 규칙]\n'
     +'① suggs 배열에 반드시 정확히 3개 — 1개나 2개면 오답이므로 절대 금지.\n'
-    +'② 스크린샷에서 상대방 마지막 메시지를 찾아 lastMsg에 원문 그대로 입력.\n'
-    +'③ 각 답변: 1문장 이내 구어체, 이모지 1~2개, 세 답변은 완전히 다른 전략(유머/칭찬/밀당 등).\n'
-    +'④ 재치·임팩트 최우선. 뻔한 표현 금지. why는 한국어 10자 이내.\n'
+    +'② 스크린샷에서 상대방 마지막 메시지를 찾아 lastMsg에 원문, lastMsgKo에 한국어 번역.\n'
+    +'③ summary: 스크린샷 전체 대화 흐름을 한국어로 2~3문장 요약.\n'
+    +'④ 각 답변: 1문장 이내 구어체, 이모지 1~2개, 세 답변은 완전히 다른 전략(유머/칭찬/밀당 등).\n'
+    +'⑤ 재치·임팩트 최우선. 뻔한 표현 금지. why는 한국어 10자 이내.\n'
     +'JSON만 반환(다른 텍스트 없이):\n'
-    +'{"tip":"한줄전략","lastMsg":"상대마지막메시지원문","suggs":['
+    +'{"tip":"한줄전략","lastMsg":"상대마지막메시지원문","lastMsgKo":"상대마지막메시지한국어번역","summary":"전체대화흐름한국어요약","suggs":['
     +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"10자이내"},'
     +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"10자이내"},'
     +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"10자이내"}]}';
@@ -1810,7 +1830,7 @@ async function callClaudeChat(msg,p){
     +'② 각 답변: 1문장 이내 구어체, 이모지 1~2개, 세 답변은 완전히 다른 전략(유머/칭찬/밀당 등).\n'
     +'③ 재치·임팩트 최우선. 뻔한 표현 금지. why는 한국어 10자 이내.\n'
     +'JSON만 반환(다른 텍스트 없이):\n'
-    +'{"tip":"한줄전략","suggs":[{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"}]}';
+    +'{"tip":"한줄전략","herKo":"상대메시지한국어번역","suggs":[{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"}]}';
   var r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
