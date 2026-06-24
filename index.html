@@ -210,6 +210,47 @@ body{height:100%;background:#0c0a12;color:#f3eef9;font-family:-apple-system,Blin
 .chat-go{background:linear-gradient(135deg,#ff5d86,#b14bd8);border:none;color:#fff;width:42px;height:42px;border-radius:12px;font-size:1.1rem;cursor:pointer;-webkit-flex-shrink:0;flex-shrink:0;}
 .chat-loading{text-align:center;padding:14px;color:#9b93ad;font-size:0.8rem;display:none;}
 .chat-loading.show{display:block;}
+/* ── 분석 탭 ── */
+.analysis-select{width:100%;background:#1a1520;border:1.5px solid #2c2438;border-radius:12px;padding:11px 14px;color:#f3eef9;font-size:0.9rem;font-family:inherit;outline:none;margin-bottom:16px;-webkit-appearance:none;appearance:none;}
+.stat-grid{display:-webkit-box;display:-webkit-flex;display:flex;}
+.stat-card{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:#1a1520;border-radius:12px;padding:12px 8px;text-align:center;margin-right:8px;}
+.stat-card:last-child{margin-right:0;}
+.sc-val{font-size:1.3rem;font-weight:800;color:#f3eef9;margin-bottom:3px;}
+.sc-val.sc-ok{color:#4ecdc4;}
+.sc-val.sc-warn{color:#f7b733;}
+.sc-lbl{font-size:0.6rem;color:#9b93ad;font-weight:600;}
+.time-chart-section{background:#1a1520;border-radius:14px;padding:14px 12px 10px;margin-top:12px;}
+.section-label{font-size:0.68rem;font-weight:700;color:#9b93ad;letter-spacing:0.8px;text-transform:uppercase;margin-bottom:10px;}
+.time-chart{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:flex-end;-webkit-align-items:flex-end;align-items:flex-end;height:72px;margin-bottom:4px;}
+.tc-col{-webkit-box-flex:1;-webkit-flex:1;flex:1;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
+.tc-bar-wrap{width:100%;height:60px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:flex-end;-webkit-align-items:flex-end;align-items:flex-end;padding:0 1px;}
+.tc-bar{width:100%;border-radius:2px 2px 0 0;background:#2c2438;min-height:3px;-webkit-transition:height .3s ease;transition:height .3s ease;}
+.tc-bar.tc-top{background:linear-gradient(180deg,#ff5d86,#b14bd8);}
+.tc-bar.tc-2nd{background:#f7b733;}
+.tc-lbl{font-size:0.42rem;color:#4a3f5c;margin-top:2px;}
+.optimal-box{background:linear-gradient(135deg,rgba(255,93,134,0.12),rgba(177,75,216,0.12));border:1px solid rgba(255,93,134,0.3);border-radius:14px;padding:14px 16px;margin-top:10px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;}
+.ob-icon{font-size:1.8rem;margin-right:14px;-webkit-flex-shrink:0;flex-shrink:0;}
+.ob-title{font-size:0.62rem;color:#9b93ad;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:3px;}
+.ob-time{font-size:1.1rem;font-weight:800;color:#ff5d86;margin-bottom:2px;}
+.ob-sub{font-size:0.68rem;color:#9b93ad;line-height:1.5;}
+.success-section{background:#1a1520;border-radius:14px;padding:14px 12px;margin-top:12px;}
+.success-tag{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;padding:8px 0;border-bottom:1px solid #16131f;}
+.success-tag:last-child{border-bottom:none;}
+.st-rank{font-size:0.7rem;font-weight:800;color:#f7b733;width:20px;-webkit-flex-shrink:0;flex-shrink:0;}
+.st-label{-webkit-box-flex:1;-webkit-flex:1;flex:1;font-size:0.82rem;color:#f3eef9;}
+.st-cnt{font-size:0.68rem;color:#9b93ad;background:#16131f;padding:2px 8px;border-radius:20px;}
+.diagnosis-btn{width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,#ff5d86,#b14bd8);border:none;color:#fff;border-radius:14px;font-size:0.95rem;font-weight:800;cursor:pointer;}
+.diagnosis-btn:disabled{opacity:0.6;}
+.diagnosis-card{background:#1a1520;border-radius:16px;padding:16px;margin-top:12px;border:1px solid rgba(255,93,134,0.2);}
+.dx-status{font-size:0.95rem;font-weight:800;color:#ff5d86;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #2c2438;}
+.dx-section{margin-bottom:12px;}
+.dx-lbl{font-size:0.62rem;font-weight:700;color:#9b93ad;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:5px;}
+.dx-txt{font-size:0.8rem;color:#cec8d8;line-height:1.65;}
+.dx-strat{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:flex-start;-webkit-align-items:flex-start;align-items:flex-start;margin-bottom:6px;}
+.dx-strat span{font-size:0.6rem;font-weight:800;color:#b14bd8;background:rgba(177,75,216,0.15);padding:2px 6px;border-radius:4px;margin-right:8px;-webkit-flex-shrink:0;flex-shrink:0;margin-top:1px;}
+.dx-strat{font-size:0.8rem;color:#cec8d8;line-height:1.5;}
+.dx-warn .dx-txt{color:#f7b733;}
+.dx-next .dx-txt{color:#4ecdc4;font-weight:600;}
 /* 추천 패널 — 입력창 바로 위 고정 영역, 스크롤 불필요 */
 .sugg-panel{display:none;background:#0c0a12;border-top:2px solid #ff5d86;-webkit-flex-shrink:0;flex-shrink:0;overflow-y:auto;-webkit-overflow-scrolling:touch;max-height:56vh;}
 .sugg-panel.show{display:block;}
@@ -479,7 +520,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,.nav-item:focus-
       <div class="hdr-badges">
         <span class="badge" id="bdStage">첫 연락</span>
         <span class="badge" id="bdStyle">매력남</span>
-        <span class="badge badge-ver">v10.0</span>
+        <span class="badge badge-ver">v10.1</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="goSetup()">⚙️ 재설정</button>
@@ -1025,11 +1066,41 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,.nav-item:focus-
       <!-- 버전 정보 -->
       <div style="background:#16131f;border-radius:12px;border:1px solid #2c2438;padding:14px;margin-bottom:20px;text-align:center;">
         <div style="font-size:0.7rem;color:#9b93ad;margin-bottom:8px;">현재 버전</div>
-        <div style="font-size:1.3rem;font-weight:900;color:#f7b733;margin-bottom:4px;">v9.2</div>
-        <div style="font-size:0.68rem;color:#9b93ad;line-height:1.7;">닉네임 · AI 감정분석 강화 · 전략집<br>랭킹→채팅 링크 · 전략 메모<br>📷 대화 캡쳐 사진 분석</div>
+        <div style="font-size:1.3rem;font-weight:900;color:#f7b733;margin-bottom:4px;">v10.1</div>
+        <div style="font-size:0.68rem;color:#9b93ad;line-height:1.7;">📊 분석 탭 추가 · 시간대별 대화 히트맵<br>AI 관계 진단 리포트 · 성공 전략 패턴 학습<br>개인화 AI 추천 강화</div>
         <div style="margin-top:12px;font-size:0.7rem;color:#34d6b0;">🔄 업데이트 시 새로고침하면 자동 반영</div>
       </div>
 
+    </div>
+
+  </div>
+
+    <!-- 📊 분석 탭 -->
+    <div class="tab" id="tab-analysis">
+      <div class="tab-inner">
+        <div style="font-size:1rem;font-weight:800;color:#f3eef9;margin-bottom:4px;">📊 대화 분석 & 전략 인사이트</div>
+        <div style="font-size:0.72rem;color:#9b93ad;margin-bottom:14px;">대화 패턴 분석 · 최적 연락 시간 · AI 관계 진단</div>
+        <select id="analysisSelect" class="analysis-select" onchange="showAnalysis()">
+          <option value="-1">이성을 선택하세요 ▾</option>
+        </select>
+        <div id="analysisContent" style="display:none;">
+          <!-- 통계 카드 -->
+          <div class="stat-grid" id="statGrid"></div>
+          <!-- 시간대 차트 -->
+          <div id="timeChartWrap"></div>
+          <!-- 최적 연락 시간 -->
+          <div id="optimalTimeBox"></div>
+          <!-- 성공 전략 패턴 -->
+          <div id="successBox"></div>
+          <!-- AI 진단 버튼 -->
+          <button id="diagnosisBtn" class="diagnosis-btn" onclick="callAnalysisAI()">🔍 AI 관계 진단 받기</button>
+          <!-- 진단 결과 -->
+          <div id="diagnosisResult" style="margin-bottom:20px;"></div>
+        </div>
+        <div id="analysisEmpty" style="text-align:center;padding:40px 0;color:#4a3f5c;font-size:0.8rem;">
+          이성관리 탭에서 이성을 추가하면<br>분석이 가능합니다
+        </div>
+      </div>
     </div>
 
   </div>
@@ -1039,7 +1110,8 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,.nav-item:focus-
     <button class="nav-item on" onclick="switchTab('coach',this)"><span class="ni">🤖</span>AI코치</button>
     <button class="nav-item" onclick="switchTab('women',this);renderWomen()"><span class="ni">👥</span>이성관리</button>
     <button class="nav-item" onclick="switchTab('phrases',this);renderMemos()"><span class="ni">🎯</span>전략집</button>
-    <button class="nav-item" onclick="switchTab('rank',this);renderRank()"><span class="ni">🏆</span>호감도랭킹</button>
+    <button class="nav-item" onclick="switchTab('rank',this);renderRank()"><span class="ni">🏆</span>랭킹</button>
+    <button class="nav-item" onclick="switchTab('analysis',this);initAnalysis()"><span class="ni">📊</span>분석</button>
     <button class="nav-item" onclick="switchTab('guide',this)"><span class="ni">📖</span>가이드</button>
   </div>
 </div>
@@ -1808,8 +1880,10 @@ async function chatAnalyze(){
 async function callClaudeChatVision(imgs,extraText,p){
   var recent=(p.chat||[]).slice(-10);
   var history=recent.length?recent.map(function(c){return(c.dir==='her'?'상대: ':'나: ')+c.msg;}).join('\n'):'(이전 대화 없음)';
+  var successCtx=(p.successLabels||[]).slice(-10);
   var sys='당신은 태국어/라오어 원어민 수준의 언어 전문가이자 세계 최고의 플러팅 전략 코치입니다.\n'
     +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계단계: '+SD[p.s||0]+' / 스타일: '+PD[persona]+'\n'
+    +(successCtx.length?'✓ 이 대화에서 이미 효과적이었던 전략: '+successCtx.join(', ')+' — 이를 참고해 더 발전된 전략 제시\n':'')
     +'이전 대화:\n'+history+'\n\n'
     +'[태국어 OCR — 최우선 규칙]\n'
     +'• 태국어는 자음·모음·성조부호가 겹쳐 표기되므로 한 글자씩 천천히 식별하라.\n'
@@ -1851,8 +1925,10 @@ async function callClaudeChatVision(imgs,extraText,p){
 async function callClaudeChat(msg,p){
   var recent=(p.chat||[]).slice(-14);
   var history=recent.map(function(c){return(c.dir==='her'?'상대('+p.n+'): ':'나: ')+c.msg;}).join('\n');
+  var successCtx=(p.successLabels||[]).slice(-10);
   var sys='당신은 태국어/라오어 원어민 수준의 언어 전문가이자 세계 최고의 플러팅 전략 코치입니다.\n'
     +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계단계: '+SD[p.s||0]+' / 스타일: '+PD[persona]+'\n'
+    +(successCtx.length?'✓ 이 대화에서 이미 효과적이었던 전략: '+successCtx.join(', ')+' — 이를 참고해 더 발전된 전략 제시\n':'')
     +'최근 대화:\n'+history+'\n\n'
     +'[절대 규칙]\n'
     +'① suggs 반드시 정확히 3개 — 절대 1~2개 금지.\n'
@@ -1900,13 +1976,14 @@ function renderChatSuggs(result){
   result.suggs.forEach(function(s,i){
     var thE=(s.th||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     var koE=(s.ko||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    var lbE=(s.label||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     html+='<div class="sp-item">'
       +'<div class="sp-lbl">'+escH(s.label||'')+'</div>'
       +'<div class="sp-th">'+escH(s.th||'')+'</div>'
       +'<div class="sp-ko">🇰🇷 '+escH(s.ko||'')+'</div>'
       +'<div class="sp-btns">'
       +'<button class="sp-cp" onclick="cp(\''+thE+'\')">복사</button>'
-      +'<button class="sp-send" onclick="chatSend(\''+thE+'\',\''+koE+'\')">이걸로 보내기 ✓</button>'
+      +'<button class="sp-send" onclick="chatSend(\''+thE+'\',\''+koE+'\',\''+lbE+'\')">이걸로 보내기 ✓</button>'
       +'</div></div>';
   });
   html+='<button class="sp-retry" onclick="retryChatSuggs()">🔄 마음에 안들어요 — 다시 추천</button>';
@@ -1931,10 +2008,16 @@ async function retryChatSuggs(){
     showToast('⚠️ AI 오류. 다시 시도하세요');
   }
 }
-function chatSend(th,ko){
+function chatSend(th,ko,label){
   hideSuggPanel();
   var p=people[chatIdx];if(!p.chat)p.chat=[];
   p.chat.push({dir:'me',msg:th,ko:ko,ts:Date.now()});
+  /* 성공 전략 패턴 학습 */
+  if(label){
+    if(!p.successLabels)p.successLabels=[];
+    p.successLabels.push(label);
+    if(p.successLabels.length>60)p.successLabels=p.successLabels.slice(-60);
+  }
   savePpl();cp(th);renderChatMsgs();
   showToast('복사 완료! 상대에게 보내세요 ✓');
 }
@@ -1977,6 +2060,131 @@ function renderRank(){
       +'</tr></table>';
     list.appendChild(div);
   });
+}
+
+/* ── 📊 분석 탭 ── */
+function initAnalysis(){
+  var sel=document.getElementById('analysisSelect');
+  var prev=sel.value;
+  sel.innerHTML='<option value="-1">이성을 선택하세요 ▾</option>';
+  var hasPeople=false;
+  people.forEach(function(p,i){
+    if(p.n){hasPeople=true;sel.innerHTML+='<option value="'+i+'">'+(p.e||'👩')+' '+escH(p.n)+(p.a?' ('+p.a+'세)':'')+'</option>';}
+  });
+  document.getElementById('analysisEmpty').style.display=hasPeople?'none':'block';
+  if(prev!=='-1'&&prev!==null){sel.value=prev;showAnalysis();}
+  else{document.getElementById('analysisContent').style.display='none';}
+}
+function showAnalysis(){
+  var idx=parseInt(document.getElementById('analysisSelect').value);
+  var ac=document.getElementById('analysisContent');
+  if(idx<0){ac.style.display='none';return;}
+  ac.style.display='block';
+  var p=people[idx];
+  _renderStats(p);
+  _renderTimeChart(p);
+  _renderSuccessPatterns(p);
+  document.getElementById('diagnosisResult').innerHTML='';
+}
+function _renderStats(p){
+  var chat=p.chat||[];
+  var herMsgs=chat.filter(function(c){return c.dir==='her';});
+  var myMsgs=chat.filter(function(c){return c.dir==='me';});
+  var last=chat.filter(function(c){return c.ts;});
+  var lastTs=last.length?last[last.length-1].ts:null;
+  var daysSince=lastTs?Math.floor((Date.now()-lastTs)/(1000*60*60*24)):null;
+  var dayStr=daysSince===null?'-':daysSince===0?'오늘':daysSince+'일 전';
+  var warn=daysSince!==null&&daysSince>2;
+  document.getElementById('statGrid').innerHTML=
+    '<div class="stat-card"><div class="sc-val">'+herMsgs.length+'</div><div class="sc-lbl">상대 메시지</div></div>'
+    +'<div class="stat-card"><div class="sc-val">'+myMsgs.length+'</div><div class="sc-lbl">내 메시지</div></div>'
+    +'<div class="stat-card"><div class="sc-val '+(warn?'sc-warn':'sc-ok')+'">'+dayStr+'</div><div class="sc-lbl">마지막 연락</div></div>';
+}
+function _renderTimeChart(p){
+  var hours=new Array(24).fill(0);
+  (p.chat||[]).forEach(function(c){if(c.dir==='her'&&c.ts)hours[new Date(c.ts).getHours()]++;});
+  var max=Math.max.apply(null,hours)||1;
+  var sorted=hours.map(function(v,i){return{h:i,v:v};}).sort(function(a,b){return b.v-a.v;});
+  var top1=sorted[0].v>0?sorted[0].h:-1;
+  var top2=sorted[1].v>0?sorted[1].h:-1;
+  /* 차트 */
+  var bars='';
+  for(var i=0;i<24;i++){
+    var pct=Math.round((hours[i]/max)*100);
+    var cls=i===top1?'tc-bar tc-top':i===top2?'tc-bar tc-2nd':'tc-bar';
+    bars+='<div class="tc-col"><div class="tc-bar-wrap"><div class="'+cls+'" style="height:'+pct+'%"></div></div>'
+      +'<div class="tc-lbl">'+(i%3===0?i:'')+'</div></div>';
+  }
+  document.getElementById('timeChartWrap').innerHTML=
+    '<div class="time-chart-section"><div class="section-label">📈 시간대별 대화 분포 (상대 메시지 기준)</div>'
+    +'<div class="time-chart">'+bars+'</div>'
+    +'<div style="font-size:0.6rem;color:#9b93ad;margin-top:4px;"><span style="color:#ff5d86;">■</span> 최다 &nbsp;<span style="color:#f7b733;">■</span> 2위</div></div>';
+  /* 최적 시간 */
+  var ob=document.getElementById('optimalTimeBox');
+  if(top1>=0){
+    var topHours=sorted.filter(function(x){return x.v>0;}).slice(0,3).map(function(x){return x.h+'시';});
+    ob.innerHTML='<div class="optimal-box"><div class="ob-icon">⏰</div><div>'
+      +'<div class="ob-title">최적 연락 시간</div>'
+      +'<div class="ob-time">'+top1+'시 ~ '+(top1+1)+'시</div>'
+      +'<div class="ob-sub">활발한 시간대: '+topHours.join(' · ')+'</div>'
+      +'</div></div>';
+  } else {
+    ob.innerHTML='<div class="optimal-box"><div class="ob-icon">💬</div><div><div class="ob-sub">대화를 더 나누면 최적 시간대가 분석됩니다</div></div></div>';
+  }
+}
+function _renderSuccessPatterns(p){
+  var labels=p.successLabels||[];
+  var sb=document.getElementById('successBox');
+  if(!labels.length){
+    sb.innerHTML='<div class="success-section"><div class="section-label">🏆 성공 전략 패턴</div>'
+      +'<div style="font-size:0.72rem;color:#9b93ad;text-align:center;padding:8px 0;">추천에서 선택한 전략이 쌓이면<br>효과적인 패턴이 여기 표시됩니다</div></div>';
+    return;
+  }
+  var counts={};
+  labels.forEach(function(l){counts[l]=(counts[l]||0)+1;});
+  var sorted=Object.keys(counts).sort(function(a,b){return counts[b]-counts[a];}).slice(0,6);
+  var rows=sorted.map(function(l,i){
+    return '<div class="success-tag"><span class="st-rank">'+(i+1)+'</span><span class="st-label">'+escH(l)+'</span><span class="st-cnt">'+counts[l]+'회</span></div>';
+  }).join('');
+  sb.innerHTML='<div class="success-section"><div class="section-label">🏆 효과적인 전략 TOP '+sorted.length+'</div>'+rows+'</div>';
+}
+async function callAnalysisAI(){
+  var idx=parseInt(document.getElementById('analysisSelect').value);
+  if(idx<0){showToast('이성을 먼저 선택하세요');return;}
+  var p=people[idx];
+  var btn=document.getElementById('diagnosisBtn');
+  btn.disabled=true;btn.textContent='🔄 AI 분석 중...';
+  var chat=(p.chat||[]).filter(function(c){return c.dir!=='summary';});
+  if(chat.length<3){btn.disabled=false;btn.textContent='🔍 AI 관계 진단 받기';showToast('대화 기록이 부족합니다 (최소 3개 필요)');return;}
+  var history=chat.slice(-30).map(function(c){return(c.dir==='her'?'상대: ':'나: ')+(c.msg||'')+(c.ko?' (뜻: '+c.ko+')':'');}).join('\n');
+  var successCtx=(p.successLabels||[]).slice(-15);
+  var sys='당신은 연애 심리 전문가이자 태국/라오스 여성 관계 분석가입니다. 대화 내용을 심층 분석해 실용적인 인사이트를 한국어로 제공하세요.';
+  var userMsg='분석 대상: '+(p.n||'상대')+(p.a?'('+p.a+'세)':'')+' / 단계: '+SD[p.s||0]+' / 호감도: '+p.sc+'점\n\n'
+    +'[대화 히스토리]\n'+history+'\n\n'
+    +(successCtx.length?'[지금까지 효과적이었던 전략]: '+successCtx.join(', ')+'\n\n':'')
+    +'아래 JSON으로 분석 리포트를 작성하세요:\n'
+    +'{"status":"현재관계상태한줄","interest":"상대관심도분석(2~3문장)","pattern":"상대대화패턴특징(2~3문장)","strategy":["전략1","전략2","전략3"],"warning":"주의할점한줄","nextStep":"지금당장해야할행동한줄"}';
+  try{
+    var r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1200,system:sys,messages:[{role:'user',content:userMsg}]})
+    });
+    var d=await r.json();
+    var result=JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
+    var html='<div class="diagnosis-card">'
+      +'<div class="dx-status">'+escH(result.status||'')+'</div>'
+      +'<div class="dx-section"><div class="dx-lbl">💝 관심도 분석</div><div class="dx-txt">'+escH(result.interest||'')+'</div></div>'
+      +'<div class="dx-section"><div class="dx-lbl">🧠 대화 패턴</div><div class="dx-txt">'+escH(result.pattern||'')+'</div></div>'
+      +'<div class="dx-section"><div class="dx-lbl">🎯 지금 써야 할 전략</div>'
+      +(result.strategy||[]).map(function(s,i){return '<div class="dx-strat"><span>0'+(i+1)+'</span>'+escH(s)+'</div>';}).join('')
+      +'</div>'
+      +'<div class="dx-section dx-warn"><div class="dx-lbl">⚠️ 주의</div><div class="dx-txt">'+escH(result.warning||'')+'</div></div>'
+      +'<div class="dx-section dx-next"><div class="dx-lbl">🚀 지금 당장</div><div class="dx-txt">'+escH(result.nextStep||'')+'</div></div>'
+      +'</div>';
+    document.getElementById('diagnosisResult').innerHTML=html;
+  }catch(e){showToast('⚠️ 분석 오류. 다시 시도하세요');}
+  btn.disabled=false;btn.textContent='🔍 AI 관계 진단 받기';
 }
 
 /* ── 전략집 단계 선택 ── */
