@@ -210,6 +210,15 @@ body{height:100%;background:#0c0a12;color:#f3eef9;font-family:-apple-system,Blin
 .chat-go{background:linear-gradient(135deg,#ff5d86,#b14bd8);border:none;color:#fff;width:42px;height:42px;border-radius:12px;font-size:1.1rem;cursor:pointer;-webkit-flex-shrink:0;flex-shrink:0;}
 .chat-loading{text-align:center;padding:14px;color:#9b93ad;font-size:0.8rem;display:none;}
 .chat-loading.show{display:block;}
+/* ── 프로필 사진 ── */
+.photo-upload-area{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;cursor:pointer;gap:14px;background:#16131f;border:1.5px dashed #3d3554;border-radius:12px;padding:12px 16px;}
+.photo-upload-area:active{opacity:0.7;}
+.photo-preview-img{width:56px;height:56px;border-radius:28px;object-fit:cover;-webkit-flex-shrink:0;flex-shrink:0;}
+.photo-placeholder{width:56px;height:56px;border-radius:28px;background:#2c2438;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-box-pack:center;-webkit-justify-content:center;justify-content:center;font-size:1.5rem;-webkit-flex-shrink:0;flex-shrink:0;}
+.photo-upload-txt{font-size:0.8rem;color:#9b93ad;line-height:1.6;}
+.photo-upload-txt strong{color:#f3eef9;font-weight:700;font-size:0.85rem;}
+.ppl-add-btn{width:100%;padding:14px;background:#16131f;border:1.5px dashed #3d3554;border-radius:14px;color:#9b93ad;font-size:0.9rem;font-weight:700;cursor:pointer;text-align:center;margin-top:4px;}
+.ppl-add-btn:active{background:#1f1930;}
 /* ── 분석 탭 ── */
 .analysis-select{width:100%;background:#1a1520;border:1.5px solid #2c2438;border-radius:12px;padding:11px 14px;color:#f3eef9;font-size:0.9rem;font-family:inherit;outline:none;margin-bottom:16px;-webkit-appearance:none;appearance:none;}
 .stat-grid{display:-webkit-box;display:-webkit-flex;display:flex;}
@@ -520,7 +529,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,.nav-item:focus-
       <div class="hdr-badges">
         <span class="badge" id="bdStage">첫 연락</span>
         <span class="badge" id="bdStyle">매력남</span>
-        <span class="badge badge-ver">v10.1</span>
+        <span class="badge badge-ver">v10.2</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="goSetup()">⚙️ 재설정</button>
@@ -1066,8 +1075,8 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,.nav-item:focus-
       <!-- 버전 정보 -->
       <div style="background:#16131f;border-radius:12px;border:1px solid #2c2438;padding:14px;margin-bottom:20px;text-align:center;">
         <div style="font-size:0.7rem;color:#9b93ad;margin-bottom:8px;">현재 버전</div>
-        <div style="font-size:1.3rem;font-weight:900;color:#f7b733;margin-bottom:4px;">v10.1</div>
-        <div style="font-size:0.68rem;color:#9b93ad;line-height:1.7;">📊 분석 탭 추가 · 시간대별 대화 히트맵<br>AI 관계 진단 리포트 · 성공 전략 패턴 학습<br>개인화 AI 추천 강화</div>
+        <div style="font-size:1.3rem;font-weight:900;color:#f7b733;margin-bottom:4px;">v10.2</div>
+        <div style="font-size:0.68rem;color:#9b93ad;line-height:1.7;">캡쳐사진 → 분석 대시보드 자동 반영<br>이성 무제한 등록 · 프로필 사진 추가<br>탭 순서 최적화</div>
         <div style="margin-top:12px;font-size:0.7rem;color:#34d6b0;">🔄 업데이트 시 새로고침하면 자동 반영</div>
       </div>
 
@@ -1109,9 +1118,9 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,.nav-item:focus-
   <div class="nav">
     <button class="nav-item on" onclick="switchTab('coach',this)"><span class="ni">🤖</span>AI코치</button>
     <button class="nav-item" onclick="switchTab('women',this);renderWomen()"><span class="ni">👥</span>이성관리</button>
-    <button class="nav-item" onclick="switchTab('phrases',this);renderMemos()"><span class="ni">🎯</span>전략집</button>
-    <button class="nav-item" onclick="switchTab('rank',this);renderRank()"><span class="ni">🏆</span>랭킹</button>
     <button class="nav-item" onclick="switchTab('analysis',this);initAnalysis()"><span class="ni">📊</span>분석</button>
+    <button class="nav-item" onclick="switchTab('rank',this);renderRank()"><span class="ni">🏆</span>랭킹</button>
+    <button class="nav-item" onclick="switchTab('phrases',this);renderMemos()"><span class="ni">🎯</span>전략집</button>
     <button class="nav-item" onclick="switchTab('guide',this)"><span class="ni">📖</span>가이드</button>
   </div>
 </div>
@@ -1165,6 +1174,15 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,.nav-item:focus-
   <div class="sheet">
     <div class="sheet-handle"></div>
     <div style="font-size:1rem;font-weight:800;margin-bottom:18px;" id="editTitle">이성 정보</div>
+    <div class="field">
+      <label>프로필 사진</label>
+      <div class="photo-upload-area" onclick="document.getElementById('photoFileInput').click()">
+        <div class="photo-placeholder" id="editPhotoPlaceholder">📷</div>
+        <img id="editPhotoPreview" class="photo-preview-img" style="display:none;" src="" alt="프로필">
+        <div class="photo-upload-txt"><strong>사진 추가 / 변경</strong><br>탭하여 갤러리에서 선택</div>
+      </div>
+      <input type="file" id="photoFileInput" accept="image/*" style="display:none;" onchange="handlePhotoUpload(this)">
+    </div>
     <div class="field">
       <label>이름 (닉네임)</label>
       <input id="eN" type="text" placeholder="예: Ssom, 민지...">
@@ -1225,7 +1243,8 @@ var WEBHOOK_URL=localStorage.getItem('webhookUrl')||'';
 /* ── 상태 ── */
 var stage=0,persona='charming',editIdx=-1,editStage=0;
 var people=JSON.parse(localStorage.getItem('ppl')||'[]');
-while(people.length<10) people.push({n:'',a:'',s:0,sc:0,e:AE[people.length]});
+/* 빈 슬롯 제거 (구버전 10-slot 호환) + 동적 배열로 전환 */
+people=people.filter(function(p){return p&&p.n;});
 var memos=JSON.parse(localStorage.getItem('memos')||'[]');
 var nickname=localStorage.getItem('nickname')||'';
 var userPhone=localStorage.getItem('userPhone')||'';
@@ -1612,45 +1631,60 @@ function renderWomen(){
   var list=document.getElementById('womanList');
   if(!list)return;
   var html='';
-  for(var i=0;i<10;i++){
-    var p=people[i]||{n:'',a:'',s:0,sc:0,e:AE[i]};
-    var bb=i<9?'border-bottom:1px solid #2c2438;':'';
-    if(!p.n){
-      html+='<div onclick="openEdit('+i+')" style="'+bb+'padding:14px;cursor:pointer;">'
-        +'<table style="width:100%;border-collapse:collapse;"><tr>'
-        +'<td style="width:52px;vertical-align:middle;">'
-        +'<div style="width:48px;height:48px;border-radius:24px;border:2px dashed #5b5470;text-align:center;line-height:44px;font-size:1.3rem;color:#9b93ad;">+</div></td>'
-        +'<td style="vertical-align:middle;padding-left:12px;">'
-        +'<div style="font-size:0.95rem;font-weight:700;color:#f3eef9;">'+(i+1)+'번 슬롯</div>'
-        +'<div style="font-size:0.75rem;color:#9b93ad;margin-top:3px;">탭하여 이성 추가</div></td>'
-        +'</tr></table></div>';
-    } else {
-      var sc2=SC[p.s||0]||'#9b93ad';
-      var pct=Math.min(100,Math.max(0,p.sc||0));
-      var chatCnt=(p.chat||[]).length;
-      html+='<div onclick="openEdit('+i+')" style="'+bb+'padding:14px;cursor:pointer;">'
-        +'<table style="width:100%;border-collapse:collapse;"><tr>'
-        +'<td style="width:52px;vertical-align:middle;">'
-        +'<div style="width:48px;height:48px;border-radius:24px;background:#241b33;text-align:center;line-height:48px;font-size:1.3rem;position:relative;">'+(p.e||'👩')
-        +'<span style="position:absolute;bottom:0;right:0;width:16px;height:16px;background:#2c2438;border-radius:8px;font-size:9px;line-height:16px;text-align:center;color:#aaa2bb;">'+(i+1)+'</span></div></td>'
-        +'<td style="vertical-align:middle;padding-left:12px;">'
-        +'<div style="font-size:0.95rem;font-weight:700;color:#f3eef9;">'+p.n+(p.a?' <span style="font-size:0.72rem;font-weight:400;color:#9b93ad;">'+p.a+'세</span>':'')+'</div>'
-        +'<div style="font-size:0.72rem;color:#9b93ad;margin-top:3px;">● '+SN[p.s||0]+(chatCnt?' &nbsp;💬 '+chatCnt+'개':'')+'</div>'
-        +'<div style="height:4px;background:#2c2438;border-radius:2px;margin-top:5px;overflow:hidden;">'
-        +'<div style="height:4px;width:'+pct+'%;background:#ff5d86;border-radius:2px;"></div></div></td>'
-        +'<td style="width:44px;text-align:right;vertical-align:middle;padding-left:8px;">'
-        +'<div style="font-size:1.1rem;font-weight:800;color:'+sc2+';">'+pct+'</div>'
-        +'<div style="font-size:0.6rem;color:#9b93ad;">점</div></td>'
-        +'</tr></table></div>';
-    }
-  }
+  people.forEach(function(p,i){
+    var bb='border-bottom:1px solid #2c2438;';
+    var sc2=SC[p.s||0]||'#9b93ad';
+    var pct=Math.min(100,Math.max(0,p.sc||0));
+    var chatCnt=(p.chat||[]).length;
+    var avHtml=p.photo
+      ?'<img src="'+p.photo+'" style="width:48px;height:48px;border-radius:24px;object-fit:cover;display:block;">'
+      :'<div style="width:48px;height:48px;border-radius:24px;background:#241b33;text-align:center;line-height:48px;font-size:1.3rem;position:relative;">'+(p.e||AE[i%AE.length])+'<span style="position:absolute;bottom:0;right:0;width:16px;height:16px;background:#2c2438;border-radius:8px;font-size:9px;line-height:16px;text-align:center;color:#aaa2bb;">'+(i+1)+'</span></div>';
+    html+='<div onclick="openEdit('+i+')" style="'+bb+'padding:14px;cursor:pointer;">'
+      +'<table style="width:100%;border-collapse:collapse;"><tr>'
+      +'<td style="width:52px;vertical-align:middle;">'+avHtml+'</td>'
+      +'<td style="vertical-align:middle;padding-left:12px;">'
+      +'<div style="font-size:0.95rem;font-weight:700;color:#f3eef9;">'+escH(p.n)+(p.a?' <span style="font-size:0.72rem;font-weight:400;color:#9b93ad;">'+p.a+'세</span>':'')+'</div>'
+      +'<div style="font-size:0.72rem;color:#9b93ad;margin-top:3px;">● '+SN[p.s||0]+(chatCnt?' &nbsp;💬 '+chatCnt+'개':'')+'</div>'
+      +'<div style="height:4px;background:#2c2438;border-radius:2px;margin-top:5px;overflow:hidden;">'
+      +'<div style="height:4px;width:'+pct+'%;background:#ff5d86;border-radius:2px;"></div></div></td>'
+      +'<td style="width:44px;text-align:right;vertical-align:middle;padding-left:8px;">'
+      +'<div style="font-size:1.1rem;font-weight:800;color:'+sc2+';">'+pct+'</div>'
+      +'<div style="font-size:0.6rem;color:#9b93ad;">점</div></td>'
+      +'</tr></table></div>';
+  });
+  /* + 이성 추가 버튼 */
+  html+='<div style="padding:10px 14px 6px;"><button class="ppl-add-btn" onclick="addPerson()">+ 이성 추가</button></div>';
   list.innerHTML=html;
+}
+function addPerson(){
+  people.push({n:'',a:'',s:0,sc:0,e:AE[people.length%AE.length],chat:[],successLabels:[]});
+  openEdit(people.length-1);
+}
+var _editPhotoData=null;
+function handlePhotoUpload(input){
+  if(!input.files||!input.files[0])return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    _editPhotoData=e.target.result;
+    var img=document.getElementById('editPhotoPreview');
+    var ph=document.getElementById('editPhotoPlaceholder');
+    img.src=_editPhotoData;img.style.display='block';ph.style.display='none';
+  };
+  reader.readAsDataURL(input.files[0]);
 }
 function openEdit(i){
   editIdx=i;
-  var p=people[i]||{n:'',a:'',s:0,sc:0,e:AE[i]};
+  var p=people[i]||{n:'',a:'',s:0,sc:0,e:AE[i%AE.length]};
+  if(!people[i])people[i]=p;
   editStage=p.s||0;
-  document.getElementById('editTitle').textContent=(i+1)+'번 이성 정보 '+(p.e||AE[i]);
+  _editPhotoData=p.photo||null;
+  /* 사진 미리보기 */
+  var img=document.getElementById('editPhotoPreview');
+  var ph=document.getElementById('editPhotoPlaceholder');
+  if(p.photo){img.src=p.photo;img.style.display='block';ph.style.display='none';}
+  else{img.style.display='none';img.src='';ph.style.display='flex';}
+  document.getElementById('photoFileInput').value='';
+  document.getElementById('editTitle').textContent=(i+1)+'번 이성 정보 '+(p.e||AE[i%AE.length]);
   document.getElementById('eN').value=p.n||'';
   document.getElementById('eA').value=p.a||'';
   document.getElementById('eS').value=p.sc||0;
@@ -1671,11 +1705,13 @@ function saveW(){
   p.a=document.getElementById('eA').value.trim();
   p.s=editStage;
   p.sc=parseInt(document.getElementById('eS').value)||0;
-  if(!p.e)p.e=AE[editIdx];
-  savePpl();closeEdit();renderWomen();showToast('저장 완료! ✓');
+  if(!p.e)p.e=AE[editIdx%AE.length];
+  if(_editPhotoData)p.photo=_editPhotoData;
+  if(!p.n){people.splice(editIdx,1);}  /* 이름 없이 저장 시 슬롯 제거 */
+  savePpl();closeEdit();renderWomen();showToast(p.n?'저장 완료! ✓':'슬롯 삭제됨');
 }
 function deleteW(){
-  people[editIdx]={n:'',a:'',s:0,sc:0,e:AE[editIdx]};
+  people.splice(editIdx,1);
   savePpl();closeEdit();renderWomen();showToast('삭제됨');
 }
 function closeEdit(){document.getElementById('editOverlay').classList.remove('show');}
@@ -1689,7 +1725,9 @@ function openChat(i){
   closeEdit();
   hideSuggPanel();
   var p=people[i];
-  document.getElementById('chatAv').textContent=p.e||AE[i];
+  var avEl=document.getElementById('chatAv');
+  if(p.photo){avEl.innerHTML='<img src="'+p.photo+'" style="width:40px;height:40px;border-radius:20px;object-fit:cover;">';avEl.style.fontSize='0';}
+  else{avEl.innerHTML='';avEl.style.fontSize='';avEl.textContent=p.e||AE[i%AE.length];}
   document.getElementById('chatName').textContent=p.n;
   document.getElementById('chatMeta').textContent=SN[p.s||0]+' · '+p.sc+'점';
   renderChatMsgs();
@@ -1838,12 +1876,38 @@ async function chatAnalyze(){
     try{
       var result=await callClaudeChatVision(imgs,msg,p);
       document.getElementById('chatLoading').classList.remove('show');
-      /* 대화 요약 말풍선 — 사진 분석 시 대화 첫머리에 삽입 */
+      /* 스크린샷 전체 대화 → p.chat 병합 (중복 제거 후 시간순 정렬) */
+      if(result.messages&&result.messages.length){
+        var existSet=new Set((p.chat||[]).map(function(c){return c.msg;}));
+        var total=result.messages.length;
+        var baseTs=Date.now()-(total*4*60*1000);
+        result.messages.forEach(function(m,idx){
+          if(!m.msg||existSet.has(m.msg))return;
+          existSet.add(m.msg);
+          var ts=baseTs;
+          if(m.timeHint){
+            var parts=m.timeHint.replace(/[ap]m/i,'').trim().split(':');
+            if(parts.length>=2){
+              var d=new Date();
+              var hh=parseInt(parts[0]),mm=parseInt(parts[1])||0;
+              if(/pm/i.test(m.timeHint)&&hh<12)hh+=12;
+              d.setHours(hh,mm,0,0);
+              ts=d.getTime();
+              if(ts>Date.now())ts-=86400000;
+            }
+          } else {
+            ts=baseTs+(idx*4*60*1000);
+          }
+          p.chat.push({dir:m.dir,msg:m.msg,ko:m.ko||'',ts:ts,fromScreenshot:true});
+        });
+        p.chat.sort(function(a,b){return (a.ts||0)-(b.ts||0);});
+      }
+      /* 대화 요약 말풍선 */
       if(result.summary){
         p.chat.push({dir:'summary',msg:result.summary,ts:Date.now()-1});
       }
-      /* 분석된 마지막 메시지 + 한국어 번역 */
-      if(result.lastMsg){
+      /* 마지막 메시지 (messages에 없을 경우 fallback) */
+      if(result.lastMsg&&!(p.chat||[]).find(function(c){return c.msg===result.lastMsg;})){
         p.chat.push({dir:'her',msg:result.lastMsg,ko:result.lastMsgKo||'',ts:Date.now()});
       }
       savePpl();renderChatMsgs();
@@ -1898,8 +1962,17 @@ async function callClaudeChatVision(imgs,extraText,p){
     +'• 세 답변은 완전히 다른 각도 (예: 유머 / 설레게 하기 / 밀당).\n'
     +'• 상대가 "이게 뭐지?" 하고 두근거리게 만드는 한방. 뻔한 표현 절대 금지.\n'
     +'• why는 한국어 8자 이내.\n'
+    +'[스크린샷 대화 추출 규칙]\n'
+    +'• messages: 스크린샷에 보이는 모든 메시지를 시간순으로 추출하라 (가장 오래된 것부터).\n'
+    +'• dir: 상대방 메시지 = "her", 내 메시지 = "me".\n'
+    +'• msg: 태국어/라오어 원문 (한 글자도 변경 금지).\n'
+    +'• ko: 상대방("her") 메시지만 한국어 의역. 내 메시지는 빈 문자열.\n'
+    +'• timeHint: 스크린샷에 보이는 시각 표시 (예: "14:30", "10:05 AM") — 없으면 null.\n'
+    +'• 한국어·영어 메시지도 msg에 그대로 넣을 것.\n\n'
     +'JSON만 반환(다른 텍스트 없이):\n'
-    +'{"tip":"한줄전략","lastMsg":"태국어원문","lastMsgKo":"한국어의역","summary":"대화요약","suggs":['
+    +'{"tip":"한줄전략","lastMsg":"태국어원문","lastMsgKo":"한국어의역","summary":"대화요약",'
+    +'"messages":[{"dir":"her","msg":"원문","ko":"한국어의역","timeHint":"HH:MM또는null"},{"dir":"me","msg":"원문","ko":"","timeHint":null}],'
+    +'"suggs":['
     +'{"label":"전략명","th":"태국어10단어이하","ko":"한국어번역","why":"8자이내"},'
     +'{"label":"전략명","th":"태국어10단어이하","ko":"한국어번역","why":"8자이내"},'
     +'{"label":"전략명","th":"태국어10단어이하","ko":"한국어번역","why":"8자이내"}]}';
@@ -2048,7 +2121,7 @@ function renderRank(){
     div.innerHTML='<table style="width:100%;border-collapse:collapse;"><tr>'
       +numHtml
       +'<td style="width:52px;padding:0 10px;vertical-align:middle;">'
-      +'<div style="width:44px;height:44px;border-radius:22px;background:rgba(255,107,138,0.12);text-align:center;line-height:44px;font-size:1.1rem;">'+(p.e||'👩')+'</div></td>'
+      +(p.photo?'<img src="'+p.photo+'" style="width:44px;height:44px;border-radius:22px;object-fit:cover;display:block;">':'<div style="width:44px;height:44px;border-radius:22px;background:rgba(255,107,138,0.12);text-align:center;line-height:44px;font-size:1.1rem;">'+(p.e||'👩')+'</div>')+'</td>'
       +'<td style="vertical-align:middle;">'
       +'<div style="font-size:0.95rem;font-weight:700;color:#f3eef9;">'+escH(p.n)+(p.a?' <span style="font-size:0.72rem;font-weight:400;color:#9b93ad;">'+p.a+'세</span>':'')+'</div>'
       +'<div style="font-size:0.72rem;color:#9b93ad;margin-top:2px;">● '+SN[p.s||0]+(chatCnt?' &nbsp;💬 '+chatCnt:'')+'</div>'
