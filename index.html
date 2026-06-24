@@ -2251,35 +2251,85 @@ async function callAnalysisAI(){
   var btn=document.getElementById('diagnosisBtn');
   btn.disabled=true;btn.textContent='🔄 AI 분석 중...';
   var chat=(p.chat||[]).filter(function(c){return c.dir!=='summary';});
-  if(chat.length<3){btn.disabled=false;btn.textContent='🔍 AI 관계 진단 받기';showToast('대화 기록이 부족합니다 (최소 3개 필요)');return;}
-  var history=chat.slice(-30).map(function(c){return(c.dir==='her'?'상대: ':'나: ')+(c.msg||'')+(c.ko?' (뜻: '+c.ko+')':'');}).join('\n');
-  var successCtx=(p.successLabels||[]).slice(-15);
-  var sys='당신은 연애 심리 전문가이자 태국/라오스 여성 관계 분석가입니다. 대화 내용을 심층 분석해 실용적인 인사이트를 한국어로 제공하세요.';
-  var userMsg='분석 대상: '+(p.n||'상대')+(p.a?'('+p.a+'세)':'')+' / 단계: '+SD[p.s||0]+' / 호감도: '+p.sc+'점\n\n'
-    +'[대화 히스토리]\n'+history+'\n\n'
-    +(successCtx.length?'[지금까지 효과적이었던 전략]: '+successCtx.join(', ')+'\n\n':'')
-    +'아래 JSON으로 분석 리포트를 작성하세요:\n'
-    +'{"status":"현재관계상태한줄","interest":"상대관심도분석(2~3문장)","pattern":"상대대화패턴특징(2~3문장)","strategy":["전략1","전략2","전략3"],"warning":"주의할점한줄","nextStep":"지금당장해야할행동한줄"}';
+  document.getElementById('diagnosisResult').innerHTML='<div style="text-align:center;padding:20px;color:#9b93ad;font-size:0.82rem;">💭 대화 패턴 분석 중...<br><span style="font-size:0.72rem;">15~20초 소요됩니다</span></div>';
+  if(chat.length<2){
+    btn.disabled=false;btn.textContent='🔍 AI 관계 진단 받기';
+    document.getElementById('diagnosisResult').innerHTML='<div style="text-align:center;padding:20px;color:#9b93ad;font-size:0.82rem;">대화 기록이 부족합니다.<br>캡쳐 사진 분석 또는 직접 대화 입력 후 다시 시도하세요.</div>';
+    return;
+  }
+  var history=chat.slice(-40).map(function(c,i){
+    var prefix=c.dir==='her'?'[상대] ':'[나] ';
+    var time=c.ts?(new Date(c.ts).getHours()+'시'):'';
+    return (i+1)+'. '+prefix+(c.msg||'')+(c.ko?' → "'+c.ko+'"':'')+(time?' ('+time+')':'');
+  }).join('\n');
+  var successCtx=(p.successLabels||[]).slice(-20);
+  var chatHours=new Array(24).fill(0);
+  chat.forEach(function(c){if(c.dir==='her'&&c.ts)chatHours[new Date(c.ts).getHours()]++;});
+  var peakHour=chatHours.indexOf(Math.max.apply(null,chatHours));
+  var sys='당신은 세계 최고의 연애 심리 전문가이자 태국/라오스 여성 전문 플러팅 코치입니다.\n'
+    +'실제 대화 데이터를 바탕으로 상대방 심리를 정밀 분석하고, 한국 남성이 태국/라오스 여성의 마음을 얻을 수 있는 구체적이고 실전적인 플러팅 전략을 제시하세요.\n'
+    +'분석은 반드시 근거를 대화에서 찾고, 전략은 실제로 당장 써먹을 수 있게 구체적으로 작성하세요.';
+  var userMsg='【분석 대상 프로필】\n'
+    +'이름: '+(p.n||'상대')+(p.a?' / 나이: '+p.a+'세':'')+'\n'
+    +'현재 관계 단계: '+SD[p.s||0]+' / 호감도 점수: '+p.sc+'점\n'
+    +'주 활동 시간대: '+peakHour+'시 전후\n'
+    +(successCtx.length?'지금까지 효과적이었던 전략: '+successCtx.join(', ')+'\n':'')+'\n'
+    +'【대화 기록 ('+chat.length+'건)】\n'+history+'\n\n'
+    +'위 대화를 면밀히 분석하여 아래 JSON 형식으로 한국어 플러팅 전략 리포트를 작성하세요.\n'
+    +'반드시 유효한 JSON만 반환. 모든 항목은 대화 근거 기반으로 구체적으로.\n\n'
+    +'{"temp":관계온도숫자0~100,"tempLabel":"관계온도한줄진단",'
+    +'"signals":["긍정신호1—근거","긍정신호2—근거","부정신호1—근거"],'
+    +'"personality":"그녀성격스타일3문장",'
+    +'"doList":["행동1","행동2","행동3","행동4","행동5"],'
+    +'"dontList":["금지1—이유","금지2—이유","금지3—이유"],'
+    +'"flirtLine":"지금보낼태국어한줄10단어이하이모지포함",'
+    +'"flirtLineKo":"위문장한국어뜻",'
+    +'"mission":"이번주미션2~3문장"}';
   try{
     var r=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1200,system:sys,messages:[{role:'user',content:userMsg}]})
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2000,system:sys,messages:[{role:'user',content:userMsg}]})
     });
     var d=await r.json();
-    var result=JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
+    if(!d.content||!d.content[0])throw new Error('API오류: '+(d.error&&d.error.message||JSON.stringify(d)));
+    var raw=d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,'');
+    var result=JSON.parse(raw);
+    var temp=Math.min(100,Math.max(0,result.temp||50));
+    var tempColor=temp>=70?'#ff5d86':temp>=40?'#f7b733':'#9b93ad';
+    var tempBg=temp>=70?'rgba(255,93,134,0.12)':temp>=40?'rgba(247,183,51,0.1)':'rgba(155,147,173,0.08)';
+    var flirtCopy=((result.flirtLine||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'"));
     var html='<div class="diagnosis-card">'
-      +'<div class="dx-status">'+escH(result.status||'')+'</div>'
-      +'<div class="dx-section"><div class="dx-lbl">💝 관심도 분석</div><div class="dx-txt">'+escH(result.interest||'')+'</div></div>'
-      +'<div class="dx-section"><div class="dx-lbl">🧠 대화 패턴</div><div class="dx-txt">'+escH(result.pattern||'')+'</div></div>'
-      +'<div class="dx-section"><div class="dx-lbl">🎯 지금 써야 할 전략</div>'
-      +(result.strategy||[]).map(function(s,i){return '<div class="dx-strat"><span>0'+(i+1)+'</span>'+escH(s)+'</div>';}).join('')
-      +'</div>'
-      +'<div class="dx-section dx-warn"><div class="dx-lbl">⚠️ 주의</div><div class="dx-txt">'+escH(result.warning||'')+'</div></div>'
-      +'<div class="dx-section dx-next"><div class="dx-lbl">🚀 지금 당장</div><div class="dx-txt">'+escH(result.nextStep||'')+'</div></div>'
+      +'<div style="background:'+tempBg+';border-radius:12px;padding:14px 16px;margin-bottom:16px;">'
+      +'<div style="display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;align-items:center;-webkit-box-pack:justify;justify-content:space-between;margin-bottom:8px;">'
+      +'<span style="font-size:0.65rem;font-weight:700;color:#9b93ad;text-transform:uppercase;letter-spacing:0.8px;">💗 관계 온도</span>'
+      +'<span style="font-size:1.5rem;font-weight:900;color:'+tempColor+';">'+temp+'°</span></div>'
+      +'<div style="height:8px;background:#2c2438;border-radius:4px;overflow:hidden;">'
+      +'<div style="height:8px;width:'+temp+'%;background:'+tempColor+';border-radius:4px;"></div></div>'
+      +'<div style="font-size:0.78rem;color:'+tempColor+';margin-top:8px;font-weight:600;">'+escH(result.tempLabel||'')+'</div></div>'
+      +'<div class="dx-section"><div class="dx-lbl">📡 감정 신호 분석</div>'
+      +(result.signals||[]).map(function(s){
+        var isNeg=s.indexOf('부정')>=0||s.indexOf('경계')>=0||s.indexOf('거리')>=0||s.indexOf('없음')>=0;
+        return '<div style="font-size:0.8rem;color:#cec8d8;padding:5px 0 5px 18px;position:relative;line-height:1.6;">'
+          +'<span style="position:absolute;left:0;top:6px;">'+(isNeg?'🔴':'💚')+'</span>'+escH(s)+'</div>';
+      }).join('')+'</div>'
+      +'<div class="dx-section"><div class="dx-lbl">🧠 그녀의 성격·대화 스타일</div><div class="dx-txt">'+escH(result.personality||'')+'</div></div>'
+      +'<div class="dx-section"><div class="dx-lbl">✅ 지금 당장 해야 할 행동 5가지</div>'
+      +(result.doList||[]).map(function(s,i){return '<div class="dx-strat"><span>0'+(i+1)+'</span>'+escH(s)+'</div>';}).join('')+'</div>'
+      +'<div class="dx-section dx-warn"><div class="dx-lbl">🚫 절대 하면 안 되는 것</div>'
+      +(result.dontList||[]).map(function(s){return '<div style="font-size:0.8rem;color:#f7b733;padding:4px 0 4px 18px;position:relative;line-height:1.6;"><span style="position:absolute;left:0;top:5px;">✗</span>'+escH(s)+'</div>';}).join('')+'</div>'
+      +'<div style="background:linear-gradient(135deg,rgba(255,93,134,0.12),rgba(177,75,216,0.12));border:1px solid rgba(255,93,134,0.3);border-radius:12px;padding:14px 16px;margin:12px 0;">'
+      +'<div style="font-size:0.62rem;font-weight:700;color:#9b93ad;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">💌 지금 당장 보낼 한 줄</div>'
+      +'<div style="font-size:1rem;font-weight:800;color:#f3eef9;margin-bottom:4px;">'+escH(result.flirtLine||'')+'</div>'
+      +'<div style="font-size:0.75rem;color:#9b93ad;margin-bottom:10px;">🇰🇷 '+escH(result.flirtLineKo||'')+'</div>'
+      +'<button onclick="cp(\''+flirtCopy+'\');showToast(\'복사됨! 바로 보내세요 ✓\')" style="width:100%;padding:9px;background:#ff5d86;border:none;color:#fff;border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;">📋 복사해서 바로 보내기</button></div>'
+      +'<div class="dx-section dx-next"><div class="dx-lbl">🚀 이번 주 미션</div><div class="dx-txt">'+escH(result.mission||'')+'</div></div>'
       +'</div>';
     document.getElementById('diagnosisResult').innerHTML=html;
-  }catch(e){showToast('⚠️ 분석 오류. 다시 시도하세요');}
+    setTimeout(function(){document.getElementById('diagnosisResult').scrollIntoView({behavior:'smooth',block:'start'});},200);
+  }catch(e){
+    document.getElementById('diagnosisResult').innerHTML='<div style="padding:16px;color:#f7b733;font-size:0.8rem;text-align:center;">⚠️ 분석 오류<br><span style="font-size:0.68rem;color:#9b93ad;">'+escH(e.message||'알 수 없는 오류')+'</span></div>';
+  }
   btn.disabled=false;btn.textContent='🔍 AI 관계 진단 받기';
 }
 
