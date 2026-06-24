@@ -479,7 +479,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,.nav-item:focus-
       <div class="hdr-badges">
         <span class="badge" id="bdStage">첫 연락</span>
         <span class="badge" id="bdStyle">매력남</span>
-        <span class="badge badge-ver">v9.9</span>
+        <span class="badge badge-ver">v10.0</span>
       </div>
     </div>
     <button class="hdr-btn" onclick="goSetup()">⚙️ 재설정</button>
@@ -1808,27 +1808,34 @@ async function chatAnalyze(){
 async function callClaudeChatVision(imgs,extraText,p){
   var recent=(p.chat||[]).slice(-10);
   var history=recent.length?recent.map(function(c){return(c.dir==='her'?'상대: ':'나: ')+c.msg;}).join('\n'):'(이전 대화 없음)';
-  var sys='당신은 세계 최고의 태국/라오스 여성 플러팅 전략 코치입니다.\n'
+  var sys='당신은 태국어/라오어 원어민 수준의 언어 전문가이자 세계 최고의 플러팅 전략 코치입니다.\n'
     +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계단계: '+SD[p.s||0]+' / 스타일: '+PD[persona]+'\n'
     +'이전 대화:\n'+history+'\n\n'
-    +'[절대 규칙]\n'
-    +'① suggs 배열에 반드시 정확히 3개 — 1개나 2개면 오답이므로 절대 금지.\n'
-    +'② 스크린샷에서 상대방 마지막 메시지를 찾아 lastMsg에 원문, lastMsgKo에 한국어 번역.\n'
-    +'③ summary: 스크린샷 전체 대화 흐름을 한국어로 2~3문장 요약.\n'
-    +'④ 각 답변: 1문장 이내 구어체, 이모지 1~2개, 세 답변은 완전히 다른 전략(유머/칭찬/밀당 등).\n'
-    +'⑤ 재치·임팩트 최우선. 뻔한 표현 금지. why는 한국어 10자 이내.\n'
+    +'[태국어 OCR — 최우선 규칙]\n'
+    +'• 태국어는 자음·모음·성조부호가 겹쳐 표기되므로 한 글자씩 천천히 식별하라.\n'
+    +'• 절대 추측하거나 유사 단어로 대체하지 말 것 — 원문 글자 그대로 옮길 것.\n'
+    +'• 라오어(ລາວ)와 태국어(ไทย)를 혼동하지 말 것 — 글자 형태가 다름.\n'
+    +'• lastMsg: 스크린샷에서 상대방이 보낸 마지막 메시지 태국어 원문 (한 글자도 바꾸지 말 것).\n'
+    +'• lastMsgKo: 직역 금지 — 문맥·뉘앙스·감정을 살린 자연스러운 한국어 의역.\n'
+    +'• summary: 스크린샷 전체 대화를 한국어로 2~3문장 핵심만 요약.\n\n'
+    +'[답변 규칙]\n'
+    +'• suggs 반드시 정확히 3개 — 절대 1~2개 금지.\n'
+    +'• 각 답변: 태국어 구어체, 반드시 10단어 이하, 짧고 강렬하게. 이모지 1~2개.\n'
+    +'• 세 답변은 완전히 다른 각도 (예: 유머 / 설레게 하기 / 밀당).\n'
+    +'• 상대가 "이게 뭐지?" 하고 두근거리게 만드는 한방. 뻔한 표현 절대 금지.\n'
+    +'• why는 한국어 8자 이내.\n'
     +'JSON만 반환(다른 텍스트 없이):\n'
-    +'{"tip":"한줄전략","lastMsg":"상대마지막메시지원문","lastMsgKo":"상대마지막메시지한국어번역","summary":"전체대화흐름한국어요약","suggs":['
-    +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"10자이내"},'
-    +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"10자이내"},'
-    +'{"label":"전략명","th":"태국어답변","ko":"한국어번역","why":"10자이내"}]}';
+    +'{"tip":"한줄전략","lastMsg":"태국어원문","lastMsgKo":"한국어의역","summary":"대화요약","suggs":['
+    +'{"label":"전략명","th":"태국어10단어이하","ko":"한국어번역","why":"8자이내"},'
+    +'{"label":"전략명","th":"태국어10단어이하","ko":"한국어번역","why":"8자이내"},'
+    +'{"label":"전략명","th":"태국어10단어이하","ko":"한국어번역","why":"8자이내"}]}';
 
   var content=[];
   imgs.forEach(function(img,i){
     content.push({type:'text',text:i===0?'채팅 스크린샷 '+(i+1)+'장:':'추가 스크린샷 '+(i+1)+'장:'});
     content.push({type:'image',source:{type:'base64',media_type:img.type,data:img.data}});
   });
-  var userText='위 스크린샷의 대화를 분석해 전략적 답변을 JSON으로 추천해주세요.';
+  var userText='스크린샷의 태국어를 한 글자씩 정확히 읽고, 상대방 마지막 메시지를 원문 그대로 lastMsg에 넣은 뒤 전략적 답변 JSON을 주세요.';
   if(extraText)userText+=' 추가 메모: '+extraText;
   content.push({type:'text',text:userText});
 
@@ -1844,15 +1851,16 @@ async function callClaudeChatVision(imgs,extraText,p){
 async function callClaudeChat(msg,p){
   var recent=(p.chat||[]).slice(-14);
   var history=recent.map(function(c){return(c.dir==='her'?'상대('+p.n+'): ':'나: ')+c.msg;}).join('\n');
-  var sys='당신은 세계 최고의 태국/라오스 여성 플러팅 전략 코치입니다.\n'
+  var sys='당신은 태국어/라오어 원어민 수준의 언어 전문가이자 세계 최고의 플러팅 전략 코치입니다.\n'
     +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계단계: '+SD[p.s||0]+' / 스타일: '+PD[persona]+'\n'
     +'최근 대화:\n'+history+'\n\n'
     +'[절대 규칙]\n'
-    +'① suggs 배열에 반드시 정확히 3개 — 1개나 2개면 오답이므로 절대 금지.\n'
-    +'② 각 답변: 1문장 이내 구어체, 이모지 1~2개, 세 답변은 완전히 다른 전략(유머/칭찬/밀당 등).\n'
-    +'③ 재치·임팩트 최우선. 뻔한 표현 금지. why는 한국어 10자 이내.\n'
-    +'JSON만 반환(다른 텍스트 없이):\n'
-    +'{"tip":"한줄전략","herKo":"상대메시지한국어번역","suggs":[{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"10자이내"}]}';
+    +'① suggs 반드시 정확히 3개 — 절대 1~2개 금지.\n'
+    +'② herKo: 상대 메시지를 직역 말고 뉘앙스·감정 살린 자연스러운 한국어 의역.\n'
+    +'③ 각 답변: 태국어 구어체, 반드시 10단어 이하, 이모지 1~2개. 세 답변 완전히 다른 각도.\n'
+    +'④ 상대가 두근거리게 만드는 한방. 뻔한 표현 절대 금지. why 8자 이내.\n'
+    +'JSON만 반환:\n'
+    +'{"tip":"한줄전략","herKo":"한국어의역","suggs":[{"label":"전략명","th":"10단어이하태국어","ko":"한국어번역","why":"8자이내"},{"label":"전략명","th":"10단어이하태국어","ko":"한국어번역","why":"8자이내"},{"label":"전략명","th":"10단어이하태국어","ko":"한국어번역","why":"8자이내"}]}';
   var r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
