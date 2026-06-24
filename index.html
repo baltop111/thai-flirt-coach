@@ -260,6 +260,17 @@ body{height:100%;background:#0c0a12;color:#f3eef9;font-family:-apple-system,Blin
 .dx-strat{font-size:0.8rem;color:#cec8d8;line-height:1.5;}
 .dx-warn .dx-txt{color:#f7b733;}
 .dx-next .dx-txt{color:#4ecdc4;font-weight:600;}
+/* ── 비전 분석 카드 (2단계 흐름 1단계) ── */
+.va-section{padding:10px 14px;border-bottom:1px solid #16131f;}
+.va-section:last-of-type{border-bottom:none;}
+.va-label{font-size:0.6rem;font-weight:700;color:#9b93ad;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:5px;}
+.va-text{font-size:0.82rem;color:#cec8d8;line-height:1.65;}
+.va-tip-box{background:rgba(177,75,216,0.1);border-left:2px solid #b14bd8;padding:8px 12px;border-radius:0 8px 8px 0;font-size:0.8rem;color:#e0d6ff;line-height:1.6;}
+.va-last-box{background:#1a1520;border-radius:10px;padding:12px 14px;}
+.va-msg-th{font-size:0.95rem;font-weight:700;color:#f3eef9;margin-bottom:4px;line-height:1.5;}
+.va-msg-ko{font-size:0.78rem;color:#9b93ad;line-height:1.5;}
+.va-cta-btn{display:block;width:calc(100% - 28px);margin:12px 14px 14px;padding:14px;background:linear-gradient(135deg,#ff5d86,#b14bd8);border:none;color:#fff;border-radius:14px;font-size:0.95rem;font-weight:800;cursor:pointer;text-align:center;}
+.va-cta-btn:active{opacity:0.85;}
 /* 추천 패널 — 입력창 바로 위 고정 영역, 스크롤 불필요 */
 .sugg-panel{display:none;background:#0c0a12;border-top:2px solid #ff5d86;-webkit-flex-shrink:0;flex-shrink:0;overflow-y:auto;-webkit-overflow-scrolling:touch;max-height:56vh;}
 .sugg-panel.show{display:block;}
@@ -1250,6 +1261,7 @@ var nickname=localStorage.getItem('nickname')||'';
 var userPhone=localStorage.getItem('userPhone')||'';
 var registeredUsers=JSON.parse(localStorage.getItem('registeredUsers')||'[]');
 var lastChatContext=null;
+var lastVisionResult=null;
 
 /* ── 핸드폰 번호 포맷 ── */
 function fmtPhone(el){
@@ -1895,7 +1907,8 @@ async function chatAnalyze(){
         p.chat.push({dir:'her',msg:result.lastMsg,ko:result.lastMsgKo||'',ts:Date.now()});
       }
       savePpl();renderChatMsgs();
-      renderChatSuggs(result);
+      /* ── 1단계: 분석 카드 표시 (바로 추천 안함) ── */
+      showVisionAnalysisCard(result);
       /* 백그라운드: 전체 대화 히스토리 추출 → 분석 대시보드 반영 */
       _extractChatHistory(imgs,p);
     }catch(e){
@@ -2040,6 +2053,48 @@ async function callClaudeChat(msg,p){
   });
   var d=await r.json();
   return JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
+}
+/* ── 비전 2단계: 분석 카드 표시 ── */
+function showVisionAnalysisCard(result){
+  lastVisionResult=result;
+  var panel=document.getElementById('suggPanel');
+  /* 헤더 */
+  var html='<div class="sugg-panel-hdr">📊 대화 분석 완료'
+    +'<button class="sugg-panel-close" onclick="hideSuggPanel()">✕</button></div>';
+  /* 요약 */
+  if(result.summary){
+    html+='<div class="va-section">'
+      +'<div class="va-label">📋 대화 흐름 요약</div>'
+      +'<div class="va-text">'+escH(result.summary)+'</div>'
+      +'</div>';
+  }
+  /* AI 전략 힌트 */
+  if(result.tip){
+    html+='<div class="va-section">'
+      +'<div class="va-label">💡 AI 분석 포인트</div>'
+      +'<div class="va-tip-box">'+escH(result.tip)+'</div>'
+      +'</div>';
+  }
+  /* 상대방 마지막 메시지 */
+  if(result.lastMsg){
+    html+='<div class="va-section">'
+      +'<div class="va-label">💬 상대방 마지막 메시지</div>'
+      +'<div class="va-last-box">'
+      +'<div class="va-msg-th">'+escH(result.lastMsg)+'</div>'
+      +(result.lastMsgKo?'<div class="va-msg-ko">🇰🇷 '+escH(result.lastMsgKo)+'</div>':'')
+      +'</div></div>';
+  }
+  /* CTA — 2단계 진입 버튼 */
+  html+='<button class="va-cta-btn" onclick="requestVisionSuggs()">✨ 이 메시지에 답변 추천받기</button>';
+  panel.innerHTML=html;
+  panel.classList.add('show');
+  scrollChatBottom();
+}
+function requestVisionSuggs(){
+  if(!lastVisionResult){showToast('분석 결과가 없습니다. 사진을 다시 업로드하세요.');return;}
+  var panel=document.getElementById('suggPanel');
+  panel.innerHTML='<div style="text-align:center;padding:24px 0;color:#9b93ad;font-size:0.82rem;">🎯 최적 답변 전략 생성 중...</div>';
+  setTimeout(function(){renderChatSuggs(lastVisionResult);},200);
 }
 function hideSuggPanel(){
   var p=document.getElementById('suggPanel');
