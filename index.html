@@ -1957,11 +1957,18 @@ async function _extractChatHistory(imgs,p){
   var sys2='당신은 태국어/라오어 채팅 스크린샷 분석 전문가입니다. 스크린샷에 보이는 모든 메시지를 시간순으로 정확히 추출하세요.';
   var content2=[];
   imgs.forEach(function(img,i){content2.push({type:'image',source:{type:'base64',media_type:img.type,data:img.data}});});
-  content2.push({type:'text',text:'스크린샷에 보이는 모든 메시지를 시간순(오래된것→최신)으로 추출하세요.\n'
-    +'• dir: 상대방="her", 내메시지="me"\n'
+  content2.push({type:'text',text:'스크린샷에 보이는 모든 메시지를 시간순(오래된것→최신)으로 추출하세요.\n\n'
+    +'[말풍선 구분 — 절대 규칙]\n'
+    +'• 오른쪽 말풍선(초록색/파란색/노란색) = 내가 보낸 메시지 → dir:"me"\n'
+    +'• 왼쪽 말풍선(흰색/회색) = 상대방이 보낸 메시지 → dir:"her"\n'
+    +'• 카카오톡: 오른쪽 노란/초록 말풍선=나(me), 왼쪽 흰색 말풍선=상대방(her)\n'
+    +'• 라인: 오른쪽 초록 말풍선=나(me), 왼쪽 흰색=상대방(her)\n'
+    +'• 절대 혼동 금지 — 위치(좌/우)가 발신자를 결정함\n\n'
+    +'각 메시지 필드:\n'
+    +'• dir: "her"(왼쪽/상대방) 또는 "me"(오른쪽/나)\n'
     +'• msg: 원문 그대로 (한 글자도 변경금지)\n'
-    +'• ko: her 메시지만 한국어 의역, me는 ""\n'
-    +'• timeHint: 보이는 시각표시 없으면 null\n'
+    +'• ko: her 메시지만 한국어 자연스러운 의역, me는 ""\n'
+    +'• timeHint: 보이는 시각표시, 없으면 null\n'
     +'JSON배열만 반환:\n[{"dir":"her","msg":"원문","ko":"의역","timeHint":"14:30"},{"dir":"me","msg":"원문","ko":"","timeHint":null}]'});
   try{
     var r2=await fetch('https://api.anthropic.com/v1/messages',{
@@ -2012,11 +2019,17 @@ async function callClaudeChatVision(imgs,extraText,p){
     +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계단계: '+SD[p.s||0]+' / 스타일: '+PD[persona]+'\n'
     +(successCtx.length?'✓ 효과적 전략: '+successCtx.join(', ')+'\n':'')
     +'이전 대화:\n'+history+'\n\n'
+    +'[말풍선 구분 — 절대 규칙]\n'
+    +'• 오른쪽 말풍선(초록색/파란색) = 내가 보낸 메시지 (me) — lastMsg에 절대 넣지 말 것\n'
+    +'• 왼쪽 말풍선(흰색/회색) = 상대방이 보낸 메시지 (her) — lastMsg는 반드시 이것\n'
+    +'• 카카오톡 기준: 오른쪽 노란/초록 = 나, 왼쪽 흰색 = 상대방\n'
+    +'• lastMsg는 화면에서 가장 마지막에 나온 왼쪽(상대방) 메시지 원문\n'
+    +'• 상대방이 내 메시지에 어떻게 반응했는지 분석해 다음 전략을 결정\n\n'
     +'[OCR 규칙] 태국어 한 글자씩 정확히 식별. 추측·대체 금지. 라오어와 혼동 금지.\n'
-    +'lastMsg=상대 마지막 메시지 원문. lastMsgKo=뉘앙스 살린 한국어 의역. summary=전체 2~3문장 요약.\n'
-    +'[답변] suggs 정확히 3개. 태국어 구어체 10단어 이하. 완전히 다른 각도 3가지. why 8자 이내.\n'
+    +'lastMsgKo=상대방 마지막 메시지 뉘앙스 살린 한국어 의역. summary=대화 흐름 2~3문장 요약(누가 어떤 반응을 보였는지 포함).\n'
+    +'[답변] suggs 정확히 3개. 상대방의 마지막 메시지에 이어지는 답변. 태국어 구어체 10단어 이하. 완전히 다른 각도 3가지. why 8자 이내.\n'
     +'JSON만 반환:\n'
-    +'{"tip":"한줄전략","lastMsg":"태국어원문","lastMsgKo":"한국어의역","summary":"대화요약",'
+    +'{"tip":"한줄전략","lastMsg":"상대방왼쪽말풍선마지막원문","lastMsgKo":"한국어의역","summary":"대화요약",'
     +'"suggs":[{"label":"전략명","th":"태국어","ko":"한국어","why":"8자이내"},{"label":"전략명","th":"태국어","ko":"한국어","why":"8자이내"},{"label":"전략명","th":"태국어","ko":"한국어","why":"8자이내"}]}';
 
   var content=[];
