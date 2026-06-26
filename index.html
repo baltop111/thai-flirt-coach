@@ -2028,44 +2028,54 @@ async function callClaudeChatVision(imgs,extraText,p){
   var recent=(p.chat||[]).slice(-10);
   var history=recent.length?recent.map(function(c){return(c.dir==='her'?'상대: ':'나: ')+c.msg;}).join('\n'):'(이전 대화 없음)';
   var successCtx=(p.successLabels||[]).slice(-10);
-  /* ── 메인 호출: OCR + suggs (Sonnet — 태국어 OCR 정확도 최우선) ── */
-  var sys='당신은 태국어/라오어 텍스트 인식 전문가이자 플러팅 전략 코치입니다.\n'
+  /* ── 메인 호출: OCR + 심층분석 + suggs (Sonnet) ── */
+  var imgCount=imgs.length;
+  var sys='당신은 태국어/라오어 텍스트 인식 전문가이자 세계 최고 플러팅 전략 코치입니다.\n'
     +'상대: '+(p.n||'상대')+(p.a?', '+p.a+'세':'')+' / 관계단계: '+SD[p.s||0]+' / 스타일: '+PD[persona]+'\n'
     +(successCtx.length?'✓ 효과적 전략: '+successCtx.join(', ')+'\n':'')
-    +'이전 대화:\n'+history+'\n\n'
-    +'=== 말풍선 발신자 구분 (최우선 규칙 — 절대 혼동 금지) ===\n'
-    +'핵심: 카카오톡·라인·왓츠앱 공통 — 색깔=나, 흰색=상대방\n'
-    +'▶ 색깔 있는 말풍선(초록/노란/파란 등) = 내가 보낸 메시지 (me)\n'
-    +'▶ 흰색/무색 말풍선 = 상대방 이성이 보낸 메시지 (her)\n'
-    +'  - 카카오톡: 오른쪽 노란색=나(me), 왼쪽 흰색=상대방(her)\n'
-    +'  - 라인: 오른쪽 초록색=나(me), 왼쪽 흰색=상대방(her)\n'
-    +'  - 왓츠앱: 오른쪽 연초록=나(me), 왼쪽 흰색=상대방(her)\n'
-    +'▶ lastMsg = 흰색(상대방) 말풍선 중 가장 마지막 원문 — 색깔 말풍선 절대 금지\n\n'
-    +'=== 태국어 OCR 규칙 (100% 정확도 요구) ===\n'
-    +'▶ 태국 문자 낱자를 픽셀 단위로 식별 — 유사 문자 혼동 금지\n'
-    +'▶ ก/ภ/ถ/ฎ/ฏ 등 유사 문자 반드시 구분\n'
-    +'▶ 성조 기호(่้๊๋) 및 모음 기호 생략·오독 금지\n'
-    +'▶ 읽기 불확실한 글자는 []로 표시, 절대 추측해서 다른 글자로 쓰지 말 것\n'
-    +'▶ 라오어와 태국어 혼동 금지\n\n'
-    +'=== 분석 지시 ===\n'
-    +'상대방(왼쪽)이 나(오른쪽)의 메시지에 어떻게 반응했는지 파악 후 다음 전략 도출.\n'
-    +'JSON만 반환:\n'
-    +'{"tip":"한줄전략","lastMsg":"상대방왼쪽말풍선마지막원문","lastMsgKo":"한국어자연스러운의역","summary":"대화흐름요약(누가어떤반응인지포함)",'
-    +'"suggs":[{"label":"전략명","th":"태국어구어체10단어이하","ko":"한국어","why":"8자이내"},{"label":"전략명","th":"태국어구어체10단어이하","ko":"한국어","why":"8자이내"},{"label":"전략명","th":"태국어구어체10단어이하","ko":"한국어","why":"8자이내"}]}';
+    +(history!=='(이전 대화 없음)'?'이전 대화:\n'+history+'\n':'')
+    +'\n=== [규칙1] 말풍선 발신자 구분 — 절대 혼동 금지 ===\n'
+    +'공통 원칙(카카오톡·라인·왓츠앱 동일): 색깔말풍선=나(me), 흰색말풍선=상대방(her)\n'
+    +'• 카카오톡: 오른쪽 노란색=나 / 왼쪽 흰색=상대방\n'
+    +'• 라인: 오른쪽 초록색=나 / 왼쪽 흰색=상대방\n'
+    +'• 왓츠앱: 오른쪽 연초록=나 / 왼쪽 흰색=상대방\n'
+    +'lastMsg = 흰색(상대방) 말풍선 중 모든 사진 통틀어 시간상 가장 마지막 원문\n\n'
+    +'=== [규칙2] 여러 장 사진 처리 ===\n'
+    +(imgCount>1?'총 '+imgCount+'장의 스크린샷을 시간 순서대로(1장→'+imgCount+'장) 하나의 연속 대화로 분석.\n':'')
+    +'각 사진의 대화를 순서대로 이어붙여 전체 흐름을 파악한다.\n\n'
+    +'=== [규칙3] 태국어 OCR — 100% 정확도 ===\n'
+    +'낱자 단위 식별, ก/ภ/ถ/ฎ/ฏ 등 유사문자 구분, 성조·모음 생략 금지.\n'
+    +'불확실 글자는 [] 표시, 추측 금지. 라오어·태국어 혼동 금지.\n\n'
+    +'=== [규칙4] 심층 분석 ===\n'
+    +'① 내(색깔) 메시지 중 상대방이 가장 뜨겁게 반응한 메시지 1개를 hotMyMsg에 기록\n'
+    +'② 그 반응이 뜨거운 이유를 hotReason에 한국어로 기록\n'
+    +'③ 상대방 답장이 빠른 시간대/패턴을 bestTiming에 기록\n'
+    +'④ summary에 "나의 어떤 말→상대방 반응" 흐름 포함\n\n'
+    +'JSON만 반환(코드블록 없이):\n'
+    +'{"tip":"한줄전략","lastMsg":"상대방마지막원문","lastMsgKo":"한국어의역",'
+    +'"summary":"전체대화흐름요약(반응포함)",'
+    +'"hotMyMsg":"상대반응이가장뜨거웠던나의메시지","hotReason":"그이유한국어",'
+    +'"bestTiming":"최적응답타이밍분석한국어",'
+    +'"suggs":[{"label":"전략명","th":"태국어10단어이하","ko":"한국어","why":"8자이내"},{"label":"전략명","th":"태국어10단어이하","ko":"한국어","why":"8자이내"},{"label":"전략명","th":"태국어10단어이하","ko":"한국어","why":"8자이내"}]}';
 
   var content=[];
   imgs.forEach(function(img,i){
     content.push({type:'text',text:i===0?'채팅 스크린샷 '+(i+1)+'장:':'추가 스크린샷 '+(i+1)+'장:'});
     content.push({type:'image',source:{type:'base64',media_type:img.type,data:img.data}});
   });
-  var userText='[1단계] 오른쪽 말풍선=나, 왼쪽 말풍선=상대방 — 절대 혼동 금지.\n[2단계] 태국어 문자를 낱자 단위로 100% 정확히 읽어라. 불확실하면 [] 표시.\n[3단계] lastMsg에는 반드시 왼쪽(상대방) 마지막 말풍선 원문만 넣어라.\n[4단계] 위 분석을 바탕으로 전략적 답변 JSON을 반환하라.';
+  var userText=(imgCount>1?'['+imgCount+'장 연속 대화] 1장부터 '+imgCount+'장까지 시간순으로 이어지는 하나의 대화입니다.\n':'')
+    +'[1단계] 색깔말풍선=나(me), 흰색말풍선=상대방(her) — 절대 혼동 금지.\n'
+    +'[2단계] 모든 태국어를 낱자 단위로 100% 정확히 읽어라. 불확실하면 [] 표시.\n'
+    +'[3단계] lastMsg = 흰색(상대방) 말풍선 중 전체 사진 통틀어 시간상 마지막 원문.\n'
+    +'[4단계] 내 메시지 중 상대가 가장 뜨겁게 반응한 것 + 최적 타이밍 분석.\n'
+    +'[5단계] 위 분석으로 전략적 답변 JSON을 반환하라.';
   if(extraText)userText+=' 추가 메모: '+extraText;
   content.push({type:'text',text:userText});
 
   var r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1600,system:sys,messages:[{role:'user',content:content}]})
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,system:sys,messages:[{role:'user',content:content}]})
   });
   var d=await r.json();
   if(!d.content||!d.content[0])throw new Error((d.error&&d.error.message)||'API 응답 없음');
@@ -2104,20 +2114,35 @@ async function callClaudeChat(msg,p){
 function showVisionAnalysisCard(result){
   lastVisionResult=result;
   var panel=document.getElementById('suggPanel');
-  /* 헤더 */
-  var html='<div class="sugg-panel-hdr">📊 대화 분석 완료'
+  var html='<div class="sugg-panel-hdr">📊 대화 심층 분석 완료'
     +'<button class="sugg-panel-close" onclick="hideSuggPanel()">✕</button></div>';
-  /* 요약 */
+  /* 대화 흐름 요약 */
   if(result.summary){
     html+='<div class="va-section">'
       +'<div class="va-label">📋 대화 흐름 요약</div>'
       +'<div class="va-text">'+escH(result.summary)+'</div>'
       +'</div>';
   }
+  /* 🔥 핫 반응 구간 */
+  if(result.hotMyMsg){
+    html+='<div class="va-section">'
+      +'<div class="va-label">🔥 상대 반응이 가장 뜨거웠던 내 메시지</div>'
+      +'<div class="va-last-box">'
+      +'<div class="va-msg-th">'+escH(result.hotMyMsg)+'</div>'
+      +(result.hotReason?'<div class="va-msg-ko">💡 '+escH(result.hotReason)+'</div>':'')
+      +'</div></div>';
+  }
+  /* ⏰ 최적 타이밍 */
+  if(result.bestTiming){
+    html+='<div class="va-section">'
+      +'<div class="va-label">⏰ 최적 응답 타이밍</div>'
+      +'<div class="va-tip-box">'+escH(result.bestTiming)+'</div>'
+      +'</div>';
+  }
   /* AI 전략 힌트 */
   if(result.tip){
     html+='<div class="va-section">'
-      +'<div class="va-label">💡 AI 분석 포인트</div>'
+      +'<div class="va-label">💡 AI 전략 포인트</div>'
       +'<div class="va-tip-box">'+escH(result.tip)+'</div>'
       +'</div>';
   }
@@ -2130,7 +2155,6 @@ function showVisionAnalysisCard(result){
       +(result.lastMsgKo?'<div class="va-msg-ko">🇰🇷 '+escH(result.lastMsgKo)+'</div>':'')
       +'</div></div>';
   }
-  /* CTA — 2단계 진입 버튼 */
   html+='<button class="va-cta-btn" onclick="requestVisionSuggs()">✨ 이 메시지에 답변 추천받기</button>';
   panel.innerHTML=html;
   panel.classList.add('show');
