@@ -42,6 +42,9 @@ body{height:100vh;height:100dvh;overflow:hidden;background:#0c0a12;color:#f3eef9
 .content{-webkit-box-flex:1;-webkit-flex:1;flex:1;min-height:0;overflow:hidden;position:relative;}
 .tab{display:none;height:100%;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 14px 76px;}
 .tab.active{display:block;}
+/* ── 가상 채팅 탭 오버라이드 ── */
+#tab-coach{padding:0;overflow:hidden;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
+#tab-coach.active{display:-webkit-box;display:-webkit-flex;display:flex;}
 
 /* ── 하단 네비 ── */
 .nav{position:fixed;bottom:0;left:0;right:0;z-index:200;display:-webkit-box;display:-webkit-flex;display:flex;background:#1b1626;border-top:1px solid #2c2438;}
@@ -468,6 +471,59 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,.nav-item:focus-
 .hdr,.chat-hdr{-webkit-box-shadow:0 2px 20px rgba(0,0,0,0.45);box-shadow:0 2px 20px rgba(0,0,0,0.45);}
 /* 모션 줄이기 존중 */
 @media (prefers-reduced-motion: reduce){*{-webkit-animation-duration:0.001ms!important;animation-duration:0.001ms!important;-webkit-transition-duration:0.001ms!important;transition-duration:0.001ms!important;}}
+/* ══ 가상 채팅 UI ══ */
+.vc-header{display:-webkit-box;display:-webkit-flex;display:flex;align-items:center;background:#1b1626;border-bottom:1px solid #2c2438;padding:10px 14px;-webkit-flex:none;flex:none;position:relative;z-index:10;}
+.vc-avatar-wrap{position:relative;cursor:pointer;-webkit-flex:none;flex:none;}
+.vc-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid #ff5d86;background:#2c2438;display:block;}
+.vc-avatar-edit{position:absolute;bottom:0;right:0;width:16px;height:16px;background:#ff5d86;border-radius:50%;font-size:8px;display:-webkit-box;display:-webkit-flex;display:flex;align-items:center;justify-content:center;color:#fff;}
+.vc-info{-webkit-flex:1;flex:1;margin-left:10px;}
+.vc-name{font-weight:700;font-size:0.97rem;color:#e8e0f0;}
+.vc-status{font-size:0.7rem;color:#34d6b0;margin-top:2px;}
+.vc-clear-btn{background:none;border:none;color:#9b93ad;font-size:1.1rem;cursor:pointer;padding:6px;}
+.vc-msgs{-webkit-box-flex:1;-webkit-flex:1;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 14px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
+.vc-day-sep{text-align:center;margin:10px 0;font-size:0.67rem;color:#9b93ad;background:#1b1626;border-radius:20px;padding:3px 10px;align-self:center;}
+.vc-row{display:-webkit-box;display:-webkit-flex;display:flex;align-items:flex-end;margin-bottom:10px;}
+.vc-row.me{-webkit-box-pack:end;-webkit-justify-content:flex-end;justify-content:flex-end;}
+.vc-row.her{-webkit-box-pack:start;-webkit-justify-content:flex-start;justify-content:flex-start;}
+.vc-av-sm{width:34px;height:34px;border-radius:50%;object-fit:cover;-webkit-flex:none;flex:none;margin-right:7px;border:1.5px solid #2c2438;background:#2c2438;}
+.vc-bubble-wrap{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;max-width:72%;}
+.vc-bubble{padding:10px 14px;border-radius:20px;font-size:0.9rem;line-height:1.5;word-break:break-word;}
+.vc-bubble.her{background:#2c2438;color:#e8e0f0;border-bottom-left-radius:4px;}
+.vc-bubble.me{background:linear-gradient(135deg,#25d366,#128c47);color:#fff;border-bottom-right-radius:4px;}
+.vc-bubble-ko{font-size:0.68rem;color:#9b93ad;margin-top:3px;padding-left:4px;}
+.vc-row.me .vc-bubble-ko{text-align:right;padding-right:4px;}
+.vc-time{font-size:0.62rem;color:#6b6080;margin-top:4px;padding-left:2px;}
+.vc-row.me .vc-time{text-align:right;}
+.vc-typing{display:-webkit-box;display:-webkit-flex;display:flex;align-items:flex-end;margin-bottom:10px;}
+.vc-typing-dots{background:#2c2438;border-radius:20px;border-bottom-left-radius:4px;padding:12px 16px;display:-webkit-box;display:-webkit-flex;display:flex;align-items:center;}
+.vc-typing-dots span{width:7px;height:7px;background:#9b93ad;border-radius:50%;display:inline-block;margin:0 2px;animation:vcDot 1.2s infinite;}
+.vc-typing-dots span:nth-child(2){animation-delay:.2s;}
+.vc-typing-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes vcDot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+.vc-inp-area{-webkit-flex:none;flex:none;border-top:1px solid #2c2438;background:#1b1626;padding:8px 14px;padding-bottom:calc(76px + 8px);}
+.vc-img-banner{display:none;background:#1f1a2e;border:1px solid #2c2438;border-radius:10px;padding:7px 12px;font-size:0.74rem;color:#9b93ad;margin-bottom:6px;-webkit-box-pack:justify;-webkit-justify-content:space-between;justify-content:space-between;align-items:center;}
+.vc-img-banner.show{display:-webkit-box;display:-webkit-flex;display:flex;}
+.vc-img-preview{display:-webkit-box;display:-webkit-flex;display:flex;overflow-x:auto;margin-bottom:6px;}
+.vc-inp-row{display:-webkit-box;display:-webkit-flex;display:flex;align-items:flex-end;}
+.vc-inp-row label{font-size:1.3rem;cursor:pointer;padding:6px 8px 6px 0;-webkit-flex:none;flex:none;}
+.vc-inp-row textarea{-webkit-box-flex:1;-webkit-flex:1;flex:1;background:#0c0a12;border:1px solid #2c2438;border-radius:20px;padding:10px 14px;color:#e8e0f0;font-size:0.9rem;resize:none;max-height:100px;overflow-y:auto;line-height:1.4;}
+.vc-inp-row textarea::placeholder{color:#6b6080;}
+.vc-inp-row button{background:linear-gradient(135deg,#ff5d86,#b14bd8);border:none;border-radius:50%;width:40px;height:40px;margin-left:8px;color:#fff;font-size:1rem;cursor:pointer;-webkit-flex:none;flex:none;display:-webkit-box;display:-webkit-flex;display:flex;align-items:center;justify-content:center;}
+/* 추천 패널 */
+.vc-sugg-panel{position:absolute;bottom:0;left:0;right:0;background:#16131f;border-top:2px solid #ff5d86;border-radius:20px 20px 0 0;padding:16px 14px;padding-bottom:calc(76px + 16px);transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.56,.64,1);z-index:300;max-height:60vh;overflow-y:auto;}
+.vc-sugg-panel.show{transform:translateY(0);}
+.vc-sugg-hdr{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-pack:justify;-webkit-justify-content:space-between;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.vc-sugg-hdr-txt{font-size:0.8rem;color:#ff5d86;font-weight:700;}
+.vc-sugg-close{background:none;border:none;color:#9b93ad;font-size:1.1rem;cursor:pointer;padding:2px 6px;}
+.vc-tip{background:#1f1a2e;border-left:3px solid #ff5d86;border-radius:8px;padding:8px 12px;font-size:0.75rem;color:#d0c8e8;margin-bottom:12px;}
+.vc-sugg-item{background:#1a1520;border:1px solid #2c2438;border-radius:14px;padding:12px 14px;margin-bottom:8px;cursor:pointer;transition:border-color .2s;}
+.vc-sugg-item:active{border-color:#ff5d86;background:#1f1a2e;}
+.vc-sugg-lbl{font-size:0.65rem;font-weight:700;color:#ff5d86;margin-bottom:4px;letter-spacing:.5px;}
+.vc-sugg-th{font-size:0.92rem;color:#e8e0f0;margin-bottom:3px;font-weight:500;}
+.vc-sugg-ko{font-size:0.72rem;color:#9b93ad;}
+.vc-sugg-why{font-size:0.65rem;color:#f7b733;margin-top:4px;}
+.vc-analysis-bubble{background:linear-gradient(135deg,#1f1a2e,#16131f);border:1px solid #3d3055;border-radius:14px;padding:12px 14px;margin-bottom:10px;font-size:0.78rem;color:#d0c8e8;line-height:1.5;}
+.vc-analysis-bubble .vc-ab-hdr{font-size:0.72rem;font-weight:700;color:#ff5d86;margin-bottom:6px;}
 </style>
 </head>
 <body>
@@ -551,35 +607,43 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,.nav-item:focus-
 
     <!-- 코치 탭 -->
     <div class="tab active" id="tab-coach">
-      <div class="card">
-        <div class="inp-lbl">👩 상대방 메시지 입력 또는 📷 대화 캡쳐 사진 업로드</div>
-        <div class="img-mode-banner" id="coachImgBanner">
-          <span>📷 사진 <span id="coachImgCount">0</span>장 선택됨 — AI가 대화 내용을 읽어 분석합니다</span>
-          <button class="img-mode-clear" onclick="clearCoachImages()">전체삭제</button>
+      <!-- 채팅 헤더 -->
+      <div class="vc-header">
+        <label class="vc-avatar-wrap" for="vcPhotoInput" title="사진 변경">
+          <img class="vc-avatar" id="vcAvatar" src="" alt="상대">
+          <div class="vc-avatar-edit">📷</div>
+        </label>
+        <input type="file" id="vcPhotoInput" accept="image/*" style="display:none" onchange="handleVcPhoto(this)">
+        <div class="vc-info">
+          <div class="vc-name" id="vcNameDisplay">Panoy</div>
+          <div class="vc-status">🟢 온라인 · 가상 대화 연습</div>
         </div>
-        <div class="chat-img-preview" id="coachImgPreview"></div>
-        <div class="inp-row">
-          <div class="chat-img-btn-wrap" style="margin-right:8px;">
-            <label class="chat-img-btn" for="coachImgInput" title="대화 캡쳐 업로드">📷</label>
-            <input type="file" id="coachImgInput" accept="image/*" multiple style="display:none"
-              onchange="handleCoachImageUpload(this)">
-            <span class="chat-img-count" id="coachImgBadge" style="display:none;"></span>
-          </div>
-          <textarea class="inp-txt" id="herMsg" placeholder="메시지 입력 또는 📷 사진만 올려도 됩니다" rows="2" oninput="autoH(this)"></textarea>
-          <button class="inp-go" onclick="analyze()" style="margin-left:8px;">▶</button>
+        <button class="vc-clear-btn" onclick="clearVcChat()" title="대화 초기화">🗑️</button>
+      </div>
+      <!-- 메시지 영역 -->
+      <div class="vc-msgs" id="vcMsgs"></div>
+      <!-- 입력 영역 -->
+      <div class="vc-inp-area" id="vcInpArea">
+        <div class="vc-img-banner" id="vcImgBanner">
+          <span>📷 사진 <span id="vcImgCount">0</span>장 — 대화 분석 모드</span>
+          <button class="img-mode-clear" onclick="clearVcImages()">삭제</button>
         </div>
-        <div id="sigBox" class="sigs" style="display:none;"></div>
-        <div id="tipBox" class="tipbox" style="display:none;"></div>
-        <div id="stratBox" class="stratbox" style="display:none;"></div>
+        <div class="vc-img-preview chat-img-preview" id="vcImgPreview"></div>
+        <div class="vc-inp-row">
+          <label for="vcImgInput" title="대화 캡쳐 업로드">📷</label>
+          <input type="file" id="vcImgInput" accept="image/*" multiple style="display:none" onchange="handleVcImageUpload(this)">
+          <textarea id="vcInput" placeholder="한국어로 의도를 입력하면 태국어 추천" rows="1" oninput="autoH(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();vcSend();}"></textarea>
+          <button onclick="vcSend()">➤</button>
+        </div>
       </div>
-      <div class="loading" id="loading"><div class="dots"><span></span><span></span><span></span></div><br>AI 전략 분석 중...</div>
-      <div id="results"></div>
-      <div class="reset-row" id="resetRow" style="display:none;">
-        <button onclick="resetCoach()">🔄 새 메시지 분석하기</button>
-      </div>
-      <div class="empty" id="emptyState">
-        <div class="ei">🎯</div>
-        <p>상대방 메시지를 입력하면<br>AI가 감정을 분석하고<br>최적의 플러팅 전략과<br>태국어 답변 3개를 추천합니다</p>
+      <!-- 추천 패널 -->
+      <div class="vc-sugg-panel" id="vcSuggPanel">
+        <div class="vc-sugg-hdr">
+          <span class="vc-sugg-hdr-txt">✨ 태국어 답변 추천</span>
+          <button class="vc-sugg-close" onclick="hideVcSuggPanel()">✕</button>
+        </div>
+        <div class="vc-tip" id="vcTip"></div>
+        <div id="vcSuggList"></div>
       </div>
     </div>
 
@@ -1367,6 +1431,7 @@ function checkPw(){
     updateNickDisplay();
     renderWomen();
     renderMemos();
+    setTimeout(vcInit,50);
   } else if(localStorage.getItem('auth')==='1'){
     /* 로그인은 됐지만 아직 시작하기 안 누른 경우 */
     document.getElementById('pwWrap').classList.add('hidden');
@@ -1394,6 +1459,7 @@ function startApp(){
   updateNickDisplay();
   renderWomen();
   renderMemos();
+  setTimeout(vcInit,50);
 }
 function updateNickDisplay(){
   var el=document.getElementById('hdrNick');
@@ -1672,14 +1738,332 @@ function useMeg(text){
   document.getElementById('emptyState').style.display='block';
 }
 function resetCoach(){
-  document.getElementById('herMsg').value='';
-  document.getElementById('results').innerHTML='';
-  document.getElementById('sigBox').style.display='none';
-  document.getElementById('tipBox').style.display='none';
-  document.getElementById('stratBox').style.display='none';
-  document.getElementById('resetRow').style.display='none';
-  document.getElementById('emptyState').innerHTML='<div class="ei">🎯</div><p>상대방 메시지를 입력하면<br>AI가 감정을 분석하고<br>최적의 플러팅 전략과<br>태국어 답변 3개를 추천합니다</p>';
-  document.getElementById('emptyState').style.display='block';
+  document.getElementById('vcInput')&&(document.getElementById('vcInput').value='');
+}
+
+/* ══════════════════════════════════════
+   가상 채팅 시스템
+══════════════════════════════════════ */
+var vcChat=JSON.parse(localStorage.getItem('vcChat')||'[]');
+var vcPartnerPhoto=localStorage.getItem('vcPartnerPhoto')||'';
+var vcPartnerName=localStorage.getItem('vcPartnerName')||'Panoy';
+var vcImages=[];
+var _vcWaiting=false;
+
+/* 기본 아바타 SVG */
+var VC_DEFAULT_AVATAR='data:image/svg+xml;base64,'+btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80"><circle cx="40" cy="40" r="40" fill="#2c2438"/><circle cx="40" cy="30" r="14" fill="#ff5d86" opacity=".8"/><ellipse cx="40" cy="70" rx="22" ry="18" fill="#ff5d86" opacity=".6"/></svg>');
+
+function vcInit(){
+  var av=document.getElementById('vcAvatar');
+  if(av)av.src=vcPartnerPhoto||VC_DEFAULT_AVATAR;
+  var nd=document.getElementById('vcNameDisplay');
+  if(nd)nd.textContent=vcPartnerName;
+  renderVcMsgs();
+}
+
+function handleVcPhoto(input){
+  if(!input.files||!input.files[0])return;
+  resizeImageToBase64(input.files[0]).then(function(r){
+    vcPartnerPhoto='data:'+r.type+';base64,'+r.data;
+    localStorage.setItem('vcPartnerPhoto',vcPartnerPhoto);
+    var av=document.getElementById('vcAvatar');
+    if(av)av.src=vcPartnerPhoto;
+    /* 모든 그녀 아바타 업데이트 */
+    var avs=document.querySelectorAll('.vc-av-sm');
+    avs.forEach(function(a){a.src=vcPartnerPhoto;});
+    input.value='';
+  }).catch(function(){input.value='';});
+}
+
+function handleVcImageUpload(input){
+  var files=Array.prototype.slice.call(input.files);
+  if(!files.length)return;
+  Promise.all(files.map(function(f){return resizeImageToBase64(f);})).then(function(results){
+    results.forEach(function(r,i){
+      var thumb=URL.createObjectURL(files[i]);
+      vcImages.push({data:r.data,type:r.type,thumb:thumb});
+    });
+    renderVcImgPreview();
+    input.value='';
+  });
+}
+function renderVcImgPreview(){
+  var p=document.getElementById('vcImgPreview');
+  var b=document.getElementById('vcImgBanner');
+  p.innerHTML='';
+  if(!vcImages.length){b.classList.remove('show');return;}
+  vcImages.forEach(function(img,i){
+    var w=document.createElement('div');w.className='chat-img-thumb';
+    w.innerHTML='<img src="'+img.thumb+'" alt="캡쳐"><button class="chat-img-del" onclick="removeVcImage('+i+')">✕</button>';
+    p.appendChild(w);
+  });
+  b.classList.add('show');
+  document.getElementById('vcImgCount').textContent=vcImages.length;
+}
+function removeVcImage(i){URL.revokeObjectURL(vcImages[i].thumb);vcImages.splice(i,1);renderVcImgPreview();}
+function clearVcImages(){vcImages.forEach(function(img){URL.revokeObjectURL(img.thumb);});vcImages=[];renderVcImgPreview();}
+
+async function vcSend(){
+  if(_vcWaiting)return;
+  var input=document.getElementById('vcInput');
+  var msg=(input?input.value.trim():'');
+  var hasImgs=vcImages.length>0;
+  if(!msg&&!hasImgs)return;
+  _vcWaiting=true;
+  if(input)input.value='';
+
+  if(hasImgs){
+    /* 사진 분석 모드 */
+    var imgs=vcImages.slice();
+    clearVcImages();
+    appendVcSystemMsg('📷 대화 사진 분석 중...');
+    try{
+      var vr=await callVcVisionAnalysis(imgs,msg);
+      removeVcLastSystemMsg();
+      /* 분석 결과를 채팅에 표시 */
+      appendVcAnalysis(vr);
+      if(vr.lastMsg){showVcSuggPanelWithData(vr.suggs,vr.tip,null);}
+    }catch(e){removeVcLastSystemMsg();appendVcSystemMsg('⚠️ 분석 오류');}
+  } else {
+    /* 텍스트 추천 모드 */
+    appendVcSystemMsg('💭 태국어 답변 생성 중...');
+    try{
+      var cr=await callVcSuggs(msg);
+      removeVcLastSystemMsg();
+      showVcSuggPanelWithData(cr.suggs,cr.tip,msg);
+    }catch(e){removeVcLastSystemMsg();appendVcSystemMsg('⚠️ AI 오류');}
+  }
+  _vcWaiting=false;
+}
+
+function showVcSuggPanelWithData(suggs,tip,intent){
+  var panel=document.getElementById('vcSuggPanel');
+  var tipEl=document.getElementById('vcTip');
+  var listEl=document.getElementById('vcSuggList');
+  if(tipEl)tipEl.textContent=tip||'';
+  if(listEl){
+    listEl.innerHTML='';
+    (suggs||[]).forEach(function(s){
+      var th=(s.th||'').replace(/'/g,"\\'");
+      var ko=escH(s.ko||'');
+      var item=document.createElement('div');
+      item.className='vc-sugg-item';
+      item.innerHTML='<div class="vc-sugg-lbl">🎯 '+escH(s.label||'')+'</div>'
+        +'<div class="vc-sugg-th">'+escH(s.th||'')+'</div>'
+        +'<div class="vc-sugg-ko">🇰🇷 '+ko+'</div>'
+        +(s.why?'<div class="vc-sugg-why">✦ '+escH(s.why)+'</div>':'');
+      item.onclick=function(){vcPickSugg(s.th,s.ko,s.label,intent);};
+      listEl.appendChild(item);
+    });
+  }
+  if(panel)panel.classList.add('show');
+}
+function hideVcSuggPanel(){
+  var p=document.getElementById('vcSuggPanel');
+  if(p)p.classList.remove('show');
+}
+
+async function vcPickSugg(th,ko,label,intent){
+  hideVcSuggPanel();
+  /* 내 메시지 버블 추가 */
+  var msg={who:'me',th:th,ko:ko,ts:Date.now()};
+  vcChat.push(msg);
+  saveVcChat();
+  appendVcMsgEl(msg);
+  scrollVcBottom();
+  /* 상대방 타이핑 표시 → 자동 응답 */
+  showVcTyping();
+  try{
+    var reply=await callVcPartnerReply(th);
+    hideVcTyping();
+    var hm={who:'her',th:reply.reply,ko:reply.replyKo,ts:Date.now()};
+    vcChat.push(hm);
+    saveVcChat();
+    appendVcMsgEl(hm);
+    scrollVcBottom();
+  }catch(e){hideVcTyping();}
+}
+
+function renderVcMsgs(){
+  var el=document.getElementById('vcMsgs');
+  if(!el)return;
+  el.innerHTML='';
+  if(!vcChat.length){
+    el.innerHTML='<div style="text-align:center;padding:40px 20px;color:#6b6080;font-size:0.8rem;">'
+      +'<div style="font-size:2rem;margin-bottom:10px;">💬</div>'
+      +'태국어 연습을 시작해보세요!<br>한국어로 하고 싶은 말을 입력하면<br>태국어 추천을 받을 수 있어요</div>';
+    return;
+  }
+  vcChat.forEach(function(m){appendVcMsgEl(m,true);});
+}
+
+function appendVcMsgEl(m,noScroll){
+  var el=document.getElementById('vcMsgs');
+  if(!el)return;
+  /* 시스템 메시지 제거 */
+  var emp=el.querySelector('.vc-empty');
+  if(emp)emp.remove();
+  var now=new Date(m.ts);
+  var hm=(now.getHours()%12||12)+':'+(now.getMinutes()<10?'0':'')+now.getMinutes()+' '+(now.getHours()<12?'오전':'오후');
+  var row=document.createElement('div');
+  row.className='vc-row '+(m.who==='me'?'me':'her');
+  if(m.who==='her'){
+    var avSrc=vcPartnerPhoto||VC_DEFAULT_AVATAR;
+    row.innerHTML='<img class="vc-av-sm" src="'+avSrc+'" alt="상대">'
+      +'<div class="vc-bubble-wrap">'
+      +'<div class="vc-bubble her">'+escH(m.th)+'</div>'
+      +(m.ko?'<div class="vc-bubble-ko">🇰🇷 '+escH(m.ko)+'</div>':'')
+      +'<div class="vc-time">'+hm+'</div></div>';
+  } else {
+    row.innerHTML='<div class="vc-bubble-wrap">'
+      +'<div class="vc-bubble me">'+escH(m.th)+'</div>'
+      +(m.ko?'<div class="vc-bubble-ko">'+escH(m.ko)+'</div>':'')
+      +'<div class="vc-time">'+hm+'</div></div>';
+  }
+  el.appendChild(row);
+  if(!noScroll)scrollVcBottom();
+}
+
+function appendVcAnalysis(vr){
+  var el=document.getElementById('vcMsgs');
+  if(!el)return;
+  var d=document.createElement('div');
+  d.className='vc-analysis-bubble';
+  var html='<div class="vc-ab-hdr">📊 대화 분석 결과</div>';
+  if(vr.summary)html+='<div style="margin-bottom:6px;">📋 '+escH(vr.summary)+'</div>';
+  if(vr.hotMyMsg)html+='<div style="margin-bottom:4px;">🔥 <strong>최강 메시지:</strong> '+escH(vr.hotMyMsg)+'</div>';
+  if(vr.hotReason)html+='<div style="margin-bottom:4px;color:#f7b733;">→ '+escH(vr.hotReason)+'</div>';
+  if(vr.bestTiming)html+='<div>⏰ '+escH(vr.bestTiming)+'</div>';
+  if(vr.lastMsg){
+    html+='<div style="margin-top:8px;border-top:1px solid #3d3055;padding-top:8px;">'
+      +'💬 <strong>상대방 마지막:</strong> '+escH(vr.lastMsg)
+      +(vr.lastMsgKo?' <span style="color:#9b93ad;">('+escH(vr.lastMsgKo)+')</span>':'')+'</div>';
+  }
+  d.innerHTML=html;
+  el.appendChild(d);
+  scrollVcBottom();
+}
+
+function appendVcSystemMsg(txt){
+  var el=document.getElementById('vcMsgs');
+  if(!el)return;
+  var d=document.createElement('div');
+  d.className='vc-day-sep vc-sys-msg';
+  d.textContent=txt;
+  el.appendChild(d);
+  scrollVcBottom();
+}
+function removeVcLastSystemMsg(){
+  var el=document.getElementById('vcMsgs');
+  if(!el)return;
+  var msgs=el.querySelectorAll('.vc-sys-msg');
+  if(msgs.length)msgs[msgs.length-1].remove();
+}
+
+var _vcTypingEl=null;
+function showVcTyping(){
+  var el=document.getElementById('vcMsgs');
+  if(!el||_vcTypingEl)return;
+  var avSrc=vcPartnerPhoto||VC_DEFAULT_AVATAR;
+  _vcTypingEl=document.createElement('div');
+  _vcTypingEl.className='vc-typing';
+  _vcTypingEl.innerHTML='<img class="vc-av-sm" src="'+avSrc+'" alt="상대">'
+    +'<div class="vc-typing-dots"><span></span><span></span><span></span></div>';
+  el.appendChild(_vcTypingEl);
+  scrollVcBottom();
+}
+function hideVcTyping(){
+  if(_vcTypingEl){_vcTypingEl.remove();_vcTypingEl=null;}
+}
+
+function scrollVcBottom(){
+  var el=document.getElementById('vcMsgs');
+  if(el)el.scrollTop=el.scrollHeight;
+}
+function saveVcChat(){
+  localStorage.setItem('vcChat',JSON.stringify(vcChat.slice(-80)));
+}
+function clearVcChat(){
+  if(!confirm('대화 내용을 모두 삭제할까요?'))return;
+  vcChat=[];
+  saveVcChat();
+  renderVcMsgs();
+}
+
+/* ── AI 함수들 ── */
+async function callVcSuggs(intent){
+  var history=vcChat.slice(-8).map(function(m){
+    return (m.who==='me'?'나(me)':'상대('+vcPartnerName+')')+': '+m.th;
+  }).join('\n');
+  var sys='당신은 태국어/라오어 플러팅 전략 코치입니다.\n'
+    +SSOM_PATTERNS
+    +'가상 대화 상대: '+vcPartnerName+'\n'
+    +(history?'최근 대화:\n'+history+'\n\n':'')
+    +'사용자가 한국어로 하고 싶은 말을 알려주면, 실제 채팅용 태국어 구어체 답변 3개를 추천하세요.\n'
+    +'• 반드시 10단어 이하의 짧고 자연스러운 구어체\n'
+    +'• 이모지 1~2개 포함\n'
+    +'JSON만 반환: {"tip":"한줄전략(한국어)","suggs":[{"label":"전략명","th":"태국어","ko":"한국어번역","why":"이유8자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"이유8자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"이유8자이내"}]}';
+  var r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:700,system:sys,messages:[{role:'user',content:'사용자 의도: '+intent}]})
+  });
+  var d=await r.json();
+  return JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
+}
+
+async function callVcPartnerReply(myMsg){
+  var history=vcChat.slice(-10).map(function(m){
+    return (m.who==='me'?'Korean guy':vcPartnerName)+': '+m.th;
+  }).join('\n');
+  var sys='You are playing the role of '+vcPartnerName+', a Thai/Lao woman chatting on Line with a Korean man.\n'
+    +'Respond naturally in Thai. Keep it short (1-2 sentences). Be playful and natural, not too formal.\n'
+    +'Use casual Thai (colloquial), occasional emoji. Mirror the energy of his message.\n'
+    +'Recent conversation:\n'+history+'\n\n'
+    +'JSON only (no code block): {"reply":"Thai text","replyKo":"Korean translation"}';
+  var r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:300,system:sys,messages:[{role:'user',content:'Korean guy said: '+myMsg}]})
+  });
+  var d=await r.json();
+  return JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
+}
+
+async function callVcVisionAnalysis(imgs,extraText){
+  /* 기존 callClaudeChatVision 로직 재사용, 가상 파트너 컨텍스트 포함 */
+  var imgCount=imgs.length;
+  var history=vcChat.slice(-6).map(function(m){return (m.who==='me'?'나':'상대')+': '+m.th;}).join('\n');
+  var sys='당신은 태국어/라오어 텍스트 인식 전문가이자 세계 최고 플러팅 전략 코치입니다.\n'
+    +'상대: '+vcPartnerName+' / 스타일: '+PD[persona]+'\n'
+    +(history?'최근 대화:\n'+history+'\n':'')
+    +SSOM_PATTERNS
+    +'\n=== [규칙1] 말풍선 발신자 구분 ===\n'
+    +'색깔말풍선=나(me), 흰색말풍선=상대방(her)\n'
+    +'카카오톡: 오른쪽 노란색=나 / 라인: 오른쪽 초록색=나 / 왓츠앱: 오른쪽 연초록=나\n\n'
+    +'=== [규칙2] 여러 장 사진 처리 ===\n'
+    +(imgCount>1?'총 '+imgCount+'장을 시간순(1→'+imgCount+'장)으로 하나의 연속 대화로 분석.\n':'')
+    +'=== [규칙3] 태국어 OCR — 100% 정확도 ===\n'
+    +'낱자 단위 식별, 성조·모음 생략 금지.\n\n'
+    +'JSON만 반환:\n'
+    +'{"tip":"한줄전략","lastMsg":"상대방마지막원문","lastMsgKo":"한국어의역",'
+    +'"summary":"대화흐름요약","hotMyMsg":"최강내메시지","hotReason":"이유","bestTiming":"최적타이밍",'
+    +'"suggs":[{"label":"전략명","th":"태국어10단어이하","ko":"한국어","why":"8자이내"},...]}';
+  var content=[];
+  imgs.forEach(function(img,i){
+    content.push({type:'text',text:'채팅 스크린샷 '+(i+1)+'장:'});
+    content.push({type:'image',source:{type:'base64',media_type:img.type,data:img.data}});
+  });
+  var ut='위 스크린샷의 대화를 분석해 전략 추천 JSON으로 반환해주세요.';
+  if(extraText)ut+=' 메모: '+extraText;
+  content.push({type:'text',text:ut});
+  var r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,system:sys,messages:[{role:'user',content:content}]})
+  });
+  var d=await r.json();
+  return JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
 }
 
 /* ── 이성관리 ── */
