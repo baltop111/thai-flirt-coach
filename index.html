@@ -632,7 +632,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,.nav-item:focus-
         <div class="vc-inp-row">
           <label for="vcImgInput" title="대화 캡쳐 업로드">📷</label>
           <input type="file" id="vcImgInput" accept="image/*" multiple style="display:none" onchange="handleVcImageUpload(this)">
-          <textarea id="vcInput" placeholder="한국어로 의도를 입력하면 태국어 추천" rows="1" oninput="autoH(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();vcSend();}"></textarea>
+          <textarea id="vcInput" placeholder="상대방이 보낸 메시지를 입력 (태국어/한국어)" rows="1" oninput="autoH(this)" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();vcSend();}"></textarea>
           <button onclick="vcSend()">➤</button>
         </div>
       </div>
@@ -1810,26 +1810,47 @@ async function vcSend(){
   var hasImgs=vcImages.length>0;
   if(!msg&&!hasImgs)return;
   _vcWaiting=true;
-  if(input)input.value='';
+  if(input){input.value='';input.style.height='';}
 
   if(hasImgs){
-    /* 사진 분석 모드 */
+    /* 사진 캡쳐 분석 모드 */
     var imgs=vcImages.slice();
     clearVcImages();
     appendVcSystemMsg('📷 대화 사진 분석 중...');
     try{
       var vr=await callVcVisionAnalysis(imgs,msg);
       removeVcLastSystemMsg();
-      /* 분석 결과를 채팅에 표시 */
+      /* 상대방 마지막 메시지를 her 말풍선으로 표시 */
+      if(vr.lastMsg){
+        var hm={who:'her',th:vr.lastMsg,ko:vr.lastMsgKo||'',ts:Date.now()};
+        vcChat.push(hm);saveVcChat();appendVcMsgEl(hm);
+      }
       appendVcAnalysis(vr);
-      if(vr.lastMsg){showVcSuggPanelWithData(vr.suggs,vr.tip,null);}
+      scrollVcBottom();
+      if(vr.suggs&&vr.suggs.length)showVcSuggPanelWithData(vr.suggs,vr.tip,vr.lastMsg);
     }catch(e){removeVcLastSystemMsg();appendVcSystemMsg('⚠️ 분석 오류');}
   } else {
-    /* 텍스트 추천 모드 */
-    appendVcSystemMsg('💭 태국어 답변 생성 중...');
+    /* ★ 핵심 흐름: 상대방 메시지 입력 → her 말풍선 → 답변 3개 추천 */
+    /* 상대방 말풍선 먼저 표시 */
+    var hm={who:'her',th:msg,ko:'',ts:Date.now()};
+    vcChat.push(hm);saveVcChat();appendVcMsgEl(hm);scrollVcBottom();
+    /* AI가 태국어 번역+답변 생성 */
+    appendVcSystemMsg('💭 답변 추천 생성 중...');
     try{
       var cr=await callVcSuggs(msg);
       removeVcLastSystemMsg();
+      /* 한국어 번역이 있으면 her 말풍선 아래에 번역 업데이트 */
+      if(cr.herKo){
+        hm.ko=cr.herKo;
+        saveVcChat();
+        var bubbles=document.getElementById('vcMsgs').querySelectorAll('.vc-row.her');
+        var last=bubbles[bubbles.length-1];
+        if(last){
+          var koEl=last.querySelector('.vc-bubble-ko');
+          if(koEl)koEl.textContent='🇰🇷 '+cr.herKo;
+          else{var bw=last.querySelector('.vc-bubble-wrap');if(bw){var d=document.createElement('div');d.className='vc-bubble-ko';d.textContent='🇰🇷 '+cr.herKo;bw.insertBefore(d,bw.querySelector('.vc-time'));}}
+        }
+      }
       showVcSuggPanelWithData(cr.suggs,cr.tip,msg);
     }catch(e){removeVcLastSystemMsg();appendVcSystemMsg('⚠️ AI 오류');}
   }
@@ -1865,23 +1886,26 @@ function hideVcSuggPanel(){
 
 async function vcPickSugg(th,ko,label,intent){
   hideVcSuggPanel();
-  /* 내 메시지 버블 추가 */
+  /* 내 메시지 버블 */
   var msg={who:'me',th:th,ko:ko,ts:Date.now()};
-  vcChat.push(msg);
-  saveVcChat();
-  appendVcMsgEl(msg);
-  scrollVcBottom();
-  /* 상대방 타이핑 표시 → 자동 응답 */
+  vcChat.push(msg);saveVcChat();appendVcMsgEl(msg);scrollVcBottom();
+  /* 상대방 타이핑 → 자동응답 → 자동 추천 패널 */
   showVcTyping();
+  _vcWaiting=true;
   try{
     var reply=await callVcPartnerReply(th);
     hideVcTyping();
     var hm={who:'her',th:reply.reply,ko:reply.replyKo,ts:Date.now()};
-    vcChat.push(hm);
-    saveVcChat();
-    appendVcMsgEl(hm);
-    scrollVcBottom();
+    vcChat.push(hm);saveVcChat();appendVcMsgEl(hm);scrollVcBottom();
+    /* 그녀 응답에 대한 내 추천도 자동 생성 */
+    appendVcSystemMsg('💭 답변 추천 생성 중...');
+    try{
+      var cr=await callVcSuggs(reply.reply);
+      removeVcLastSystemMsg();
+      showVcSuggPanelWithData(cr.suggs,cr.tip,reply.reply);
+    }catch(e2){removeVcLastSystemMsg();}
   }catch(e){hideVcTyping();}
+  _vcWaiting=false;
 }
 
 function renderVcMsgs(){
@@ -1890,8 +1914,10 @@ function renderVcMsgs(){
   el.innerHTML='';
   if(!vcChat.length){
     el.innerHTML='<div style="text-align:center;padding:40px 20px;color:#6b6080;font-size:0.8rem;">'
+      +(vcPartnerPhoto?'':'<label for="vcPhotoInput" style="display:block;margin-bottom:16px;cursor:pointer;"><div style="width:70px;height:70px;border-radius:50%;background:#2c2438;border:2px dashed #ff5d86;display:-webkit-box;display:-webkit-flex;display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:1.5rem;">📷</div><div style="color:#ff5d86;font-size:0.75rem;margin-top:6px;">상대방 사진 설정</div></label>')
       +'<div style="font-size:2rem;margin-bottom:10px;">💬</div>'
-      +'태국어 연습을 시작해보세요!<br>한국어로 하고 싶은 말을 입력하면<br>태국어 추천을 받을 수 있어요</div>';
+      +'<strong style="color:#d0c8e8;font-size:0.88rem;">상대방 메시지를 입력하세요</strong><br><br>'
+      +'① 다른 앱에서 받은 메시지를 아래에 입력<br>② 상대 말풍선으로 표시됨<br>③ 태국어 답변 3개 추천<br>④ 골라서 보내기!</div>';
     return;
   }
   vcChat.forEach(function(m){appendVcMsgEl(m,true);});
@@ -1999,14 +2025,15 @@ async function callVcSuggs(intent){
     +SSOM_PATTERNS
     +'가상 대화 상대: '+vcPartnerName+'\n'
     +(history?'최근 대화:\n'+history+'\n\n':'')
-    +'사용자가 한국어로 하고 싶은 말을 알려주면, 실제 채팅용 태국어 구어체 답변 3개를 추천하세요.\n'
-    +'• 반드시 10단어 이하의 짧고 자연스러운 구어체\n'
+    +'상대방이 보낸 메시지(태국어 또는 한국어)를 주면, 이에 대한 실제 채팅용 태국어 구어체 답변 3개를 추천하세요.\n'
+    +'• 반드시 10단어 이하의 짧고 자연스러운 구어체 (문어체 금지)\n'
     +'• 이모지 1~2개 포함\n'
-    +'JSON만 반환: {"tip":"한줄전략(한국어)","suggs":[{"label":"전략명","th":"태국어","ko":"한국어번역","why":"이유8자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"이유8자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"이유8자이내"}]}';
+    +'• 세 답변은 서로 다른 전략 각도 (설레게/유머/밀당 등)\n'
+    +'JSON만 반환: {"tip":"한줄전략(한국어)","herKo":"상대메시지한국어번역(없으면빈문자열)","suggs":[{"label":"전략명","th":"태국어","ko":"한국어번역","why":"이유8자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"이유8자이내"},{"label":"전략명","th":"태국어","ko":"한국어번역","why":"이유8자이내"}]}';
   var r=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':CK,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:700,system:sys,messages:[{role:'user',content:'사용자 의도: '+intent}]})
+    body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:700,system:sys,messages:[{role:'user',content:'상대방 메시지: '+intent+'\n\n위 메시지에 대한 태국어 답변 3개를 추천해주세요. herKo에는 상대 메시지의 자연스러운 한국어 의역을 넣어주세요.'}]})
   });
   var d=await r.json();
   return JSON.parse(d.content[0].text.trim().replace(/^```json\s*/,'').replace(/\s*```$/,''));
