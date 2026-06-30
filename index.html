@@ -481,7 +481,9 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,.nav-item:focus-
 .vc-info{-webkit-flex:1;flex:1;margin-left:10px;}
 .vc-name{font-weight:700;font-size:0.97rem;color:#e8e0f0;}
 .vc-status{font-size:0.7rem;color:#34d6b0;margin-top:2px;}
-.vc-clear-btn{background:none;border:none;color:#9b93ad;font-size:1.1rem;cursor:pointer;padding:6px;}
+.vc-clear-btn{background:#1f1a2e;border:1px solid #2c2438;border-radius:16px;color:#9b93ad;font-size:0.72rem;font-weight:600;cursor:pointer;padding:6px 12px;white-space:nowrap;}
+.vc-new-chat-banner{text-align:center;padding:16px 0 4px;}
+.vc-new-chat-btn{background:linear-gradient(135deg,#ff5d86,#b14bd8);border:none;border-radius:20px;color:#fff;font-size:0.82rem;font-weight:700;padding:11px 24px;cursor:pointer;}
 .vc-msgs{-webkit-box-flex:1;-webkit-flex:1;flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 14px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;}
 .vc-day-sep{text-align:center;margin:10px 0;font-size:0.67rem;color:#9b93ad;background:#1b1626;border-radius:20px;padding:3px 10px;align-self:center;}
 .vc-row{display:-webkit-box;display:-webkit-flex;display:flex;align-items:flex-end;margin-bottom:10px;}
@@ -625,7 +627,7 @@ button:focus-visible,textarea:focus-visible,input:focus-visible,.nav-item:focus-
           <div class="vc-name" id="vcNameDisplay">Panoy</div>
           <div class="vc-status">🟢 온라인 · 가상 대화 연습</div>
         </div>
-        <button class="vc-clear-btn" onclick="clearVcChat()" title="대화 초기화">🗑️</button>
+        <button class="vc-clear-btn" onclick="clearVcChat()">🔄 새로 채팅하기</button>
       </div>
       <!-- 메시지 영역 -->
       <div class="vc-msgs" id="vcMsgs"></div>
@@ -1946,7 +1948,20 @@ function vcStopChat(){
   var el=document.getElementById('vcMsgs');
   var old=el&&el.querySelector('.vc-continue-wrap');
   if(old)old.remove();
-  appendVcSystemMsg('✅ 대화 연습 완료! 새 메시지를 입력해 다시 시작하세요.');
+  if(!el)return;
+  var banner=document.createElement('div');
+  banner.className='vc-new-chat-banner';
+  banner.innerHTML='<div style="font-size:0.72rem;color:#9b93ad;margin-bottom:10px;">✅ 대화 연습 완료!</div>'
+    +'<button class="vc-new-chat-btn" onclick="clearVcChat()">🔄 새로 채팅하기</button>';
+  el.appendChild(banner);
+  scrollVcBottom();
+}
+
+function clearVcChat(){
+  vcChat=[];
+  saveVcChat();
+  renderVcMsgs();
+  hideVcSuggPanel();
 }
 
 function renderVcMsgs(){
@@ -2049,12 +2064,6 @@ function scrollVcBottom(){
 }
 function saveVcChat(){
   localStorage.setItem('vcChat',JSON.stringify(vcChat.slice(-80)));
-}
-function clearVcChat(){
-  if(!confirm('대화 내용을 모두 삭제할까요?'))return;
-  vcChat=[];
-  saveVcChat();
-  renderVcMsgs();
 }
 
 /* ── AI 함수들 ── */
