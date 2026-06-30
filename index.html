@@ -182,9 +182,11 @@ body{height:100vh;height:100dvh;overflow:hidden;background:#0c0a12;color:#f3eef9
 .chat-empty .ce{font-size:2.5rem;margin-bottom:10px;}
 .chat-empty p{font-size:0.82rem;line-height:1.7;}
 .bubble-wrap{margin-bottom:14px;}
-.bubble-wrap.her{-webkit-box-align:start;-webkit-align-items:flex-start;align-items:flex-start;}
+.bubble-wrap.her{-webkit-box-align:start;-webkit-align-items:flex-start;align-items:flex-start;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:horizontal;-webkit-flex-direction:row;flex-direction:row;}
 .bubble-wrap.me{-webkit-box-align:end;-webkit-align-items:flex-end;align-items:flex-end;text-align:right;}
 .bubble-label{font-size:0.62rem;color:#9b93ad;margin-bottom:4px;padding:0 4px;}
+.bubble-her-av{width:36px;height:36px;border-radius:50%;object-fit:cover;-webkit-flex-shrink:0;flex-shrink:0;margin-right:8px;margin-top:2px;border:1.5px solid #2c2438;background:#2c2438;}
+.bubble-her-body{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;min-width:0;max-width:calc(100% - 44px);}
 .bubble{display:inline-block;max-width:78%;padding:10px 13px;border-radius:16px;font-size:0.88rem;line-height:1.55;text-align:left;word-break:break-word;}
 .bubble.her{background:#16131f;border:1px solid #2c2438;color:#f3eef9;border-top-left-radius:4px;}
 .bubble.me{background:linear-gradient(135deg,#ff5d86,#b14bd8);color:#fff;border-top-right-radius:4px;}
@@ -2242,10 +2244,16 @@ function renderChatMsgs(){
         +'<div class="bubble-summary-txt">'+escH(c.msg)+'</div>';
     } else if(c.dir==='her'){
       wrap.className='bubble-wrap her';
-      wrap.innerHTML='<div class="bubble-label">👩 '+escH(p.n||'상대')+'</div>'
+      var avHtml=p.photo
+        ?'<img class="bubble-her-av" src="'+p.photo+'" alt="'+escH(p.n||'상대')+'">'
+        :'<div class="bubble-her-av" style="text-align:center;line-height:33px;font-size:1.1rem;">'+(p.e||'👩')+'</div>';
+      wrap.innerHTML=avHtml
+        +'<div class="bubble-her-body">'
+        +'<div class="bubble-label">'+escH(p.n||'상대')+'</div>'
         +'<div class="bubble her">'+escH(c.msg)+'</div>'
         +(c.ko?'<div class="bubble-ko-her">🇰🇷 '+escH(c.ko)+'</div>':'')
-        +'<div class="bubble-ts">'+fmtTime(c.ts)+'</div>';
+        +'<div class="bubble-ts">'+fmtTime(c.ts)+'</div>'
+        +'</div>';
     } else {
       wrap.className='bubble-wrap me';
       wrap.innerHTML='<div class="bubble-label">'+(nickname||'나')+'</div>'
